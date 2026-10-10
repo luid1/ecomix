@@ -339,3 +339,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .article-aside{padding-top:14px}
   .article-source{margin-top:48px}
 }
+
+/* Eco News — imagens reais com proxy e fallback */
+.news-slide-image,.news-card-image,.news-lead-image{overflow:hidden;background:#dfeae4;}
+.news-slide-image img,.news-card-image img,.news-lead-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s ease;}
+.news-slide-image:hover img,.news-card-image:hover img,.news-lead-image:hover img{transform:scale(1.025);}

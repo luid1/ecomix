@@ -6,7 +6,7 @@ const FALLBACK = [
     url: 'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-incendios-florestais-da-indonesia-atinge-ao-menos-4-paises.shtml',
     description: 'Fumaça de incêndios florestais se espalha pela região e afeta países do Sudeste Asiático, segundo a publicação original.',
     date: '2026-10-10T12:00:00-03:00',
-    source: 'Folha / Ambiente', image: '', category: 'MEIO AMBIENTE'
+    source: 'Folha / Ambiente', image: 'https://cdn.jornaldebrasilia.com.br/wp-content/uploads/2026/10/10105613/AFP__20261010__D2UK8KA__v1__MidRes__IndonesiaPollutionEnvironmentFire-620x620.jpg', category: 'MEIO AMBIENTE'
   },
   {
     title:'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação',
@@ -138,6 +138,19 @@ function enrich(items){
   });
 }
 
+
+async function hydrateArticleImages(items, maxItems=10){
+  const targets=items.filter(x=>x && x.url && /^https?:\/\//i.test(x.url) && !x.image).slice(0,maxItems);
+  await Promise.allSettled(targets.map(async item=>{
+    try{
+      const html=await get(item.url,3600);
+      const image=extractMetaImage(html,item.url);
+      if(image)item.image=image;
+    }catch{}
+  }));
+  return items;
+}
+
 async function handler(req,res){
   res.setHeader('Content-Type','application/json; charset=utf-8');
   res.setHeader('Cache-Control','s-maxage=180, stale-while-revalidate=300');
@@ -161,6 +174,7 @@ async function handler(req,res){
     const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
     const all=[...FALLBACK,...results.flat()];
     const unique=[...new Map(all.map(x=>[x.url,x])).values()];
+    await hydrateArticleImages(unique,10);
     const sorted=enrich(unique).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
