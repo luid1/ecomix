@@ -8,24 +8,11 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="news-page article-page">
-<header class="news-header">
-  <div class="wrap nav">
-    <a href="index.html" class="logo"><img src="assets/ecomix-header.png" alt="EcoMix Gestão Ambiental"></a>
-    <nav class="desktop-nav">
-      <a href="index.html#sobre">A EcoMix</a>
-      <a href="index.html#servicos">Serviços</a>
-      <a href="index.html#condominios">Condomínios</a>
-      <a href="index.html#empresas">Empresas</a>
-      <a href="index.html#processo">Como funciona</a>
-      <a href="ecomix-news.html" class="news-nav">Eco News</a>
-      <a href="index.html#contato" class="nav-cta">Fale conosco</a>
-    </nav>
-  </div>
-</header>
+<header class="news-header news-only-header"><div class="wrap"><a class="news-only-brand" href="https://ecomixgestaoambiental.com.br/ecomix-news.html" aria-label="Eco News"><span>ECO</span><b>NEWS</b></a></div></header>
 
 <div class="article-newsbar">
   <div class="wrap">
-    <a href="ecomix-news.html" class="article-newsback">← Voltar para o Eco News</a>
+    <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="article-newsback">← Voltar para o Eco News</a>
     <div class="article-newsbrand"><span>ECO</span><b>NEWS</b></div>
     <span class="article-newstagline">INFORMAÇÃO QUE MOVIMENTA O CICLO</span>
   </div>
@@ -54,10 +41,11 @@
     }catch(e){return '';}
   };
 
-  const fallbackImage='assets/hero-rapaz-reciclagem.jpg';
+  const fallbackImage='';
+  const manausImage='https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg';
 
   function render(a){
-    const image=a.image||fallbackImage;
+    const image=(/Manaus|fumaça|queimadas/i.test(a.title||'') ? (a.image || manausImage) : a.image) || fallbackImage;
     const displayImage = /^https?:\/\//i.test(image) ? ('/api/image?url='+encodeURIComponent(image)) : image;
     root.innerHTML=`
       <section class="article-hero">
@@ -75,7 +63,7 @@
               alt="${esc(a.title)}"
               loading="eager"
               referrerpolicy="no-referrer"
-              onerror="this.onerror=null;this.src='${fallbackImage}'"
+              onerror="this.onerror=null;${(/Manaus|fumaça|queimadas/i.test(a.title||'') ? `this.src='${manausImage}'` : `this.style.display='none'`)}"
             >
             <figcaption>${esc(a.imageCredit||('Imagem: '+a.source))}</figcaption>
           </figure>
@@ -115,7 +103,7 @@
               <span>ECO NEWS</span>
               <strong>Informação que movimenta o ciclo.</strong>
             </div>
-            <a href="ecomix-news.html">Ver outras matérias →</a>
+            <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html">Ver outras matérias →</a>
             <a href="index.html">Voltar para a EcoMix →</a>
           </aside>
         </div>
@@ -133,7 +121,7 @@
       const known={
         'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-incendios-florestais-da-indonesia-atinge-ao-menos-4-paises.shtml':{
           title:'Fumaça de incêndios florestais da Indonésia atinge ao menos 4 países',
-          source:'Folha / Ambiente',category:'MEIO AMBIENTE',date:'2026-10-10T12:00:00-03:00',image:'assets/gestao.jpg',
+          source:'Folha / Ambiente',category:'MEIO AMBIENTE',date:'2026-10-10T12:00:00-03:00',image: 'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg', imageCredit:'Foto: Bruno Kelly / Reuters — imagem publicada pela Folha na matéria',
           description:'Fumaça de incêndios florestais se espalha pela região e afeta países do Sudeste Asiático, segundo a publicação original.'
         }
       };
@@ -144,7 +132,7 @@
           <div class="wrap">
             <div class="article-intro">O Eco News não conseguiu atualizar os detalhes desta matéria agora. Você pode consultar a publicação original.</div>
             <a class="article-back" href="${articleUrl ? esc(articleUrl) : 'ecomix-news.html'}" target="_blank" rel="noopener noreferrer">Abrir publicação original ↗</a>
-            <br><br><a class="article-back" href="ecomix-news.html">← Voltar ao Eco News</a>
+            <br><br><a class="article-back" href="https://ecomixgestaoambiental.com.br/ecomix-news.html">← Voltar ao Eco News</a>
           </div>
         </section>`;
     });

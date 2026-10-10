@@ -1,14 +1,15 @@
-const crypto = require('crypto');
-
 const FALLBACK = [
   {
-    title: 'Fumaça de incêndios florestais da Indonésia atinge ao menos 4 países',
-    url: 'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-incendios-florestais-da-indonesia-atinge-ao-menos-4-paises.shtml',
-    description: 'Fumaça de incêndios florestais se espalha pela região e afeta países do Sudeste Asiático, segundo a publicação original.',
-    date: '2026-10-10T12:00:00-03:00',
-    source: 'Folha / Ambiente', image: 'https://cdn.jornaldebrasilia.com.br/wp-content/uploads/2026/10/10105613/AFP__20261010__D2UK8KA__v1__MidRes__IndonesiaPollutionEnvironmentFire-620x620.jpg', category: 'MEIO AMBIENTE'
+    title: 'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo',
+    url: 'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-queimadas-encobre-manaus-pelo-terceiro-dia-consecutivo.shtml',
+    description: 'A cidade de Manaus (AM) voltou a amanhecer sob fumaça gerada pelas queimadas no estado neste sábado (10). O Sistema Eletrônico de Vigilância Ambiental (Selva), da Universidade do Estado do Amazonas (UEA), registrou qualidade péssima do ar na capital.',
+    date: '2026-10-10T14:58:00-03:00',
+    source: 'Folha / Ambiente',
+    image: 'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg',
+    imageCredit: 'Foto: Bruno Kelly / Reuters — imagem publicada pela Folha na matéria',
+    category: 'MEIO AMBIENTE'
   },
-  {
+{
     title:'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação',
     url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/menos-de-5-das-empresas-cumprem-lei-de-reciclagem-de-eletronicos-no-brasil-diz-associacao.shtml',
     description:'Entidade do setor cobra fiscalização e afirma que poucas empresas cumprem as metas de logística reversa de eletrônicos.',
@@ -134,7 +135,7 @@ function enrich(items){
     const map={residuos:['resíduo','resíduos','lixo','aterro','coleta','descarte'],reciclagem:['reciclag','catador','triagem','material recicl','logística reversa','embalagem'],condominios:['condomínio','condomínios','síndico','administradora'],sustentabilidade:['sustent','clima','ambient','carbono','esg','água','emissões'],tecnologia:['tecnologia','robô','inteligência artificial','inovação'],'economia-circular':['economia circular','circularidade','reutiliza','reaproveita']};
     for(const [tag,words] of Object.entries(map))if(words.some(w=>h.includes(w)))tags.push(tag);
     const id=crypto.createHash('sha1').update(a.url).digest('hex').slice(0,18);
-    return {...a,id,image:a.image||LOCAL_FALLBACKS[a.category]||'assets/gestao.jpg',tags:[...new Set(tags)]};
+    return {...a,id,image:a.image||'',tags:[...new Set(tags)]};
   });
 }
 

@@ -14,3 +14,7 @@ Versão corrigida do portal Eco News.
 ## Deploy
 Envie o conteúdo desta pasta para o projeto da Vercel e faça um novo Deploy.
 Não altere os registros MX do e-mail da Umbler.
+
+
+## Imagens de notícias
+A matéria de Manaus usa a URL da imagem que a própria Folha publica na matéria, com crédito Bruno Kelly/Reuters. Imagens de outras fontes só são marcadas como originais quando identificadas/verificadas na publicação de origem; não é usado um fallback de reciclagem para fingir que pertence à notícia.
