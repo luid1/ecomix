@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const FALLBACK = [
   {
     title: 'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo',
@@ -180,7 +181,7 @@ async function handler(req,res){
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
   }catch(error){
-    return res.status(200).json({updated_at:new Date().toISOString(),live_sources:false,items:enrich(FALLBACK)});
+    return res.status(200).json({updated_at:new Date().toISOString(),live_sources:false,items:FALLBACK.map((x,i)=>({...x,id:String(i+1),tags:['todos']}))});
   }
 }
 
