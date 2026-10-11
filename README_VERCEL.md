@@ -7,3 +7,10 @@ V23: correção de imagens do Eco News. Miniaturas do Google News são ignoradas
 
 
 V25 — correção da imagem da matéria ‘Amazonas recebe aeronaves para combater queimadas’. A imagem verificada corresponde à foto creditada a Vinícius Mendonça/Ibama; a miniatura do Google News não é mais aceita como imagem da matéria.
+
+## V26 — Eco News focado em reciclagem
+- Removidas as matérias genéricas de queimadas, incêndios e desmatamento do Eco News.
+- O portal agora prioriza reciclagem, resíduos, coleta seletiva, logística reversa, catadores, triagem, reaproveitamento e economia circular.
+- Não usa foto genérica de EcoMix para representar notícia específica.
+- Quando a foto original da matéria não é encontrada/verificada, usa o placeholder neutro do Eco News.
+- Fallback editorial atualizado com fontes ambientais e institucionais.

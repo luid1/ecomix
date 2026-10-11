@@ -1,60 +1,66 @@
 const crypto = require('crypto');
 const FALLBACK = [
   {
-    title: 'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo',
-    url: 'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-queimadas-encobre-manaus-pelo-terceiro-dia-consecutivo.shtml',
-    description: 'A cidade de Manaus (AM) voltou a amanhecer sob fumaça gerada pelas queimadas no estado neste sábado (10). O Sistema Eletrônico de Vigilância Ambiental (Selva), da Universidade do Estado do Amazonas (UEA), registrou qualidade péssima do ar na capital.',
-    date: '2026-10-10T14:58:00-03:00',
-    source: 'Folha / Ambiente',
-    image: 'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg',
-    imageCredit: 'Foto: Bruno Kelly / Reuters — imagem publicada pela Folha na matéria',
-    category: 'MEIO AMBIENTE'
-  },
-{
-    title:'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação',
-    url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/menos-de-5-das-empresas-cumprem-lei-de-reciclagem-de-eletronicos-no-brasil-diz-associacao.shtml',
-    description:'Entidade do setor cobra fiscalização e afirma que poucas empresas cumprem as metas de logística reversa de eletrônicos.',
-    date:'2026-10-09T12:00:00-03:00', source:'C-Level / Folha', image:'', category:'RECICLAGEM'
+    title: 'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação',
+    url: 'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/menos-de-5-das-empresas-cumprem-lei-de-reciclagem-de-eletronicos-no-brasil-diz-associacao.shtml',
+    description: 'Levantamento aponta baixa adesão empresarial à logística reversa de eletroeletrônicos e destaca o potencial de reaproveitamento de metais e outros materiais.',
+    date: '2026-10-09T12:00:00-03:00',
+    source: 'C-Level / Folha',
+    image: 'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg',
+    imageCredit: 'Eduardo Knapp/Folhapress',
+    category: 'RECICLAGEM'
   },
   {
-    title:'5º leilão do Eco Invest atrai quase R$ 50 bi para investimentos verdes',
-    url:'https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-10/5o-leilao-do-eco-invest-atrai-quase-r-50-bi-para-investimentos-verdes',
-    description:'Rodada recebeu demanda de R$ 181,3 bilhões de seis bancos, com recursos para inovação e transformação ecológica.',
-    date:'2026-10-07T17:48:00-03:00', source:'Agência Brasil', image:'', category:'SUSTENTABILIDADE'
+    title: 'Ceará avança na logística reversa de resíduos têxteis pós-consumo',
+    url: 'https://www.ce.gov.br/sema/2026/10/07/estado-do-ceara-avanca-na-logistica-reversa-de-residuos-texteis-pos-consumo/',
+    description: 'Projeto amplia pontos de entrega voluntária e prevê coleta, triagem, reaproveitamento e reciclagem de resíduos têxteis pós-consumo.',
+    date: '2026-10-07T09:28:00-03:00',
+    source: 'Governo do Ceará / SEMA',
+    image: '',
+    category: 'LOGÍSTICA REVERSA'
   },
   {
-    title:'Cerrado brasileiro perdeu 13,9 milhões de hectares de margens de rios',
-    url:'https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-10/cerrado-brasileiro-perdeu-139-milhoes-de-hectares-de-margens-de-rios',
-    description:'Dados do MapBiomas apontam forte perda de vegetação nativa nas margens de rios do Cerrado entre 1985 e 2025.',
-    date:'2026-10-08T07:07:00-03:00', source:'Agência Brasil', image:'', category:'MEIO AMBIENTE'
+    title: '57% das empresas industriais adotam técnicas de economia circular, revela pesquisa da CNI',
+    url: 'https://www.rcnonline.com.br/economia/2026/10/2698205-57-das-empresas-industriais-adotam-tecnicas-de-economia-circular-revela-pesquisa-da-cni.html',
+    description: 'Pesquisa da CNI mostra que a reciclagem é a prática de economia circular mais adotada entre as empresas industriais pesquisadas.',
+    date: '2026-10-02T09:59:00-03:00',
+    source: 'CNI / RCN Online',
+    image: '',
+    category: 'ECONOMIA CIRCULAR'
   },
   {
-    title:'Excesso de oferta e incerteza regulatória freiam expansão de renováveis no Brasil',
-    url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/excesso-de-oferta-e-incerteza-regulatoria-freiam-expansao-de-renovaveis-no-brasil-e-novas-instalacoes-caem-27.shtml',
-    description:'Relatório aponta redução na expansão de fontes renováveis e desafios para investimentos em energia limpa no país.',
-    date:'2026-10-08T23:00:00-03:00', source:'C-Level / Folha', image:'', category:'ENERGIA LIMPA'
+    title: 'Portaria cria Sistema Nacional de Logística Reversa integrado ao Sinir',
+    url: 'https://www.gov.br/mma/pt-br/noticias-defeso-eleitoral/portaria-cria-sistema-nacional-de-logistica-reversa-integrado-ao-sinir',
+    description: 'Novo sistema será usado para cadastro, reporte, monitoramento e rastreabilidade dos sistemas de logística reversa no Brasil.',
+    date: '2026-09-22T15:44:00-03:00',
+    source: 'Ministério do Meio Ambiente e Mudança do Clima',
+    image: '',
+    category: 'LOGÍSTICA REVERSA'
   },
   {
-    title:'Fim do desmatamento ilegal deve ser prioridade para o próximo governo',
-    url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/fim-do-desmatamento-ilegal-deve-ser-prioridade-para-o-proximo-governo-diz-ex-ministra-do-meio-ambiente.shtml',
-    description:'Entrevista aborda ações contra o desmatamento ilegal e medidas para acelerar a agenda climática.',
-    date:'2026-10-08T12:00:00-03:00', source:'C-Level / Folha', image:'', category:'SUSTENTABILIDADE'
+    title: 'Lei de Incentivo à Reciclagem fortalece cooperativa em São Paulo',
+    url: 'https://envolverde.com.br/noticia/lei-de-incentivo-a-reciclagem-tem-um-de-seus-primeiros-projetos-em-execucao-pela-cooperativa-crescer-em-sao-paulo',
+    description: 'Projeto amplia infraestrutura de coleta seletiva, triagem e processamento de recicláveis e prevê novos equipamentos para a operação da cooperativa.',
+    date: '2026-06-18T12:00:00-03:00',
+    source: 'Envolverde',
+    image: '',
+    category: 'RECICLAGEM'
+  },
+  {
+    title: 'Praia Grande amplia rede de Ecopontos para materiais recicláveis',
+    url: 'https://p-www2.praiagrande.sp.gov.br/noticia/eleicoes-ecopontos-nao-funcionarao-no-dia-4-de-outubro',
+    description: 'A rede municipal reúne pontos para descarte de vidro, plástico, papel, metal, madeira, óleo de cozinha e outros materiais.',
+    date: '2026-09-24T12:00:00-03:00',
+    source: 'Prefeitura de Praia Grande',
+    image: '',
+    category: 'COLETA SELETIVA'
   }
 ];
 
 
 const VERIFIED_IMAGES = {
   // Imagens verificadas diretamente nas páginas das respectivas matérias.
-  'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo': 'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg',
-  'Fumaça de incêndios florestais da Indonésia atinge ao menos 4 países': 'https://f.i.uol.com.br/fotografia/2026/10/09/17915834616ac964e5ef58a_1791583461_3x2_md.jpg',
-  'Há dois dias, incêndio atinge área de reserva extrativista no Xingu': 'https://f.i.uol.com.br/fotografia/2026/10/09/17915821796ac95fe3b8448_1791582179_3x2_md.jpg',
-  'Empresa australiana de data centers apoiada pela Nvidia desiste de IPO de US$ 5 bilhões': 'https://f.i.uol.com.br/fotografia/2026/10/06/17913030946ac51db6042a8_1791303094_3x2_md.jpg',
-  'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação': 'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg',
-  'Excesso de oferta e incerteza regulatória freiam expansão de renováveis no Brasil': 'https://f.i.uol.com.br/fotografia/2025/01/23/173765773567928d878f5ac_1737657735_3x2_md.jpg',
-  'Fim do desmatamento ilegal deve ser prioridade para o próximo governo': 'https://f.i.uol.com.br/fotografia/2026/05/27/17798930466a170336ee12d_1779893046_3x2_md.jpg',
-  'Amazonas recebe aeronaves para combater queimadas': 'https://contilnetnoticias.com.br/wp-content/uploads/2026/10/amazonas-recebe-aeronaves-para-combater-queimadas-Artzoi33.webp',
-  // Foto publicada junto à cobertura do Eco Invest, com crédito CropLife.
-  '5º leilão do Eco Invest atrai quase R$ 50 bi para investimentos verdes': 'https://www.gigante163.com/wp-content/uploads/2026/05/bioinsumos2.avif'
+  'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação': 'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg'
 };
 
 function normText(v='') {
@@ -83,10 +89,10 @@ function dedupe(items) {
 }
 
 const SOURCES = [
-  {name:'Folha / Ambiente', url:'https://feeds.folha.uol.com.br/ambiente/rss091.xml', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','lixo','ambient','sustent','clima','poluição','água','queimada','incêndio']},
-  {name:'Folha / Cotidiano', url:'https://feeds.folha.uol.com.br/cotidiano/rss091.xml', category:'CIDADES', keywords:['condomínio','coleta','lixo','reciclag','resídu']},
-  {name:'Folha / Tecnologia', url:'https://feeds.folha.uol.com.br/tec/rss091.xml', category:'TECNOLOGIA', keywords:['tecnologia','inteligência artificial','inovação','robô','reciclag','energia']},
-  {name:'Agência Brasil / Meio Ambiente', url:'https://news.google.com/rss/search?q=site%3Aagenciabrasil.ebc.com.br%2Fmeio-ambiente&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','lixo','ambient','sustent','clima','poluição','água','queimada','incêndio','logística reversa','economia circular']},
+  {name:'Folha / Ambiente', url:'https://feeds.folha.uol.com.br/ambiente/rss091.xml', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','lixo','coleta seletiva','logística reversa','economia circular','catador','embalagem','reaproveit']},
+  {name:'Folha / Cotidiano', url:'https://feeds.folha.uol.com.br/cotidiano/rss091.xml', category:'CIDADES', keywords:['condomínio','coleta seletiva','lixo','reciclag','resídu','logística reversa']},
+  {name:'Folha / Tecnologia', url:'https://feeds.folha.uol.com.br/tec/rss091.xml', category:'TECNOLOGIA', keywords:['reciclag','resídu','eletrônico','lixo eletrônico','logística reversa','economia circular']},
+  {name:'Agência Brasil / Meio Ambiente', url:'https://news.google.com/rss/search?q=site%3Aagenciabrasil.ebc.com.br%2Fmeio-ambiente&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','coleta seletiva','logística reversa','economia circular','catador','embalagem','reaproveit']},
   {name:'MMA / Meio Ambiente', url:'https://news.google.com/rss/search?q=site%3Agov.br%2Fmma+res%C3%ADduos+OR+reciclagem+OR+log%C3%ADstica+reversa&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'POLÍTICAS AMBIENTAIS', keywords:['resídu','reciclag','logística reversa','economia circular','meio ambiente','resíduos sólidos','catador','embalagem']},
   {name:'SINIR / Resíduos', url:'https://news.google.com/rss/search?q=site%3Asinir.gov.br+res%C3%ADduos+OR+log%C3%ADstica+reversa+OR+MTR+OR+CDF&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'RESÍDUOS', keywords:['resídu','logística reversa','mtr','cdf','pgrs','catador','embalagem','reciclag']},
   {name:'Secovi-SP / Condomínios', url:'https://news.google.com/rss/search?q=site%3Asecovi.com.br+condom%C3%ADnios+res%C3%ADduos+OR+reciclagem+OR+sustentabilidade&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'CONDOMÍNIOS', keywords:['condomínio','condomínios','síndico','administradora','resídu','reciclag','sustentabilidade','coleta']},
@@ -94,14 +100,7 @@ const SOURCES = [
   {name:'Envolverde / Sustentabilidade', url:'https://news.google.com/rss/search?q=site%3Aenvolverde.com.br+reciclagem+OR+res%C3%ADduos+OR+sustentabilidade+OR+economia+circular&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'SUSTENTABILIDADE', keywords:['reciclag','resídu','sustent','economia circular','clima','ambient','catador','energia']}
 ];
 
-const LOCAL_FALLBACKS = {
-  'MEIO AMBIENTE':'assets/gestao.jpg',
-  'RECICLAGEM':'assets/gestao.jpg',
-  'SUSTENTABILIDADE':'assets/hero-ecomix.jpg',
-  'ENERGIA LIMPA':'assets/hero-ecomix.jpg',
-  'CIDADES':'assets/condominios-nova.jpg',
-  'TECNOLOGIA':'assets/gestao.jpg'
-};
+const LOCAL_FALLBACKS = {}; // Nunca usa foto genérica para representar uma notícia específica.
 
 const entities = {
   amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',ndash:'–',mdash:'—',hellip:'…',rsquo:'’',lsquo:'‘',rdquo:'”',ldquo:'“',
@@ -221,6 +220,29 @@ function buildEditorial(a,tags){
   };
 }
 
+const BLOCKED_NEWS_TERMS=['queimada','incêndio','fumaça','desmatamento','bombeiros controlam incêndio'];
+const CORE_NEWS_TERMS=['reciclag','resíduo','resíduos','coleta seletiva','logística reversa','economia circular','catador','catadores','triagem','reaproveit','reutiliza','material recicl','lixo eletrônico','embalagem'];
+function isCoreNews(a){
+  const h=normText((a?.title||'')+' '+(a?.description||''));
+  const hasCore=CORE_NEWS_TERMS.some(k=>h.includes(normText(k)));
+  const blocked=BLOCKED_NEWS_TERMS.some(k=>h.includes(normText(k)));
+  return hasCore && !blocked;
+}
+function relevanceScore(a){
+  const h=normText((a?.title||'')+' '+(a?.description||''));
+  let n=0;
+  if(h.includes('reciclag'))n+=10;
+  if(h.includes('logistica reversa'))n+=9;
+  if(h.includes('residu'))n+=8;
+  if(h.includes('coleta seletiva'))n+=8;
+  if(h.includes('economia circular')||h.includes('circularidade'))n+=7;
+  if(h.includes('catador'))n+=6;
+  if(h.includes('triagem'))n+=5;
+  if(h.includes('reaproveit')||h.includes('reutiliza'))n+=4;
+  if(h.includes('eletronico'))n+=3;
+  return n;
+}
+
 function enrich(items){
   return items.map(a=>{
     const h=(a.title+' '+a.description).toLowerCase(),tags=['todos'];
@@ -229,7 +251,7 @@ function enrich(items){
     const id=crypto.createHash('sha1').update(a.url).digest('hex').slice(0,18);
     const verifiedKey=Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(a.title))||'';
     const verified=VERIFIED_IMAGES[verifiedKey]||'';
-    const imageCredit=verifiedKey==="Amazonas recebe aeronaves para combater queimadas" ? 'Vinícius Mendonça/Ibama' : (a.imageCredit||'');
+    const imageCredit=a.imageCredit||'';
     const editorial=buildEditorial(a,tags);
     return {...a,id,image:verified||a.image||'',imageCredit,tags:[...new Set(tags)],...editorial};
   });
@@ -297,17 +319,16 @@ async function handler(req,res){
     }
 
     const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
-    const all=[...FALLBACK,...results.flat()];
+    const all=[...FALLBACK,...results.flat()].filter(isCoreNews);
     const unique=dedupe(all);
-    // Não usamos a miniatura do Google News: ela pode ser o próprio logo do Google.
-    // Para as matérias mais recentes, resolve o redirecionamento para a publicação original
-    // e extrai a imagem OG/Twitter da própria matéria. Assim a foto corresponde ao assunto.
-    await hydrateArticleImages(unique.slice(0,12),12);
-    const sorted=enrich(unique).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
+    // O Eco News é editorialmente focado em reciclagem, resíduos e logística reversa.
+    // Nunca deixamos uma matéria de queimadas/desmatamento dominar o portal apenas por ser recente.
+    await hydrateArticleImages(unique.slice(0,20),20);
+    const sorted=enrich(unique).sort((a,b)=>relevanceScore(b)-relevanceScore(a) || (Date.parse(b.date)-Date.parse(a.date)));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
   }catch(error){
-    return res.status(200).json({updated_at:new Date().toISOString(),live_sources:false,items:FALLBACK.map((x,i)=>({...x,id:String(i+1),tags:['todos']}))});
+    return res.status(200).json({updated_at:new Date().toISOString(),live_sources:false,items:enrich(FALLBACK.filter(isCoreNews)).sort((a,b)=>relevanceScore(b)-relevanceScore(a) || Date.parse(b.date)-Date.parse(a.date))});
   }
 }
 
