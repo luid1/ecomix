@@ -440,3 +440,27 @@ html,body{max-width:100%;overflow-x:hidden}
   .news-page > main{padding-top:72px!important}
   .news-page > header .logo img{width:220px!important;max-height:55px!important}
 }
+
+
+/* ===== ECO NEWS V14 — LOGO NO CABEÇALHO / SEM SEGUNDO MASTHEAD ===== */
+.news-page > header .news-header-logo{
+  display:flex!important;
+  align-items:center!important;
+  width:285px!important;
+  height:68px!important;
+  line-height:0!important;
+  overflow:visible!important;
+}
+.news-page > header .news-header-logo img{
+  display:block!important;
+  width:285px!important;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+}
+.news-page > main .news-masthead{display:none!important}
+@media(max-width:600px){
+  .news-page > header .news-header-logo{width:215px!important;height:58px!important}
+  .news-page > header .news-header-logo img{width:215px!important}
+}

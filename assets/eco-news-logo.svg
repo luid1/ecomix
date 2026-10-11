@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" role="img" aria-labelledby="t d">
+<title id="t">Eco News</title><desc id="d">Eco News — informação que movimenta o ciclo</desc>
+<g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="-3">
+  <text x="0" y="66" font-size="62" fill="#073f30">ECO</text>
+  <text x="133" y="66" font-size="62" fill="#8fca3d">NEWS</text>
+</g>
+<path d="M108 17c15 0 25 10 25 25-18 1-29-6-25-25Z" fill="#8fca3d" opacity=".95"/>
+<path d="M109 19c-3 13-1 22 10 31" fill="none" stroke="#073f30" stroke-width="2.5" stroke-linecap="round" opacity=".85"/>
+<text x="2" y="91" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" letter-spacing="3" fill="#789086">INFORMAÇÃO QUE MOVIMENTA O CICLO</text>
+</svg>
