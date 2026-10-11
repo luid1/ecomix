@@ -7,35 +7,49 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="news-page">
-<div class="news-topline"><div class="wrap"><span>São Paulo e região metropolitana</span><span>Informação que movimenta o ciclo</span></div></div>
-<header class="news-site-header">
-  <div class="wrap news-site-nav">
-    <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-site-brand" aria-label="Eco News"><span>ECO</span><b>NEWS</b></a>
-    <button class="news-menu" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="news-desktop-nav" aria-label="Navegação principal">
+<div class="topline">
+  <div class="wrap"><span>São Paulo e região metropolitana</span><span>Atendimento para empresas e condomínios</span></div>
+</div>
+<header>
+  <div class="wrap nav">
+    <a href="https://ecomixgestaoambiental.com.br/" class="logo" aria-label="EcoMix">
+      <img src="assets/ecomix-header.png" alt="EcoMix Gestão Ambiental">
+    </a>
+    <button class="menu" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="https://ecomixgestaoambiental.com.br/#sobre">A EcoMix</a>
       <a href="https://ecomixgestaoambiental.com.br/#servicos">Serviços</a>
       <a href="https://ecomixgestaoambiental.com.br/#condominios">Condomínios</a>
       <a href="https://ecomixgestaoambiental.com.br/#empresas">Empresas</a>
       <a href="https://ecomixgestaoambiental.com.br/#processo">Como funciona</a>
-      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-current">Eco News</a>
-      <a href="https://ecomixgestaoambiental.com.br/#contato" class="news-nav-cta">Fale conosco</a>
+      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-nav">Eco News</a>
+      <a href="https://ecomixgestaoambiental.com.br/#contato" class="nav-cta">Fale conosco</a>
     </nav>
   </div>
 </header>
-<div class="news-mobile-menu" aria-hidden="true">
-  <div class="news-mobile-backdrop"></div>
-  <div class="news-mobile-panel">
-    <div class="news-mobile-top"><span>ECO NEWS</span><small>INFORMAÇÃO QUE MOVIMENTA O CICLO</small></div>
-    <nav>
-      <a href="https://ecomixgestaoambiental.com.br/#sobre"><em>01</em><span>A EcoMix</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/#servicos"><em>02</em><span>Serviços</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/#condominios"><em>03</em><span>Condomínios</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/#empresas"><em>04</em><span>Empresas</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/#processo"><em>05</em><span>Como funciona</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="current"><em>06</em><span>Eco News</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/#contato" class="cta"><em>07</em><span>Fale conosco</span><b>↗</b></a>
-    </nav>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-backdrop"></div>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-top">
+      <span>ECOMIX</span>
+      <small>GESTÃO AMBIENTAL</small>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="https://ecomixgestaoambiental.com.br/" data-menu-link><em>01</em><span>Início</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#sobre" data-menu-link><em>02</em><span>A EcoMix</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#servicos" data-menu-link><em>03</em><span>Serviços</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#condominios" data-menu-link><em>04</em><span>Condomínios</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#empresas" data-menu-link><em>05</em><span>Empresas</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#processo" data-menu-link><em>06</em><span>Como funciona</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-menu-link"><em>07</em><span>Eco News</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#contato" data-menu-link class="mobile-menu-cta"><em>08</em><span>Fale conosco</span><b>↗</b></a>
+    </div>
+    <div class="mobile-menu-footer">
+      <span>São Paulo e região metropolitana</span>
+      <span>Reciclar. Transformar. Recomeçar.</span>
+    </div>
   </div>
 </div>
 <main>
@@ -73,14 +87,17 @@
 </script>
 <script>
 (function(){
-  const btn=document.querySelector('.news-menu'), menu=document.querySelector('.news-mobile-menu'), back=menu?.querySelector('.news-mobile-backdrop');
-  if(!btn||!menu)return;
-  const close=()=>{menu.classList.remove('is-open');menu.setAttribute('aria-hidden','true');btn.setAttribute('aria-expanded','false');document.body.classList.remove('news-menu-open')};
-  const open=()=>{menu.classList.add('is-open');menu.setAttribute('aria-hidden','false');btn.setAttribute('aria-expanded','true');document.body.classList.add('news-menu-open')};
-  btn.addEventListener('click',()=>menu.classList.contains('is-open')?close():open());
-  back?.addEventListener('click',close);
-  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+  const b=document.querySelector('.menu');
+  const mobileMenu=document.querySelector('#mobileMenu');
+  const backdrop=mobileMenu?.querySelector('.mobile-menu-backdrop');
+  const menuLinks=[...(mobileMenu?.querySelectorAll('[data-menu-link]')||[])];
+  if(!b||!mobileMenu)return;
+  const close=()=>{b.classList.remove('is-open');b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','Abrir menu');mobileMenu.classList.remove('is-open');mobileMenu.setAttribute('aria-hidden','true');document.body.classList.remove('menu-open')};
+  const open=()=>{b.classList.add('is-open');b.setAttribute('aria-expanded','true');b.setAttribute('aria-label','Fechar menu');mobileMenu.classList.add('is-open');mobileMenu.setAttribute('aria-hidden','false');document.body.classList.add('menu-open')};
+  b.addEventListener('click',()=>mobileMenu.classList.contains('is-open')?close():open());
+  backdrop?.addEventListener('click',close);
   document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  menuLinks.forEach(link=>link.addEventListener('click',close));
 })();
 </script>
 </body></html>

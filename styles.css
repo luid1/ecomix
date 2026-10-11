@@ -398,3 +398,17 @@ html,body{max-width:100%;overflow-x:hidden}
   .news-mobile-panel nav a{padding-left:19px}
   .news-mobile-panel nav span{font-size:22px}
 }
+
+/* ===== ECO NEWS: CABEÇALHO OFICIAL ECOMIX, IGUAL AO SITE PRINCIPAL ===== */
+.news-page > .topline{display:block!important}
+.news-page > header{position:sticky!important;top:0!important;z-index:2000!important;background:#fff!important}
+.news-page > header .nav{display:flex!important;align-items:center!important;justify-content:space-between!important}
+.news-page > header .logo img{display:block!important}
+.news-page > header .desktop-nav{display:flex!important;align-items:center!important}
+.news-page > header .desktop-nav a{color:var(--text)!important}
+.news-page > header .desktop-nav .news-nav{color:var(--green)!important;font-weight:900}
+.news-page > header .desktop-nav .nav-cta{color:#fff!important}
+@media(max-width:950px){
+  .news-page > header .desktop-nav{display:none!important}
+  .news-page > header .menu{display:flex!important}
+}
