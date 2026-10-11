@@ -71,10 +71,12 @@ if(phrases.length>1){
   if(!loader) return;
   const started=performance.now();
   const waitImage=img=>new Promise(resolve=>{
-    if(img.complete && img.naturalWidth>0) return resolve();
-    const done=()=>{img.removeEventListener('load',done);img.removeEventListener('error',done);resolve();};
-    img.addEventListener('load',done,{once:true});
-    img.addEventListener('error',done,{once:true});
+    if(img.complete && img.naturalWidth>0) return resolve(true);
+    const done=ok=>{img.removeEventListener('load',onload);img.removeEventListener('error',onerror);resolve(ok);};
+    const onload=()=>done(true);
+    const onerror=()=>done(false);
+    img.addEventListener('load',onload,{once:true});
+    img.addEventListener('error',onerror,{once:true});
   });
   const preloadUrl=url=>new Promise(resolve=>{
     const img=new Image();
@@ -96,12 +98,15 @@ if(phrases.length>1){
     const check=()=>{
       const imgs=[...slider.querySelectorAll('img')];
       if(!imgs.length) return;
-      Promise.all(imgs.map(waitImage)).then(finish);
+      Promise.all(imgs.map(waitImage)).then(results=>{
+        // Libera a home somente quando as fotos realmente carregaram.
+        if(results.every(Boolean)) finish();
+      });
     };
     slider.addEventListener('eco-news-ready',check,{once:true});
     check();
-    // Se o agregador estiver indisponível, não prende a home indefinidamente.
-    setTimeout(finish,20000);
+    // Segurança para não deixar a página presa indefinidamente caso uma fonte externa caia.
+    setTimeout(finish,25000);
   });
   const minTime=new Promise(resolve=>setTimeout(resolve,Math.max(0,5000-(performance.now()-started))));
   Promise.all([waitStaticImages(),waitDynamicNews(),minTime]).then(()=>loader.classList.add('is-done'));

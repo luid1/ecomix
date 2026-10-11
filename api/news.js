@@ -181,11 +181,14 @@ function enrich(items){
 }
 
 
-async function hydrateArticleImages(items, maxItems=24){
-  const targets=items.filter(x=>x && x.url && /^https?:\/\//i.test(x.url) && !x.image).slice(0,maxItems);
+async function hydrateArticleImages(items, maxItems=12){
+  // Para as notícias que não têm foto verificada, busca a imagem diretamente
+  // na página original. Isso evita depender apenas da imagem do RSS, que pode
+  // ser thumbnail ou URL que bloqueia hotlink.
+  const targets=items.filter(x=>x && x.url && /^https?:\/\//i.test(x.url) && !VERIFIED_IMAGES[Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(x.title))||'']).slice(0,maxItems);
   await Promise.allSettled(targets.map(async item=>{
     try{
-      const html=await get(item.url,2600);
+      const html=await get(item.url,4200);
       const image=extractMetaImage(html,item.url);
       if(image)item.image=image;
     }catch{}
