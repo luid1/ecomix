@@ -137,7 +137,7 @@ function parseRSS(xml, source){
     link=abs(clean(link),source.url);
     const desc=clean(match(b,/<(?:description|summary|content:encoded)[^>]*>([\s\S]*?)<\/(?:description|summary|content:encoded)>/i));
     const date=clean(match(b,/<(?:pubDate|published|updated|dc:date)[^>]*>([\s\S]*?)<\/(?:pubDate|published|updated|dc:date)>/i));
-    const media=match(b,/<media:(?:content|thumbnail)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<(?:enclosure|image)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<img[^>]+(?:src|data-src|data-original)=["']([^"']+)["']/i);
+    const media=source.url.includes('news.google.com') ? '' : (match(b,/<media:(?:content|thumbnail)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<(?:enclosure|image)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<img[^>]+(?:src|data-src|data-original)=["']([^"']+)["']/i));
     const feedPublisher=clean(match(b,/<source[^>]*>([\s\S]*?)<\/source>/i));
     if(title&&link&&has(title+' '+desc,source.keywords)){
       out.push({title,url:link,description:desc.slice(0,700),date:(Date.parse(date)?new Date(date).toISOString():new Date().toISOString()),source:feedPublisher||source.name,image:abs(media,source.url),imageCredit:feedPublisher||source.name,category:source.category});
@@ -145,6 +145,23 @@ function parseRSS(xml, source){
     if(out.length>=12)break;
   }
   return out;
+}
+
+async function getPage(url,timeout=4200){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeout);
+  try{
+    const r=await fetch(url,{signal:controller.signal,redirect:'follow',headers:{'user-agent':'Mozilla/5.0 (compatible; EcoNews/1.0)','accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8','accept-language':'pt-BR,pt;q=0.9,en;q=0.7'}});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const bytes=await r.arrayBuffer();
+    const ct=r.headers.get('content-type')||'';
+    const probe=new TextDecoder('utf-8').decode(bytes.slice(0,1400));
+    let charset=(ct.match(/charset=([^;\s]+)/i)?.[1]||probe.match(/encoding=["']([^"']+)["']/i)?.[1]||'utf-8').toLowerCase().replace(/["']/g,'');
+    if(charset==='iso-8859-1')charset='windows-1252';
+    let text;
+    try{text=new TextDecoder(charset).decode(bytes);}catch{text=new TextDecoder('utf-8').decode(bytes);}
+    return {text,url:r.url||url};
+  }finally{clearTimeout(timer);}
 }
 
 async function get(url,timeout=2800){
@@ -223,9 +240,10 @@ async function hydrateArticleImages(items, maxItems=12){
   const targets=items.filter(x=>x && x.url && /^https?:\/\//i.test(x.url) && !VERIFIED_IMAGES[Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(x.title))||'']).slice(0,maxItems);
   await Promise.allSettled(targets.map(async item=>{
     try{
-      const html=await get(item.url,4200);
-      const image=extractMetaImage(html,item.url);
-      if(image)item.image=image;
+      const page=await getPage(item.url,4200);
+      if(page.url && /^https?:\/\//i.test(page.url)) item.url=canonicalUrl(page.url);
+      const image=extractMetaImage(page.text,page.url||item.url);
+      if(image && !/news\.google\.com/i.test(image))item.image=image;
     }catch{}
   }));
   return items;
@@ -278,8 +296,10 @@ async function handler(req,res){
     const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
     const all=[...FALLBACK,...results.flat()];
     const unique=dedupe(all);
-    // As imagens são resolvidas sob demanda pelo proxy /api/image.
-    // Não bloqueamos a resposta do feed esperando dezenas de páginas externas.
+    // Não usamos a miniatura do Google News: ela pode ser o próprio logo do Google.
+    // Para as matérias mais recentes, resolve o redirecionamento para a publicação original
+    // e extrai a imagem OG/Twitter da própria matéria. Assim a foto corresponde ao assunto.
+    await hydrateArticleImages(unique.slice(0,12),12);
     const sorted=enrich(unique).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
