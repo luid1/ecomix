@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eco News — Matéria</title>
+<meta name="description" content="Eco News — notícias, contexto e informações sobre resíduos, reciclagem e sustentabilidade.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="news-page article-page">
+<div class="topline">
+  <div class="wrap"><span>São Paulo e região metropolitana</span><span>Atendimento para empresas e condomínios</span></div>
+</div>
+<header>
+  <div class="wrap nav">
+    <a href="https://ecomixgestaoambiental.com.br/" class="logo" aria-label="EcoMix">
+      <img src="assets/ecomix-header-v13.png" alt="EcoMix Gestão Ambiental">
+    </a>
+    <button class="menu" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="desktop-nav" aria-label="Navegação principal">
+      <a href="https://ecomixgestaoambiental.com.br/#sobre">A EcoMix</a>
+      <a href="https://ecomixgestaoambiental.com.br/#servicos">Serviços</a>
+      <a href="https://ecomixgestaoambiental.com.br/#condominios">Condomínios</a>
+      <a href="https://ecomixgestaoambiental.com.br/#empresas">Empresas</a>
+      <a href="https://ecomixgestaoambiental.com.br/#processo">Como funciona</a>
+      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-nav">Eco News</a>
+      <a href="https://ecomixgestaoambiental.com.br/#contato" class="nav-cta">Fale conosco</a>
+    </nav>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-backdrop"></div>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-top">
+      <span>ECOMIX</span>
+      <small>GESTÃO AMBIENTAL</small>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="https://ecomixgestaoambiental.com.br/" data-menu-link><em>01</em><span>Início</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#sobre" data-menu-link><em>02</em><span>A EcoMix</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#servicos" data-menu-link><em>03</em><span>Serviços</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#condominios" data-menu-link><em>04</em><span>Condomínios</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#empresas" data-menu-link><em>05</em><span>Empresas</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#processo" data-menu-link><em>06</em><span>Como funciona</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-menu-link"><em>07</em><span>Eco News</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#contato" data-menu-link class="mobile-menu-cta"><em>08</em><span>Fale conosco</span><b>↗</b></a>
+    </div>
+    <div class="mobile-menu-footer">
+      <span>São Paulo e região metropolitana</span>
+      <span>Reciclar. Transformar. Recomeçar.</span>
+    </div>
+  </div>
+</div>
+<div class="article-newsbar">
+  <div class="wrap">
+    <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="article-newsback">← Voltar para o Eco News</a>
+    <div class="article-newsbrand"><span>ECO</span><b>NEWS</b></div>
+    <span class="article-newstagline">INFORMAÇÃO QUE MOVIMENTA O CICLO</span>
+  </div>
+</div>
+
+<main id="articleRoot">
+  <div class="news-loading">Abrindo matéria…</div>
+</main>
+
+<script>
+(function(){
+  const root=document.getElementById('articleRoot');
+  const params=new URLSearchParams(location.search);
+  const id=params.get('id')||'';
+  const articleUrl=params.get('url')||'';
+
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+
+  const date=s=>{
+    try{
+      return new Intl.DateTimeFormat('pt-BR',{
+        day:'2-digit',month:'long',year:'numeric'
+      }).format(new Date(s));
+    }catch(e){return '';}
+  };
+
+  const fallbackImage='assets/eco-news-sem-imagem.svg';
+  const manausImage='https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg';
+
+  function render(a){
+    const image=(/Manaus|fumaça|queimadas/i.test(a.title||'') ? (a.image || manausImage) : a.image) || fallbackImage;
+    const displayImage = /^https?:\/\//i.test(image) ? ('/api/image?url='+encodeURIComponent(image)) : image;
+    root.innerHTML=`
+      <section class="article-hero">
+        <div class="wrap article-hero-grid">
+          <div class="article-hero-copy">
+            <span class="article-news-eyebrow">ECO NEWS · ${esc(a.category||'SUSTENTABILIDADE')}</span>
+            <h1>${esc(a.title)}</h1>
+            <p>${esc(a.description||'Confira os principais pontos desta notícia e o contexto disponível na publicação original.')}</p>
+            <div class="article-meta">${esc(a.source)}<br>${esc(date(a.date))}</div>
+          </div>
+
+          <figure class="article-hero-media">
+            <img
+              src="${esc(displayImage)}"
+              alt="${esc(a.title)}"
+              loading="eager"
+              referrerpolicy="no-referrer"
+              onerror="this.onerror=null;${(/Manaus|fumaça|queimadas/i.test(a.title||'') ? `this.src='${manausImage}'` : `this.src='assets/eco-news-sem-imagem.svg'`)}"
+            >
+            <figcaption>${esc(a.imageCredit||('Imagem: '+a.source))}</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <article class="article-content">
+        <div class="wrap article-layout">
+          <div class="article-main">
+            <div class="article-intro">
+              Esta matéria foi selecionada pelo <strong>Eco News</strong> a partir de uma publicação original. 
+              Organizamos o resumo e o contexto disponível na fonte, sem substituir a reportagem de origem.
+            </div>
+
+            <section>
+              <h2>O que a notícia mostra</h2>
+              <p>${esc(a.description||'A publicação original apresenta informações sobre o tema, seus impactos e os principais envolvidos.')}</p>
+            </section>
+
+            ${(a.points||[]).map(p=>`
+              <section>
+                <h2>${esc(p.title)}</h2>
+                <p>${esc(p.text)}</p>
+              </section>
+            `).join('')}
+
+            <div class="article-source">
+              <span>PUBLICAÇÃO ORIGINAL</span>
+              <strong>${esc(a.source)}</strong>
+              <p>O conteúdo, a reportagem e as imagens pertencem à publicação original. Consulte a fonte para a matéria completa e eventuais atualizações.</p>
+              <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">Ler a matéria original ↗</a>
+            </div>
+          </div>
+
+          <aside class="article-aside">
+            <div>
+              <span>ECO NEWS</span>
+              <strong>Informação que movimenta o ciclo.</strong>
+            </div>
+            <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html">Ver outras matérias →</a>
+            <a href="index.html">Voltar para a EcoMix →</a>
+          </aside>
+        </div>
+      </article>
+    `;
+  }
+
+  fetch('/api/news?'+(articleUrl ? 'url='+encodeURIComponent(articleUrl) : 'id='+encodeURIComponent(id)),{cache:'no-store'})
+    .then(r=>r.json())
+    .then(a=>{
+      if(!a||a.error) throw new Error('notícia');
+      render(a);
+    })
+    .catch(()=>{
+      const known={
+        'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-incendios-florestais-da-indonesia-atinge-ao-menos-4-paises.shtml':{
+          title:'Fumaça de incêndios florestais da Indonésia atinge ao menos 4 países',
+          source:'Folha / Ambiente',category:'MEIO AMBIENTE',date:'2026-10-10T12:00:00-03:00',image: 'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg', imageCredit:'Foto: Bruno Kelly / Reuters — imagem publicada pela Folha na matéria',
+          description:'Fumaça de incêndios florestais se espalha pela região e afeta países do Sudeste Asiático, segundo a publicação original.'
+        }
+      };
+      const fallback=known[articleUrl];
+      if(fallback){ render({...fallback,url:articleUrl}); return; }
+      root.innerHTML=`
+        <section class="article-content">
+          <div class="wrap">
+            <div class="article-intro">O Eco News não conseguiu atualizar os detalhes desta matéria agora. Você pode consultar a publicação original.</div>
+            <a class="article-back" href="${articleUrl ? esc(articleUrl) : 'ecomix-news.html'}" target="_blank" rel="noopener noreferrer">Abrir publicação original ↗</a>
+            <br><br><a class="article-back" href="https://ecomixgestaoambiental.com.br/ecomix-news.html">← Voltar ao Eco News</a>
+          </div>
+        </section>`;
+    });
+})();
+</script>
+<script>
+(function(){
+  const b=document.querySelector('.menu');
+  const mobileMenu=document.querySelector('#mobileMenu');
+  const backdrop=mobileMenu?.querySelector('.mobile-menu-backdrop');
+  const menuLinks=[...(mobileMenu?.querySelectorAll('[data-menu-link]')||[])];
+  if(!b||!mobileMenu)return;
+  const close=()=>{b.classList.remove('is-open');b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','Abrir menu');mobileMenu.classList.remove('is-open');mobileMenu.setAttribute('aria-hidden','true');document.body.classList.remove('menu-open')};
+  const open=()=>{b.classList.add('is-open');b.setAttribute('aria-expanded','true');b.setAttribute('aria-label','Fechar menu');mobileMenu.classList.add('is-open');mobileMenu.setAttribute('aria-hidden','false');document.body.classList.add('menu-open')};
+  b.addEventListener('click',()=>mobileMenu.classList.contains('is-open')?close():open());
+  backdrop?.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+  menuLinks.forEach(link=>link.addEventListener('click',close));
+})();
+</script>
+</body>
+</html>

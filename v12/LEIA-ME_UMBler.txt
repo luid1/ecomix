@@ -1,0 +1,13 @@
+ECOMIX — ECO NEWS / UMBLER
+
+Esta versão transforma o Eco News em um agregador editorial multifonte.
+
+1) Suba o conteúdo deste ZIP dentro de /public na Umbler.
+2) O arquivo news-api.php busca manchetes de diferentes fontes por RSS/páginas públicas.
+3) O Eco News filtra assuntos como resíduos, reciclagem, condomínios, sustentabilidade, tecnologia e economia circular.
+4) As imagens são buscadas a partir do feed ou da imagem de compartilhamento da publicação original quando disponível.
+5) Cada matéria mantém a fonte e o link para a reportagem original.
+
+IMPORTANTE: a utilização de fotografias e textos de terceiros depende das condições/licenças de cada publicação. O sistema prioriza a curadoria de manchetes, resumos e links, sem copiar a reportagem integral. Antes de usar uma imagem de terceiros em produção, verifique a autorização/licença do veículo.
+
+Fontes configuradas nesta versão: Folha/Ambiente, Folha/Cotidiano, Folha/Tecnologia, C-Level/Folha, Agência Brasil, Envolverde e Secovi-SP.
