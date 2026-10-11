@@ -55,15 +55,18 @@
 <main>
 <section class="news-lead"><div class="wrap news-lead-grid" id="newsLead"><div class="news-loading">Carregando as principais notícias…</div></div></section>
 <section class="news-body"><div class="wrap"><div class="news-section-title"><div><span class="eyebrow">RADAR ECO NEWS</span><h2>As notícias que merecem atenção.</h2></div><p>Uma seleção automática de diferentes veículos e fontes, organizada por relevância para empresas, condomínios e gestão ambiental.</p></div>
-<div class="news-filters" id="newsFilters"><button class="news-filter active" data-filter="todos">Todos</button><button class="news-filter" data-filter="residuos">Resíduos</button><button class="news-filter" data-filter="reciclagem">Reciclagem</button><button class="news-filter" data-filter="condominios">Condomínios</button><button class="news-filter" data-filter="sustentabilidade">Sustentabilidade</button><button class="news-filter" data-filter="tecnologia">Tecnologia</button><button class="news-filter" data-filter="economia-circular">Economia circular</button></div>
-<div class="news-grid" id="newsGrid"><div class="news-loading">Buscando notícias em diferentes fontes…</div></div></div></section>
+<div class="news-tools"><div class="news-filters" id="newsFilters"><button class="news-filter active" data-filter="todos">Todos</button><button class="news-filter" data-filter="residuos">Resíduos</button><button class="news-filter" data-filter="reciclagem">Reciclagem</button><button class="news-filter" data-filter="condominios">Condomínios</button><button class="news-filter" data-filter="sustentabilidade">Sustentabilidade</button><button class="news-filter" data-filter="tecnologia">Tecnologia</button><button class="news-filter" data-filter="economia-circular">Economia circular</button></div><label class="news-search"><span>⌕</span><input id="newsSearch" type="search" placeholder="Buscar no Eco News" autocomplete="off"></label></div>
+<div class="news-grid" id="newsGrid"><div class="news-loading">Buscando notícias em diferentes fontes…</div></div>
+<div class="news-more-grid"><section class="news-side-block"><div class="news-block-head"><span class="eyebrow">EM ALTA</span><h3>O que está movimentando o setor</h3></div><ol id="newsTrending" class="news-trending"><li>Carregando…</li></ol></section><section class="news-side-block explain-block"><div class="news-block-head"><span class="eyebrow">ECO NEWS EXPLICA</span><h3>Informação para entender o que está por trás das manchetes.</h3></div><div class="explain-grid"><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html?tema=logistica-reversa"><strong>Logística reversa</strong><span>Como funciona e por que empresas precisam acompanhar.</span></a><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html?tema=residuos"><strong>Gestão de resíduos</strong><span>Do descarte à destinação, o que muda na prática.</span></a><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html?tema=economia-circular"><strong>Economia circular</strong><span>Como materiais voltam para a cadeia produtiva.</span></a></div></section></div>
+<div class="news-audience-grid"><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html?tema=condominios"><span>PARA CONDOMÍNIOS</span><strong>Coleta, reciclagem e gestão ambiental no dia a dia.</strong><b>Ver notícias →</b></a><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html?tema=empresas"><span>PARA EMPRESAS</span><strong>Regulação, logística reversa, ESG e eficiência operacional.</strong><b>Ver notícias →</b></a></div></div></section>
 <section class="news-editorial"><div class="wrap news-editorial-grid"><div><span class="eyebrow">COMO FUNCIONA</span><h2>Notícia não é só manchete. É contexto.</h2></div><div><p>O Eco News reúne manchetes e informações publicadas por diferentes veículos e organiza tudo em uma experiência editorial própria da EcoMix.</p><p>Ao abrir uma notícia, o visitante encontra o contexto disponível no feed, a fonte, a data e o caminho direto para a reportagem original. O conteúdo de cada veículo continua pertencendo à sua publicação de origem.</p><div class="editorial-points"><div><b>01</b><span>Vários veículos em um só lugar.</span></div><div><b>02</b><span>Filtros por assunto e interesse.</span></div><div><b>03</b><span>Fonte original sempre identificada.</span></div></div></div></div></section>
 </main>
 <footer class="news-footer"><div class="wrap"><div><strong>ECO NEWS</strong><span>Informação que movimenta o ciclo.</span></div><a href="https://ecomixgestaoambiental.com.br/">Voltar para a EcoMix →</a></div></footer>
 <script>
 (function(){
   const grid=document.getElementById('newsGrid'), lead=document.getElementById('newsLead'), filters=[...document.querySelectorAll('.news-filter')];
-  let all=[];
+  let all=[]; let currentFilter='todos'; let currentSearch='';
+  const tema=new URLSearchParams(location.search).get('tema')||'';
   const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const imageSrc=(u,ref)=>{const x=String(u||''); return /^https?:\/\//i.test(x)?('/api/image?url='+encodeURIComponent(x)+(ref?'&ref='+encodeURIComponent(ref):'')):x||'assets/eco-news-sem-imagem.svg'};
   const canonical=u=>String(u||'').split('#')[0].split('?')[0].replace(/^https?:\/\/(www\.)?/i,'').replace(/\/+$/,'').toLowerCase();
@@ -71,17 +74,30 @@
   const date=s=>{try{return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(s)).replace(' de ',' ')}catch(e){return ''}};
   function card(a,feature=false){return `<article class="news-card ${feature?'news-card-feature':''}"><a class="news-card-image" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}"><img src="${esc(imageSrc(a.image,a.url))}" alt="" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.closest('.news-card-image,.news-lead-image')?.classList.add('image-failed');this.remove()"></a><div class="news-card-copy"><div class="news-card-meta"><span>${esc(a.category||'SUSTENTABILIDADE')}</span><time>${esc(date(a.date))}</time></div><h3>${esc(a.title)}</h3><p>${esc(a.description||'Confira o contexto e os principais pontos desta notícia.')}</p><a class="news-card-link" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}">Abrir matéria →</a><div class="news-source">Fonte: ${esc(a.source)}</div></div></article>`}
   function render(filter='todos'){
-    const list0=filter==='todos'?all:all.filter(a=>(a.tags||[]).includes(filter));
+    currentFilter=filter;
+    const q=norm(currentSearch);
+    let list0=filter==='todos'?all:all.filter(a=>(a.tags||[]).includes(filter));
+    if(q) list0=list0.filter(a=>norm([a.title,a.description,a.source,a.category,(a.tags||[]).join(' ')].join(' ')).includes(q));
     const leadKey=canonical(all[0]?.url);
-    const list=filter==='todos'?list0.filter(a=>canonical(a.url)!==leadKey):list0;
-    grid.innerHTML=list.slice(0,12).map((a,i)=>card(a,i===0)).join('')||'<div class="news-loading">Nenhuma notícia encontrada nesta categoria.</div>';
+    const list=list0.filter(a=>canonical(a.url)!==leadKey);
+    grid.innerHTML=list.slice(0,12).map((a,i)=>card(a,i===0)).join('')||'<div class="news-loading">Nenhuma notícia encontrada para essa busca.</div>';
+    renderTrending();
+  }
+  function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  function renderTrending(){
+    const el=document.getElementById('newsTrending'); if(!el)return;
+    const items=all.filter(a=>canonical(a.url)!==canonical(all[0]?.url)).slice(0,5);
+    el.innerHTML=items.map((a,i)=>`<li><a href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}"><em>${String(i+1).padStart(2,'0')}</em><span>${esc(a.title)}</span><small>${esc(a.source)}</small></a></li>`).join('')||'<li>Nenhuma notícia disponível.</li>';
   }
   function renderLead(){
     const a=all[0]; if(!a){lead.innerHTML='<div class="news-loading">Não foi possível carregar as principais notícias agora.</div>';return;}
     lead.innerHTML=`<a class="news-lead-image" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}"><img src="${esc(imageSrc(a.image,a.url))}" alt="" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.closest('.news-card-image,.news-lead-image')?.classList.add('image-failed');this.remove()"></a><div class="news-lead-copy"><span class="news-tag">DESTAQUE · ${esc(a.category||'SUSTENTABILIDADE')}</span><h1>${esc(a.title)}</h1><p class="news-deck">${esc(a.description||'Uma notícia em destaque selecionada entre diferentes fontes do setor.')}</p><div class="news-byline">${esc(a.source)} · ${esc(date(a.date))}</div><a class="news-read" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}">Ler contexto completo <span>→</span></a></div>`;
   }
-  fetch('/api/news?limit=24',{cache:'no-store'}).then(r=>r.json()).then(data=>{all=Array.isArray(data.items)?data.items:[];renderLead();render();}).catch(()=>{grid.innerHTML='<div class="news-loading">As notícias estão temporariamente indisponíveis. Tente novamente em instantes.</div>';});
+  fetch('/api/news?limit=30',{cache:'no-store'}).then(r=>r.json()).then(data=>{all=Array.isArray(data.items)?data.items:[];renderLead();
+    if(tema){const map={condominios:'condominios',empresas:'sustentabilidade',residuos:'residuos',reciclagem:'reciclagem','economia-circular':'economia-circular'}; currentFilter=map[tema]||'todos'; filters.forEach(x=>x.classList.toggle('active',x.dataset.filter===currentFilter));}
+    render(currentFilter);}).catch(()=>{grid.innerHTML='<div class="news-loading">As notícias estão temporariamente indisponíveis. Tente novamente em instantes.</div>';});
   filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter)}));
+  document.getElementById('newsSearch')?.addEventListener('input',e=>{currentSearch=e.target.value||'';render(currentFilter);});
 })();
 </script>
 <script>

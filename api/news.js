@@ -84,7 +84,13 @@ function dedupe(items) {
 const SOURCES = [
   {name:'Folha / Ambiente', url:'https://feeds.folha.uol.com.br/ambiente/rss091.xml', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','lixo','ambient','sustent','clima','poluição','água','queimada','incêndio']},
   {name:'Folha / Cotidiano', url:'https://feeds.folha.uol.com.br/cotidiano/rss091.xml', category:'CIDADES', keywords:['condomínio','coleta','lixo','reciclag','resídu']},
-  {name:'Folha / Tecnologia', url:'https://feeds.folha.uol.com.br/tec/rss091.xml', category:'TECNOLOGIA', keywords:['tecnologia','inteligência artificial','inovação','robô','reciclag','energia']}
+  {name:'Folha / Tecnologia', url:'https://feeds.folha.uol.com.br/tec/rss091.xml', category:'TECNOLOGIA', keywords:['tecnologia','inteligência artificial','inovação','robô','reciclag','energia']},
+  {name:'Agência Brasil / Meio Ambiente', url:'https://news.google.com/rss/search?q=site%3Aagenciabrasil.ebc.com.br%2Fmeio-ambiente&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','lixo','ambient','sustent','clima','poluição','água','queimada','incêndio','logística reversa','economia circular']},
+  {name:'MMA / Meio Ambiente', url:'https://news.google.com/rss/search?q=site%3Agov.br%2Fmma+res%C3%ADduos+OR+reciclagem+OR+log%C3%ADstica+reversa&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'POLÍTICAS AMBIENTAIS', keywords:['resídu','reciclag','logística reversa','economia circular','meio ambiente','resíduos sólidos','catador','embalagem']},
+  {name:'SINIR / Resíduos', url:'https://news.google.com/rss/search?q=site%3Asinir.gov.br+res%C3%ADduos+OR+log%C3%ADstica+reversa+OR+MTR+OR+CDF&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'RESÍDUOS', keywords:['resídu','logística reversa','mtr','cdf','pgrs','catador','embalagem','reciclag']},
+  {name:'Secovi-SP / Condomínios', url:'https://news.google.com/rss/search?q=site%3Asecovi.com.br+condom%C3%ADnios+res%C3%ADduos+OR+reciclagem+OR+sustentabilidade&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'CONDOMÍNIOS', keywords:['condomínio','condomínios','síndico','administradora','resídu','reciclag','sustentabilidade','coleta']},
+  {name:'Teletime / Tecnologia', url:'https://news.google.com/rss/search?q=site%3Ateletime.com.br+reciclagem+OR+res%C3%ADduos+OR+sustentabilidade+OR+esg&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'TECNOLOGIA', keywords:['tecnologia','eletrônico','reciclag','resídu','sustentabilidade','esg','energia']},
+  {name:'Envolverde / Sustentabilidade', url:'https://news.google.com/rss/search?q=site%3Aenvolverde.com.br+reciclagem+OR+res%C3%ADduos+OR+sustentabilidade+OR+economia+circular&hl=pt-BR&gl=BR&ceid=BR%3Apt-419', category:'SUSTENTABILIDADE', keywords:['reciclag','resídu','sustent','economia circular','clima','ambient','catador','energia']}
 ];
 
 const LOCAL_FALLBACKS = {
@@ -132,10 +138,11 @@ function parseRSS(xml, source){
     const desc=clean(match(b,/<(?:description|summary|content:encoded)[^>]*>([\s\S]*?)<\/(?:description|summary|content:encoded)>/i));
     const date=clean(match(b,/<(?:pubDate|published|updated|dc:date)[^>]*>([\s\S]*?)<\/(?:pubDate|published|updated|dc:date)>/i));
     const media=match(b,/<media:(?:content|thumbnail)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<(?:enclosure|image)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<img[^>]+(?:src|data-src|data-original)=["']([^"']+)["']/i);
+    const feedPublisher=clean(match(b,/<source[^>]*>([\s\S]*?)<\/source>/i));
     if(title&&link&&has(title+' '+desc,source.keywords)){
-      out.push({title,url:link,description:desc.slice(0,420),date:(Date.parse(date)?new Date(date).toISOString():new Date().toISOString()),source:source.name,image:abs(media,source.url),imageCredit:source.name,category:source.category});
+      out.push({title,url:link,description:desc.slice(0,700),date:(Date.parse(date)?new Date(date).toISOString():new Date().toISOString()),source:feedPublisher||source.name,image:abs(media,source.url),imageCredit:feedPublisher||source.name,category:source.category});
     }
-    if(out.length>=8)break;
+    if(out.length>=12)break;
   }
   return out;
 }
@@ -169,6 +176,23 @@ function extractMetaImage(html,pageUrl){
   return '';
 }
 
+function buildEditorial(a,tags){
+  const desc=clean(a.description||'');
+  const topic = tags.includes('reciclagem') ? 'reciclagem e logística reversa' : tags.includes('residuos') ? 'gestão de resíduos' : tags.includes('condominios') ? 'gestão ambiental em condomínios' : tags.includes('tecnologia') ? 'tecnologia e transformação do setor' : tags.includes('economia-circular') ? 'economia circular' : 'sustentabilidade e meio ambiente';
+  const intro = desc || `A publicação trata de um tema ligado a ${topic} e reúne informações relevantes para empresas, condomínios e profissionais que acompanham a agenda ambiental.`;
+  const why = `O assunto tem impacto direto sobre ${topic}, especialmente porque decisões regulatórias, operacionais e de mercado podem alterar a forma como empresas e organizações planejam suas atividades. O Eco News acompanha esse tipo de movimento para ajudar o leitor a entender o que está acontecendo e por que o tema merece atenção.`;
+  const context = `A notícia se insere em uma agenda mais ampla de mudanças na gestão ambiental. No Brasil, temas como rastreabilidade, destinação adequada, responsabilidade compartilhada, eficiência operacional e economia circular vêm ganhando espaço nas discussões entre empresas, poder público e sociedade. O contexto exato desta publicação deve ser lido em conjunto com a fonte original indicada ao final.`;
+  const watch = `Os próximos passos dependem da evolução do tema e das informações divulgadas pelas instituições e pelo veículo de origem. O Eco News pode atualizar esta página quando surgirem novos dados relevantes, mantendo a publicação original como referência principal.`;
+  return {
+    editorialIntro:intro,
+    editorialSections:[
+      {title:'Por que isso importa',text:why},
+      {title:'Contexto',text:context},
+      {title:'O que acompanhar agora',text:watch}
+    ]
+  };
+}
+
 function enrich(items){
   return items.map(a=>{
     const h=(a.title+' '+a.description).toLowerCase(),tags=['todos'];
@@ -176,7 +200,8 @@ function enrich(items){
     for(const [tag,words] of Object.entries(map))if(words.some(w=>h.includes(w)))tags.push(tag);
     const id=crypto.createHash('sha1').update(a.url).digest('hex').slice(0,18);
     const verified=VERIFIED_IMAGES[Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(a.title))||''];
-    return {...a,id,image:verified||a.image||'',tags:[...new Set(tags)]};
+    const editorial=buildEditorial(a,tags);
+    return {...a,id,image:verified||a.image||'',tags:[...new Set(tags)],...editorial};
   });
 }
 

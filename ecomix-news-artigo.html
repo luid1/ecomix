@@ -87,6 +87,31 @@
   const fallbackImage='assets/eco-news-sem-imagem.svg';
   const manausImage='https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg';
 
+  function readingTime(a){
+    const words=String(a.description||'').split(/\s+/).filter(Boolean).length + (a.editorialSections||[]).reduce((n,x)=>n+String(x.text||'').split(/\s+/).filter(Boolean).length,0);
+    return Math.max(2,Math.round(words/150));
+  }
+
+  function loadRelated(a){
+    const box=document.getElementById('relatedNews'); if(!box)return;
+    fetch('/api/news?limit=24',{cache:'no-store'}).then(r=>r.json()).then(data=>{
+      const tags=a.tags||[];
+      let items=(data.items||[]).filter(x=>x.url!==a.url);
+      items.sort((x,y)=>{const sx=(x.tags||[]).filter(t=>tags.includes(t)).length; const sy=(y.tags||[]).filter(t=>tags.includes(t)).length; return sy-sx;});
+      items=items.slice(0,3);
+      box.innerHTML=items.map(x=>`<a class="related-card" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(x.url)}"><div><span>${esc(x.category||'ECO NEWS')}</span><small>${esc(x.source)}</small></div><strong>${esc(x.title)}</strong><b>Continuar lendo →</b></a>`).join('')||'<p>Nenhuma matéria relacionada disponível.</p>';
+    }).catch(()=>{box.innerHTML='';});
+  }
+
+  function bindShare(a){
+    document.querySelectorAll('[data-share]').forEach(btn=>btn.addEventListener('click',async()=>{
+      const kind=btn.dataset.share, url=location.href, title=a.title||'Eco News';
+      if(kind==='copy'){try{await navigator.clipboard.writeText(url);btn.textContent='Link copiado';setTimeout(()=>btn.textContent='Copiar link',1800);}catch{}}
+      if(kind==='whatsapp')window.open('https://wa.me/?text='+encodeURIComponent(title+' — '+url),'_blank','noopener');
+      if(kind==='linkedin')window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url),'_blank','noopener');
+    }));
+  }
+
   function render(a){
     const image=(/Manaus|fumaça|queimadas/i.test(a.title||'') ? (a.image || manausImage) : a.image) || fallbackImage;
     const displayImage = /^https?:\/\//i.test(image) ? ('/api/image?url='+encodeURIComponent(image)) : image;
@@ -117,16 +142,23 @@
         <div class="wrap article-layout">
           <div class="article-main">
             <div class="article-intro">
-              Esta matéria foi selecionada pelo <strong>Eco News</strong> a partir de uma publicação original. 
-              Organizamos o resumo e o contexto disponível na fonte, sem substituir a reportagem de origem.
+              <strong>${esc(a.editorialIntro||a.description||'')}</strong>
+              <div class="article-reading">⏱ ${esc(readingTime(a))} de leitura · ${esc(a.source)}</div>
+            </div>
+
+            <div class="article-share" aria-label="Compartilhar matéria">
+              <span>COMPARTILHAR</span>
+              <button type="button" data-share="whatsapp">WhatsApp</button>
+              <button type="button" data-share="linkedin">LinkedIn</button>
+              <button type="button" data-share="copy">Copiar link</button>
             </div>
 
             <section>
-              <h2>O que a notícia mostra</h2>
-              <p>${esc(a.description||'A publicação original apresenta informações sobre o tema, seus impactos e os principais envolvidos.')}</p>
+              <h2>O que aconteceu</h2>
+              <p>${esc(a.description||a.editorialIntro||'A publicação reúne informações sobre o tema e seus principais desdobramentos.')}</p>
             </section>
 
-            ${(a.points||[]).map(p=>`
+            ${(a.editorialSections||[]).map(p=>`
               <section>
                 <h2>${esc(p.title)}</h2>
                 <p>${esc(p.text)}</p>
@@ -139,6 +171,12 @@
               <p>O conteúdo, a reportagem e as imagens pertencem à publicação original. Consulte a fonte para a matéria completa e eventuais atualizações.</p>
               <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">Ler a matéria original ↗</a>
             </div>
+
+            <section class="article-related">
+              <div class="eyebrow">CONTINUE LENDO</div>
+              <h2>Mais notícias sobre o tema</h2>
+              <div id="relatedNews" class="related-grid"><div class="news-loading">Carregando…</div></div>
+            </section>
           </div>
 
           <aside class="article-aside">
@@ -152,6 +190,8 @@
         </div>
       </article>
     `;
+    loadRelated(a);
+    bindShare(a);
   }
 
   fetch('/api/news?'+(articleUrl ? 'url='+encodeURIComponent(articleUrl) : 'id='+encodeURIComponent(id)),{cache:'no-store'})

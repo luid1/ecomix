@@ -464,3 +464,44 @@ html,body{max-width:100%;overflow-x:hidden}
   .news-page > header .news-header-logo{width:215px!important;height:58px!important}
   .news-page > header .news-header-logo img{width:215px!important}
 }
+
+/* ===== ECO NEWS V15 — portal editorial ===== */
+.news-tools{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}
+.news-search{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #d5e1da;border-radius:999px;padding:0 14px;height:39px;min-width:230px;color:#6e827a}
+.news-search span{font-size:20px;line-height:1}
+.news-search input{border:0;outline:0;background:transparent;width:100%;font:600 11px Manrope,sans-serif;color:#173d30}
+.news-more-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:20px;margin-top:26px}
+.news-side-block{background:#fff;border:1px solid #e0e9e4;padding:28px;border-radius:18px}
+.news-block-head h3{font-family:Manrope,sans-serif;font-size:25px;line-height:1.12;letter-spacing:-.8px;color:#073f30;margin:8px 0 18px}
+.news-trending{list-style:none;margin:0;padding:0}
+.news-trending li{border-top:1px solid #e3ebe7}
+.news-trending a{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px 0;color:#173d30}
+.news-trending em{font-style:normal;font-weight:900;color:#8fca3d;font-size:12px}
+.news-trending span{font-weight:800;font-size:13px;line-height:1.35}
+.news-trending small{grid-column:2;font-size:8px;letter-spacing:1px;color:#91a099;text-transform:uppercase}
+.explain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.explain-grid a{display:flex;flex-direction:column;gap:8px;padding:17px;background:#f5f9f6;border:1px solid #e0e9e4;border-radius:12px;color:#173d30;transition:transform .3s ease,box-shadow .3s ease}
+.explain-grid a:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(7,63,47,.08)}
+.explain-grid strong{font-family:Manrope,sans-serif;font-size:14px;color:#073f30}
+.explain-grid span{font-size:10px;line-height:1.5;color:#657a71}
+.news-audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.news-audience-grid a{background:#073f30;color:#fff;border-radius:18px;padding:28px;display:flex;flex-direction:column;min-height:150px;transition:transform .3s ease}
+.news-audience-grid a:hover{transform:translateY(-4px)}
+.news-audience-grid span{font-size:8px;letter-spacing:1.6px;color:#9fd34c;font-weight:900}
+.news-audience-grid strong{font-family:Manrope,sans-serif;font-size:23px;line-height:1.12;letter-spacing:-.7px;margin:10px 0 18px;max-width:470px}
+.news-audience-grid b{font-size:10px;color:#d9eadf;margin-top:auto}
+.article-reading{margin-top:12px;font:700 9px Manrope,sans-serif;letter-spacing:.8px;color:#81928b;text-transform:uppercase}
+.article-share{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 42px;padding-bottom:20px;border-bottom:1px solid #e1e9e5}
+.article-share span{font-size:8px;letter-spacing:1.4px;font-weight:900;color:#8aa099;margin-right:5px}
+.article-share button{border:1px solid #d8e3de;background:#fff;border-radius:999px;padding:8px 12px;font:800 9px Manrope,sans-serif;color:#315749;cursor:pointer}
+.article-share button:hover{background:#edf5ef;border-color:#b9d4c4}
+.article-related{margin-top:72px;padding-top:28px;border-top:1px solid #dfe8e3}
+.article-related h2{margin-top:7px!important}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.related-card{display:flex;flex-direction:column;gap:10px;border:1px solid #dfe8e3;border-radius:13px;padding:17px;background:#fff;color:#173d30;min-height:155px}
+.related-card div{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.related-card div span{font-size:7px;letter-spacing:1.3px;color:#76a83b;font-weight:900}
+.related-card div small{font-size:7px;color:#9aa69f}
+.related-card strong{font:800 14px/1.28 Manrope,sans-serif;color:#073f30}
+.related-card b{font-size:9px;color:#5f8171;margin-top:auto}
+@media(max-width:900px){.news-tools{align-items:stretch;flex-direction:column}.news-search{min-width:0}.news-more-grid,.news-audience-grid{grid-template-columns:1fr}.explain-grid{grid-template-columns:1fr}.related-grid{grid-template-columns:1fr}.article-share{margin-bottom:34px}}
