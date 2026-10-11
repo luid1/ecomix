@@ -63,8 +63,49 @@ if(phrases.length>1){
   },2000);
 }
 
-window.addEventListener('load',()=>{const l=document.getElementById('ec-loading');if(l)setTimeout(()=>l.classList.add('is-done'),5000);});
-
+// A abertura da home só termina depois que as imagens críticas foram carregadas.
+// Mantemos a animação de entrada por pelo menos ~5s; se alguma foto demorar mais,
+// a tela permanece até ela terminar ou até o fallback correspondente ser carregado.
+(function(){
+  const loader=document.getElementById('ec-loading');
+  if(!loader) return;
+  const started=performance.now();
+  const waitImage=img=>new Promise(resolve=>{
+    if(img.complete && img.naturalWidth>0) return resolve();
+    const done=()=>{img.removeEventListener('load',done);img.removeEventListener('error',done);resolve();};
+    img.addEventListener('load',done,{once:true});
+    img.addEventListener('error',done,{once:true});
+  });
+  const preloadUrl=url=>new Promise(resolve=>{
+    const img=new Image();
+    img.onload=img.onerror=()=>resolve();
+    img.src=url;
+  });
+  const waitStaticImages=()=>Promise.all([
+    ...[...document.images].map(waitImage),
+    ...[
+      'assets/hero-rapaz-reciclagem.jpg',
+      'assets/condominios-nova.jpg'
+    ].map(preloadUrl)
+  ]);
+  const waitDynamicNews=()=>new Promise(resolve=>{
+    const slider=document.getElementById('newsSlider');
+    if(!slider) return resolve();
+    let finished=false;
+    const finish=()=>{if(!finished){finished=true;resolve();}};
+    const check=()=>{
+      const imgs=[...slider.querySelectorAll('img')];
+      if(!imgs.length) return;
+      Promise.all(imgs.map(waitImage)).then(finish);
+    };
+    slider.addEventListener('eco-news-ready',check,{once:true});
+    check();
+    // Se o agregador estiver indisponível, não prende a home indefinidamente.
+    setTimeout(finish,20000);
+  });
+  const minTime=new Promise(resolve=>setTimeout(resolve,Math.max(0,5000-(performance.now()-started))));
+  Promise.all([waitStaticImages(),waitDynamicNews(),minTime]).then(()=>loader.classList.add('is-done'));
+})();
 
 // Entradas suaves das faixas e listas quando entram na tela.
 document.addEventListener('DOMContentLoaded', () => {
@@ -104,7 +145,7 @@ document.querySelectorAll('a[href$=".html"]').forEach(link=>{
 (function(){
   const slider=document.getElementById('newsSlider'); if(!slider) return;
   const esc=s=>String(s??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));
-  const imageSrc=u=>{const x=String(u||''); return /^https?:\/\//i.test(x)?('/api/image?url='+encodeURIComponent(x)):x||'assets/hero-rapaz-reciclagem.jpg'};
+  const imageSrc=(u,ref)=>{const x=String(u||''); return /^https?:\/\//i.test(x)?('/api/image?url='+encodeURIComponent(x)+(ref?'&ref='+encodeURIComponent(ref):'')):x||'assets/eco-news-sem-imagem.svg'};
 
   const dots=slider.querySelector('.news-slide-dots'), controls=slider.querySelector('.news-slide-controls');
   let slides=[], current=0, timer;
@@ -113,7 +154,8 @@ document.querySelectorAll('a[href$=".html"]').forEach(link=>{
   fetch('/api/news?limit=5',{cache:'no-store'}).then(r=>r.json()).then(data=>{
     const items=(data.items||[]).slice(0,5); if(!items.length){slider.querySelector('.news-home-loading')?.remove();return;}
     slider.querySelector('.news-home-loading')?.remove();
-    items.forEach((a,i)=>{const el=document.createElement('div');el.className='news-slide'+(i===0?' is-active':'');el.innerHTML=`<a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-slide-image" aria-label="Abrir notícia"><img src="${esc(imageSrc(a.image))}" alt="" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.style.display='none'"></a><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-slide-content"><span class="news-slide-kicker">${esc(a.category||'SUSTENTABILIDADE')} · ${esc(new Date(a.date).toLocaleDateString('pt-BR'))}</span><h3>${esc(a.title)}</h3><div class="news-slide-source">${esc(a.source)} <b>→</b></div></a>`;slider.insertBefore(el,controls);slides.push(el);const d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Mostrar notícia '+(i+1));d.addEventListener('click',()=>{activate(i);restart()});dots.appendChild(d);});activate(0);restart();
-  }).catch((err)=>{ const load=slider.querySelector('.news-home-loading'); if(load){ load.innerHTML='<strong>Eco News</strong><br><span>As notícias estão sendo atualizadas. Tente novamente em instantes.</span>'; } console.warn('Eco News:',err); });
+    items.forEach((a,i)=>{const el=document.createElement('div');el.className='news-slide'+(i===0?' is-active':'');el.innerHTML=`<a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-slide-image" aria-label="Abrir notícia"><img src="${esc(imageSrc(a.image,a.url))}" alt="" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='assets/eco-news-sem-imagem.svg'"></a><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-slide-content"><span class="news-slide-kicker">${esc(a.category||'SUSTENTABILIDADE')} · ${esc(new Date(a.date).toLocaleDateString('pt-BR'))}</span><h3>${esc(a.title)}</h3><div class="news-slide-source">${esc(a.source)} <b>→</b></div></a>`;slider.insertBefore(el,controls);slides.push(el);const d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Mostrar notícia '+(i+1));d.addEventListener('click',()=>{activate(i);restart()});dots.appendChild(d);});activate(0);restart();slider.dispatchEvent(new Event('eco-news-ready'));
+  }).catch((err)=>{
+    slider.dispatchEvent(new Event('eco-news-ready')); const load=slider.querySelector('.news-home-loading'); if(load){ load.innerHTML='<strong>Eco News</strong><br><span>As notícias estão sendo atualizadas. Tente novamente em instantes.</span>'; } console.warn('Eco News:',err); });
   slider.querySelector('.news-slide-next')?.addEventListener('click',()=>{activate(current+1);restart()});slider.querySelector('.news-slide-prev')?.addEventListener('click',()=>{activate(current-1);restart()});slider.addEventListener('mouseenter',()=>clearInterval(timer));slider.addEventListener('mouseleave',restart);
 })();

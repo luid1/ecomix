@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const FALLBACK = [
   {
     title: 'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo',
@@ -40,6 +41,45 @@ const FALLBACK = [
     date:'2026-10-08T12:00:00-03:00', source:'C-Level / Folha', image:'', category:'SUSTENTABILIDADE'
   }
 ];
+
+
+const VERIFIED_IMAGES = {
+  // Imagens verificadas diretamente nas páginas das respectivas matérias.
+  'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo': 'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg',
+  'Fumaça de incêndios florestais da Indonésia atinge ao menos 4 países': 'https://f.i.uol.com.br/fotografia/2026/10/09/17915834616ac964e5ef58a_1791583461_3x2_md.jpg',
+  'Há dois dias, incêndio atinge área de reserva extrativista no Xingu': 'https://f.i.uol.com.br/fotografia/2026/10/09/17915821796ac95fe3b8448_1791582179_3x2_md.jpg',
+  'Empresa australiana de data centers apoiada pela Nvidia desiste de IPO de US$ 5 bilhões': 'https://f.i.uol.com.br/fotografia/2026/10/06/17913030946ac51db6042a8_1791303094_3x2_md.jpg',
+  'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação': 'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg',
+  'Excesso de oferta e incerteza regulatória freiam expansão de renováveis no Brasil': 'https://f.i.uol.com.br/fotografia/2025/01/23/173765773567928d878f5ac_1737657735_3x2_md.jpg',
+  'Fim do desmatamento ilegal deve ser prioridade para o próximo governo': 'https://f.i.uol.com.br/fotografia/2026/05/27/17798930466a170336ee12d_1779893046_3x2_md.jpg',
+  // Foto publicada junto à cobertura do Eco Invest, com crédito CropLife.
+  '5º leilão do Eco Invest atrai quase R$ 50 bi para investimentos verdes': 'https://www.gigante163.com/wp-content/uploads/2026/05/bioinsumos2.avif'
+};
+
+function normText(v='') {
+  return String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+}
+function canonicalUrl(u='') {
+  try {
+    const x=new URL(u);
+    x.hash='';
+    x.search='';
+    x.hostname=x.hostname.toLowerCase().replace(/^www\./,'');
+    x.pathname=x.pathname.replace(/\/+$/,'');
+    return x.href;
+  } catch { return String(u).trim(); }
+}
+function dedupe(items) {
+  const seenUrl=new Set(), seenTitle=new Set(), out=[];
+  for (const item of items) {
+    const cu=canonicalUrl(item.url);
+    const ct=normText(item.title);
+    if (!cu || seenUrl.has(cu) || (ct && seenTitle.has(ct))) continue;
+    seenUrl.add(cu); if(ct) seenTitle.add(ct);
+    out.push({...item,url:cu});
+  }
+  return out;
+}
 
 const SOURCES = [
   {name:'Folha / Ambiente', url:'https://feeds.folha.uol.com.br/ambiente/rss091.xml', category:'MEIO AMBIENTE', keywords:['resídu','reciclag','lixo','ambient','sustent','clima','poluição','água','queimada','incêndio']},
@@ -91,7 +131,7 @@ function parseRSS(xml, source){
     link=abs(clean(link),source.url);
     const desc=clean(match(b,/<(?:description|summary|content:encoded)[^>]*>([\s\S]*?)<\/(?:description|summary|content:encoded)>/i));
     const date=clean(match(b,/<(?:pubDate|published|updated|dc:date)[^>]*>([\s\S]*?)<\/(?:pubDate|published|updated|dc:date)>/i));
-    const media=match(b,/<media:(?:content|thumbnail)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<(?:enclosure|image)\b[^>]*url=["']([^"']+)["']/i);
+    const media=match(b,/<media:(?:content|thumbnail)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<(?:enclosure|image)\b[^>]*url=["']([^"']+)["']/i)||match(b,/<img[^>]+(?:src|data-src|data-original)=["']([^"']+)["']/i);
     if(title&&link&&has(title+' '+desc,source.keywords)){
       out.push({title,url:link,description:desc.slice(0,420),date:(Date.parse(date)?new Date(date).toISOString():new Date().toISOString()),source:source.name,image:abs(media,source.url),imageCredit:source.name,category:source.category});
     }
@@ -135,16 +175,17 @@ function enrich(items){
     const map={residuos:['resíduo','resíduos','lixo','aterro','coleta','descarte'],reciclagem:['reciclag','catador','triagem','material recicl','logística reversa','embalagem'],condominios:['condomínio','condomínios','síndico','administradora'],sustentabilidade:['sustent','clima','ambient','carbono','esg','água','emissões'],tecnologia:['tecnologia','robô','inteligência artificial','inovação'],'economia-circular':['economia circular','circularidade','reutiliza','reaproveita']};
     for(const [tag,words] of Object.entries(map))if(words.some(w=>h.includes(w)))tags.push(tag);
     const id=crypto.createHash('sha1').update(a.url).digest('hex').slice(0,18);
-    return {...a,id,image:a.image||'',tags:[...new Set(tags)]};
+    const verified=VERIFIED_IMAGES[Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(a.title))||''];
+    return {...a,id,image:verified||a.image||'',tags:[...new Set(tags)]};
   });
 }
 
 
-async function hydrateArticleImages(items, maxItems=10){
+async function hydrateArticleImages(items, maxItems=24){
   const targets=items.filter(x=>x && x.url && /^https?:\/\//i.test(x.url) && !x.image).slice(0,maxItems);
   await Promise.allSettled(targets.map(async item=>{
     try{
-      const html=await get(item.url,3600);
+      const html=await get(item.url,2600);
       const image=extractMetaImage(html,item.url);
       if(image)item.image=image;
     }catch{}
@@ -174,13 +215,13 @@ async function handler(req,res){
 
     const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
     const all=[...FALLBACK,...results.flat()];
-    const unique=[...new Map(all.map(x=>[x.url,x])).values()];
-    await hydrateArticleImages(unique,10);
+    const unique=dedupe(all);
+    await hydrateArticleImages(unique,24);
     const sorted=enrich(unique).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
   }catch(error){
-    return res.status(200).json({updated_at:new Date().toISOString(),live_sources:false,items:enrich(FALLBACK)});
+    return res.status(200).json({updated_at:new Date().toISOString(),live_sources:false,items:FALLBACK.map((x,i)=>({...x,id:String(i+1),tags:['todos']}))});
   }
 }
 

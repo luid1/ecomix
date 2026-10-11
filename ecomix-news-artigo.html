@@ -41,7 +41,7 @@
     }catch(e){return '';}
   };
 
-  const fallbackImage='';
+  const fallbackImage='assets/eco-news-sem-imagem.svg';
   const manausImage='https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg';
 
   function render(a){
@@ -63,7 +63,7 @@
               alt="${esc(a.title)}"
               loading="eager"
               referrerpolicy="no-referrer"
-              onerror="this.onerror=null;${(/Manaus|fumaça|queimadas/i.test(a.title||'') ? `this.src='${manausImage}'` : `this.style.display='none'`)}"
+              onerror="this.onerror=null;${(/Manaus|fumaça|queimadas/i.test(a.title||'') ? `this.src='${manausImage}'` : `this.src='assets/eco-news-sem-imagem.svg'`)}"
             >
             <figcaption>${esc(a.imageCredit||('Imagem: '+a.source))}</figcaption>
           </figure>
