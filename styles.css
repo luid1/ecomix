@@ -505,3 +505,27 @@ html,body{max-width:100%;overflow-x:hidden}
 .related-card strong{font:800 14px/1.28 Manrope,sans-serif;color:#073f30}
 .related-card b{font-size:9px;color:#5f8171;margin-top:auto}
 @media(max-width:900px){.news-tools{align-items:stretch;flex-direction:column}.news-search{min-width:0}.news-more-grid,.news-audience-grid{grid-template-columns:1fr}.explain-grid{grid-template-columns:1fr}.related-grid{grid-template-columns:1fr}.article-share{margin-bottom:34px}}
+
+/* Eco News — matéria editorial detalhada */
+.article-main section p{font-size:18px;line-height:1.82;color:#355f58;max-width:760px}
+.article-main .article-intro strong{font-size:22px;line-height:1.55;display:block;color:#0a463b}
+.article-source-discreet{margin-top:48px;padding-top:18px;border-top:1px solid #dfe9e5;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.article-source-discreet span{font-size:10px;letter-spacing:.16em;font-weight:800;color:#7eae22}
+.article-source-discreet a{font-size:13px;color:#0b4d40;text-decoration:none;font-weight:700}
+.article-source-discreet a:hover{text-decoration:underline}
+
+/* ===== ECO NEWS V18 — identidade própria e artigo editorial ===== */
+.news-header-logo img{width:230px;height:auto;display:block}
+.article-newsbar-simple{background:#fff;border-bottom:1px solid #e1e9e4}
+.article-newsbar-simple .wrap{padding-top:12px;padding-bottom:12px}
+.article-newsbar-simple .article-newsback{font-size:11px;font-weight:800;color:#4f6b5e}
+.article-page .article-hero{padding-top:38px}
+.article-page .article-hero-copy h1{max-width:900px}
+.article-content .article-main section{margin-top:34px}
+.article-content .article-main section p{font-size:17px;line-height:1.9;color:#334a40;max-width:820px}
+.article-section-lead p{font-size:18px!important;line-height:1.85!important}
+.article-source-discreet{margin-top:46px!important;padding-top:18px;border-top:1px solid #dfe8e3;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:11px}
+.article-source-discreet span{font-weight:900;letter-spacing:1.5px;color:#799086}
+.article-source-discreet a{color:#527064;text-decoration:none}
+.article-source-discreet a:hover{text-decoration:underline}
+@media(max-width:720px){.news-header-logo img{width:185px}.article-content .article-main section p{font-size:16px;line-height:1.78}.article-page .article-hero{padding-top:24px}}

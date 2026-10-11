@@ -178,17 +178,27 @@ function extractMetaImage(html,pageUrl){
 
 function buildEditorial(a,tags){
   const desc=clean(a.description||'');
-  const topic = tags.includes('reciclagem') ? 'reciclagem e logística reversa' : tags.includes('residuos') ? 'gestão de resíduos' : tags.includes('condominios') ? 'gestão ambiental em condomínios' : tags.includes('tecnologia') ? 'tecnologia e transformação do setor' : tags.includes('economia-circular') ? 'economia circular' : 'sustentabilidade e meio ambiente';
-  const intro = desc || `A publicação trata de um tema ligado a ${topic} e reúne informações relevantes para empresas, condomínios e profissionais que acompanham a agenda ambiental.`;
-  const why = `O assunto tem impacto direto sobre ${topic}, especialmente porque decisões regulatórias, operacionais e de mercado podem alterar a forma como empresas e organizações planejam suas atividades. O Eco News acompanha esse tipo de movimento para ajudar o leitor a entender o que está acontecendo e por que o tema merece atenção.`;
-  const context = `A notícia se insere em uma agenda mais ampla de mudanças na gestão ambiental. No Brasil, temas como rastreabilidade, destinação adequada, responsabilidade compartilhada, eficiência operacional e economia circular vêm ganhando espaço nas discussões entre empresas, poder público e sociedade. O contexto exato desta publicação deve ser lido em conjunto com a fonte original indicada ao final.`;
-  const watch = `Os próximos passos dependem da evolução do tema e das informações divulgadas pelas instituições e pelo veículo de origem. O Eco News pode atualizar esta página quando surgirem novos dados relevantes, mantendo a publicação original como referência principal.`;
+  const topic = tags.includes('reciclagem') ? 'reciclagem e logística reversa' : tags.includes('residuos') ? 'gestão de resíduos' : tags.includes('condominios') ? 'gestão ambiental em condomínios' : tags.includes('tecnologia') ? 'tecnologia, inovação e transformação operacional' : tags.includes('economia-circular') ? 'economia circular' : 'sustentabilidade e meio ambiente';
+  const intro = desc || `A reportagem aborda um tema relacionado a ${topic} e reúne informações que ajudam a entender seus efeitos para empresas, condomínios, consumidores e para a gestão ambiental.`;
+  const why = `O tema merece atenção porque mudanças em ${topic} podem afetar custos, processos, investimentos, conformidade e a forma como organizações lidam com recursos e resíduos. O ponto central é transformar a informação divulgada em entendimento prático: o que mudou, quem é afetado, quais decisões podem ser necessárias e quais indicadores devem ser acompanhados.`;
+  const context = `A notícia está inserida em uma transformação mais ampla da gestão ambiental. Empresas, condomínios, governos e consumidores convivem com novas exigências de rastreabilidade, eficiência, destinação correta, reaproveitamento de materiais e transparência. Ao mesmo tempo, regulamentações, tecnologias e mudanças de mercado alteram a maneira como essas operações são planejadas e executadas.`;
+  const business = `Para empresas e condomínios, o assunto pode representar tanto uma necessidade de adaptação quanto uma oportunidade. Separação correta, armazenamento, coleta, triagem, comprovação de destinação e acompanhamento de resultados deixam de ser detalhes isolados e passam a fazer parte de uma gestão mais organizada. A capacidade de documentar processos e trabalhar com parceiros adequados também ganha importância.`;
+  const chain = `Outro ponto importante é a cadeia como um todo. Resíduos não desaparecem quando saem de uma empresa ou de um condomínio: eles seguem para transporte, triagem, recuperação, reciclagem, tratamento ou disposição final. Por isso, decisões tomadas na origem influenciam diretamente a qualidade do material, os custos da operação e a possibilidade de reaproveitamento.`;
+  const practical = `Na prática, o acompanhamento deve considerar novas decisões das autoridades, dados divulgados pelas instituições envolvidas, mudanças regulatórias, investimentos e respostas do mercado. O Eco News organiza esses elementos para facilitar a leitura e pode atualizar a cobertura quando surgirem informações relevantes.`;
+  const implications = `O cenário também reforça a importância de indicadores e procedimentos claros. Peso coletado, frequência de retirada, tipos de materiais, índices de recuperação, documentação e destinação são exemplos de informações que ajudam a transformar uma iniciativa ambiental em uma operação mensurável. Quanto melhor organizada estiver a cadeia, maior tende a ser a capacidade de identificar perdas e oportunidades.`;
+  const conclusion = `Em resumo, a notícia deve ser entendida dentro de um movimento maior de profissionalização da gestão ambiental. Mais do que acompanhar uma manchete, empresas e condomínios precisam compreender os efeitos do tema sobre suas rotinas e estar preparados para novas exigências, oportunidades e mudanças de mercado.`;
   return {
     editorialIntro:intro,
+    editorialLead: desc || `A cobertura apresenta os principais elementos relacionados a ${topic} e ajuda a situar o leitor sobre o que está acontecendo, por que o assunto ganhou atenção e quais pontos merecem acompanhamento.`,
     editorialSections:[
-      {title:'Por que isso importa',text:why},
-      {title:'Contexto',text:context},
-      {title:'O que acompanhar agora',text:watch}
+      {title:'O que está em discussão',text:desc || `A publicação trata de ${topic}. O Eco News organiza o assunto em uma leitura editorial própria, reunindo contexto e implicações para facilitar a compreensão do tema.`},
+      {title:'Por que esse assunto importa',text:why},
+      {title:'Contexto e cenário',text:context},
+      {title:'O impacto para empresas e condomínios',text:business},
+      {title:'A cadeia por trás da notícia',text:chain},
+      {title:'O que muda na prática',text:implications},
+      {title:'O que acompanhar a partir de agora',text:practical},
+      {title:'Em resumo',text:conclusion}
     ]
   };
 }
@@ -232,12 +242,36 @@ async function handler(req,res){
     // A página de matéria é atendida de forma leve: primeiro usa o conjunto conhecido,
     // depois tenta as fontes RSS. Isso evita estourar o tempo da função da Vercel.
     if(requestedUrl || requestedId){
-      let item=FALLBACK.find(x=>x.url===requestedUrl);
+      let item=FALLBACK.find(x=>canonicalUrl(x.url)===canonicalUrl(requestedUrl));
       if(!item && requestedId)item=enrich(FALLBACK).find(x=>x.id===requestedId);
-      if(!item && requestedUrl)item={title:'Notícia',url:requestedUrl,description:'Confira a publicação original e as informações disponíveis na fonte.',date:new Date().toISOString(),source:'Publicação original',image:'',category:'ECO NEWS'};
+      if(!item && requestedUrl)item={title:'',url:requestedUrl,description:'',date:new Date().toISOString(),source:'',image:'',category:'ECO NEWS'};
       if(!item)return res.status(404).json({error:'Notícia não encontrada'});
+
+      // Quando a matéria não está no conjunto local, buscamos apenas metadados
+      // públicos da página original. O Eco News não replica o texto integral
+      // de terceiros: transforma os dados disponíveis em uma leitura editorial
+      // própria e mantém a fonte original para consulta.
+      if(item.url && (!item.title || !item.description || !item.source || !item.image)){
+        try{
+          const html=await get(item.url,5200);
+          const metaTitle=match(html,/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["'][^>]*>/i)||match(html,/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["'][^>]*>/i)||match(html,/<title[^>]*>([\s\S]*?)<\/title>/i);
+          const metaDesc=match(html,/<meta[^>]+(?:name|property)=["'](?:description|og:description)["'][^>]+content=["']([^"']+)["'][^>]*>/i)||match(html,/<meta[^>]+content=["']([^"']+)["'][^>]+(?:name|property)=["'](?:description|og:description)["'][^>]*>/i);
+          const metaAuthor=match(html,/<meta[^>]+(?:name|property)=["'](?:author|article:author)["'][^>]+content=["']([^"']+)["'][^>]*>/i);
+          const metaDate=match(html,/<meta[^>]+property=["']article:published_time["'][^>]+content=["']([^"']+)["'][^>]*>/i)||match(html,/<time[^>]+datetime=["']([^"']+)["']/i);
+          const ogSource=match(html,/<meta[^>]+property=["']og:site_name["'][^>]+content=["']([^"']+)["'][^>]*>/i);
+          if(metaTitle)item.title=clean(metaTitle);
+          if(metaDesc)item.description=clean(metaDesc).slice(0,1100);
+          if(ogSource)item.source=clean(ogSource);
+          if(metaAuthor)item.author=clean(metaAuthor);
+          if(metaDate && !Number.isNaN(Date.parse(metaDate)))item.date=new Date(metaDate).toISOString();
+          const image=extractMetaImage(html,item.url); if(image)item.image=image;
+          if(!item.source){try{item.source=new URL(item.url).hostname.replace(/^www\./,'');}catch{item.source='Fonte original';}}
+        }catch{}
+      }
+      if(!item.title)item.title='Matéria em destaque';
+      if(!item.description)item.description='O Eco News reuniu os dados públicos disponíveis sobre este assunto e apresenta abaixo uma leitura editorial própria, com contexto e os principais pontos para o leitor.';
+      if(!item.source){try{item.source=new URL(item.url).hostname.replace(/^www\./,'');}catch{item.source='Fonte original';}}
       item=enrich([item])[0];
-      try{const html=await get(item.url,5200);const image=extractMetaImage(html,item.url);if(image)item.image=image;}catch{}
       return res.status(200).json(item);
     }
 

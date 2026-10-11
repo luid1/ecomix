@@ -53,15 +53,9 @@
     </div>
   </div>
 </div>
-<div class="article-newsbar">
-  <div class="wrap">
-    <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="article-newsback">← Voltar para o Eco News</a>
-    <div class="article-newsbrand"><span>ECO</span><b>NEWS</b></div>
-    <span class="article-newstagline">INFORMAÇÃO QUE MOVIMENTA O CICLO</span>
-  </div>
-</div>
-
-<main id="articleRoot">
+<div class="article-newsbar article-newsbar-simple">
+  <div class="wrap"><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="article-newsback">← Voltar para o Eco News</a></div>
+</div><main id="articleRoot">
   <div class="news-loading">Abrindo matéria…</div>
 </main>
 
@@ -143,7 +137,7 @@
           <div class="article-main">
             <div class="article-intro">
               <strong>${esc(a.editorialIntro||a.description||'')}</strong>
-              <div class="article-reading">⏱ ${esc(readingTime(a))} de leitura · ${esc(a.source)}</div>
+              <div class="article-reading">⏱ ${esc(readingTime(a))} de leitura · ${esc(a.source)}${a.author ? ' · '+esc(a.author) : ''}</div>
             </div>
 
             <div class="article-share" aria-label="Compartilhar matéria">
@@ -153,9 +147,9 @@
               <button type="button" data-share="copy">Copiar link</button>
             </div>
 
-            <section>
+            <section class="article-section article-section-lead">
               <h2>O que aconteceu</h2>
-              <p>${esc(a.description||a.editorialIntro||'A publicação reúne informações sobre o tema e seus principais desdobramentos.')}</p>
+              <p>${esc(a.editorialLead||a.description||a.editorialIntro||'')}</p>
             </section>
 
             ${(a.editorialSections||[]).map(p=>`
@@ -165,11 +159,9 @@
               </section>
             `).join('')}
 
-            <div class="article-source">
-              <span>PUBLICAÇÃO ORIGINAL</span>
-              <strong>${esc(a.source)}</strong>
-              <p>O conteúdo, a reportagem e as imagens pertencem à publicação original. Consulte a fonte para a matéria completa e eventuais atualizações.</p>
-              <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">Ler a matéria original ↗</a>
+            <div class="article-source article-source-discreet">
+              <span>REFERÊNCIA EDITORIAL</span>
+              <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">Fonte consultada: ${esc(a.source)} ↗</a>
             </div>
 
             <section class="article-related">
