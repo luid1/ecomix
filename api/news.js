@@ -244,7 +244,8 @@ async function handler(req,res){
     const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
     const all=[...FALLBACK,...results.flat()];
     const unique=dedupe(all);
-    await hydrateArticleImages(unique,24);
+    // As imagens são resolvidas sob demanda pelo proxy /api/image.
+    // Não bloqueamos a resposta do feed esperando dezenas de páginas externas.
     const sorted=enrich(unique).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});

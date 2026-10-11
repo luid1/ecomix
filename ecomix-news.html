@@ -93,9 +93,28 @@
     const a=all[0]; if(!a){lead.innerHTML='<div class="news-loading">Não foi possível carregar as principais notícias agora.</div>';return;}
     lead.innerHTML=`<a class="news-lead-image" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}"><img src="${esc(imageSrc(a.image,a.url))}" alt="" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.closest('.news-card-image,.news-lead-image')?.classList.add('image-failed');this.remove()"></a><div class="news-lead-copy"><span class="news-tag">DESTAQUE · ${esc(a.category||'SUSTENTABILIDADE')}</span><h1>${esc(a.title)}</h1><p class="news-deck">${esc(a.description||'Uma notícia em destaque selecionada entre diferentes fontes do setor.')}</p><div class="news-byline">${esc(a.source)} · ${esc(date(a.date))}</div><a class="news-read" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(a.url)}">Ler contexto completo <span>→</span></a></div>`;
   }
-  fetch('/api/news?limit=30',{cache:'no-store'}).then(r=>r.json()).then(data=>{all=Array.isArray(data.items)?data.items:[];renderLead();
+  const STATIC_NEWS=[
+    {title:'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo',url:'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-queimadas-encobre-manaus-pelo-terceiro-dia-consecutivo.shtml',description:'A cidade de Manaus (AM) voltou a amanhecer sob fumaça gerada pelas queimadas no estado. O monitoramento ambiental registrou qualidade péssima do ar na capital.',date:'2026-10-10T14:58:00-03:00',source:'Folha / Ambiente',image:'https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg',category:'MEIO AMBIENTE',tags:['todos','residuos','sustentabilidade']},
+    {title:'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação',url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/menos-de-5-das-empresas-cumprem-lei-de-reciclagem-de-eletronicos-no-brasil-diz-associacao.shtml',description:'Entidade do setor cobra fiscalização e afirma que poucas empresas cumprem as metas de logística reversa de eletrônicos.',date:'2026-10-09T12:00:00-03:00',source:'C-Level / Folha',image:'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg',category:'RECICLAGEM',tags:['todos','reciclagem','residuos','tecnologia']},
+    {title:'5º leilão do Eco Invest atrai quase R$ 50 bi para investimentos verdes',url:'https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-10/5o-leilao-do-eco-invest-atrai-quase-r-50-bi-para-investimentos-verdes',description:'Rodada recebeu forte demanda dos bancos para investimentos ligados à inovação e transformação ecológica.',date:'2026-10-08T17:48:00-03:00',source:'Agência Brasil',image:'',category:'SUSTENTABILIDADE',tags:['todos','sustentabilidade','economia-circular']},
+    {title:'Cerrado brasileiro perdeu 13,9 milhões de hectares de margens de rios',url:'https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-10/cerrado-brasileiro-perdeu-139-milhoes-de-hectares-de-margens-de-rios',description:'Dados do MapBiomas apontam forte perda de vegetação nativa nas margens de rios do Cerrado entre 1985 e 2025.',date:'2026-10-08T07:07:00-03:00',source:'Agência Brasil',image:'',category:'MEIO AMBIENTE',tags:['todos','sustentabilidade']},
+    {title:'Excesso de oferta e incerteza regulatória freiam expansão de renováveis no Brasil',url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/excesso-de-oferta-e-incerteza-regulatoria-freiam-expansao-de-renovaveis-no-brasil-e-novas-instalacoes-caem-27.shtml',description:'Relatório aponta redução na expansão de fontes renováveis e desafios para investimentos em energia limpa no país.',date:'2026-10-08T23:00:00-03:00',source:'C-Level / Folha',image:'https://f.i.uol.com.br/fotografia/2025/01/23/173765773567928d878f5ac_1737657735_3x2_md.jpg',category:'ENERGIA LIMPA',tags:['todos','sustentabilidade','tecnologia']},
+    {title:'Fim do desmatamento ilegal deve ser prioridade para o próximo governo',url:'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/fim-do-desmatamento-ilegal-deve-ser-prioridade-para-o-proximo-governo-diz-ex-ministra-do-meio-ambiente.shtml',description:'Entrevista aborda ações contra o desmatamento ilegal e medidas para acelerar a agenda climática.',date:'2026-10-08T12:00:00-03:00',source:'C-Level / Folha',image:'https://f.i.uol.com.br/fotografia/2026/05/27/17798930466a170336ee12d_1779893046_3x2_md.jpg',category:'SUSTENTABILIDADE',tags:['todos','sustentabilidade']}
+  ];
+  function useNews(items){
+    all=(Array.isArray(items)?items:[]).filter(x=>x&&x.title&&x.url);
+    if(!all.length) all=STATIC_NEWS;
+    renderLead();
     if(tema){const map={condominios:'condominios',empresas:'sustentabilidade',residuos:'residuos',reciclagem:'reciclagem','economia-circular':'economia-circular'}; currentFilter=map[tema]||'todos'; filters.forEach(x=>x.classList.toggle('active',x.dataset.filter===currentFilter));}
-    render(currentFilter);}).catch(()=>{grid.innerHTML='<div class="news-loading">As notícias estão temporariamente indisponíveis. Tente novamente em instantes.</div>';});
+    render(currentFilter);
+  }
+  useNews(STATIC_NEWS);
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),7000);
+  fetch('/api/news?limit=30',{cache:'no-store',signal:controller.signal})
+    .then(r=>{if(!r.ok) throw new Error('API '+r.status);return r.json();})
+    .then(data=>{clearTimeout(timer); if(Array.isArray(data.items)&&data.items.length) useNews(data.items);})
+    .catch(()=>{clearTimeout(timer);});
   filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter)}));
   document.getElementById('newsSearch')?.addEventListener('input',e=>{currentSearch=e.target.value||'';render(currentFilter);});
 })();
