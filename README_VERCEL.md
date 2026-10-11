@@ -4,3 +4,6 @@ Correções: deduplicação por URL e título, extração de imagem do RSS e da 
 
 
 V23: correção de imagens do Eco News. Miniaturas do Google News são ignoradas; links são resolvidos até a publicação original e a imagem OG/Twitter da matéria é usada quando disponível.
+
+
+V25 — correção da imagem da matéria ‘Amazonas recebe aeronaves para combater queimadas’. A imagem verificada corresponde à foto creditada a Vinícius Mendonça/Ibama; a miniatura do Google News não é mais aceita como imagem da matéria.

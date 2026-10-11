@@ -52,7 +52,7 @@ const VERIFIED_IMAGES = {
   'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação': 'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg',
   'Excesso de oferta e incerteza regulatória freiam expansão de renováveis no Brasil': 'https://f.i.uol.com.br/fotografia/2025/01/23/173765773567928d878f5ac_1737657735_3x2_md.jpg',
   'Fim do desmatamento ilegal deve ser prioridade para o próximo governo': 'https://f.i.uol.com.br/fotografia/2026/05/27/17798930466a170336ee12d_1779893046_3x2_md.jpg',
-  'Amazonas recebe aeronaves para combater queimadas': 'https://imagens.ebc.com.br/68Gufi62ddyg8C8zuyNVMSEjveA%3D/1170x700/smart/https%3A//agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/11/ibama-vinicius_mendonca_ibama.jpg?itok=nQywIFCb',
+  'Amazonas recebe aeronaves para combater queimadas': 'https://contilnetnoticias.com.br/wp-content/uploads/2026/10/amazonas-recebe-aeronaves-para-combater-queimadas-Artzoi33.webp',
   // Foto publicada junto à cobertura do Eco Invest, com crédito CropLife.
   '5º leilão do Eco Invest atrai quase R$ 50 bi para investimentos verdes': 'https://www.gigante163.com/wp-content/uploads/2026/05/bioinsumos2.avif'
 };
@@ -227,9 +227,11 @@ function enrich(items){
     const map={residuos:['resíduo','resíduos','lixo','aterro','coleta','descarte'],reciclagem:['reciclag','catador','triagem','material recicl','logística reversa','embalagem'],condominios:['condomínio','condomínios','síndico','administradora'],sustentabilidade:['sustent','clima','ambient','carbono','esg','água','emissões'],tecnologia:['tecnologia','robô','inteligência artificial','inovação'],'economia-circular':['economia circular','circularidade','reutiliza','reaproveita']};
     for(const [tag,words] of Object.entries(map))if(words.some(w=>h.includes(w)))tags.push(tag);
     const id=crypto.createHash('sha1').update(a.url).digest('hex').slice(0,18);
-    const verified=VERIFIED_IMAGES[Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(a.title))||''];
+    const verifiedKey=Object.keys(VERIFIED_IMAGES).find(k=>normText(k)===normText(a.title))||'';
+    const verified=VERIFIED_IMAGES[verifiedKey]||'';
+    const imageCredit=verifiedKey==="Amazonas recebe aeronaves para combater queimadas" ? 'Vinícius Mendonça/Ibama' : (a.imageCredit||'');
     const editorial=buildEditorial(a,tags);
-    return {...a,id,image:verified||a.image||'',tags:[...new Set(tags)],...editorial};
+    return {...a,id,image:verified||a.image||'',imageCredit,tags:[...new Set(tags)],...editorial};
   });
 }
 
@@ -283,7 +285,7 @@ async function handler(req,res){
           if(ogSource)item.source=clean(ogSource);
           if(metaAuthor)item.author=clean(metaAuthor);
           if(metaDate && !Number.isNaN(Date.parse(metaDate)))item.date=new Date(metaDate).toISOString();
-          const image=extractMetaImage(html,item.url); if(image)item.image=image;
+          const image=extractMetaImage(html,item.url); if(image && !/(news\.google\.com|gstatic\.com|googleusercontent\.com)/i.test(image))item.image=image;
           if(!item.source){try{item.source=new URL(item.url).hostname.replace(/^www\./,'');}catch{item.source='Fonte original';}}
         }catch{}
       }
