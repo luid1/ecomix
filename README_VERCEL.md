@@ -14,3 +14,6 @@ V25 — correção da imagem da matéria ‘Amazonas recebe aeronaves para comba
 - Não usa foto genérica de EcoMix para representar notícia específica.
 - Quando a foto original da matéria não é encontrada/verificada, usa o placeholder neutro do Eco News.
 - Fallback editorial atualizado com fontes ambientais e institucionais.
+
+
+V27: Eco News agora prioriza matérias de reciclagem, resíduos, logística reversa e economia circular; bloqueia imagens do Google News e evita substituir a curadoria por cards sem imagem confiável.

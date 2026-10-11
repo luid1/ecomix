@@ -102,6 +102,8 @@ const SOURCES = [
 
 const LOCAL_FALLBACKS = {}; // Nunca usa foto genérica para representar uma notícia específica.
 
+function isBadImage(u=''){ return /(?:news\.google\.com|gstatic\.com|googleusercontent\.com|google\.com\/s2\/)/i.test(String(u)); }
+
 const entities = {
   amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',ndash:'–',mdash:'—',hellip:'…',rsquo:'’',lsquo:'‘',rdquo:'”',ldquo:'“',
   aacute:'á',agrave:'à',acirc:'â',atilde:'ã',ä:'ä',eacute:'é',ecirc:'ê',iacute:'í',oacute:'ó',ocirc:'ô',otilde:'õ',uacute:'ú',ccedil:'ç',
@@ -268,7 +270,7 @@ async function hydrateArticleImages(items, maxItems=12){
       const page=await getPage(item.url,4200);
       if(page.url && /^https?:\/\//i.test(page.url)) item.url=canonicalUrl(page.url);
       const image=extractMetaImage(page.text,page.url||item.url);
-      if(image && !/news\.google\.com/i.test(image))item.image=image;
+      if(image && !isBadImage(image))item.image=image;
     }catch{}
   }));
   return items;
@@ -307,7 +309,7 @@ async function handler(req,res){
           if(ogSource)item.source=clean(ogSource);
           if(metaAuthor)item.author=clean(metaAuthor);
           if(metaDate && !Number.isNaN(Date.parse(metaDate)))item.date=new Date(metaDate).toISOString();
-          const image=extractMetaImage(html,item.url); if(image && !/(news\.google\.com|gstatic\.com|googleusercontent\.com)/i.test(image))item.image=image;
+          const image=extractMetaImage(html,item.url); if(image && !isBadImage(image))item.image=image;
           if(!item.source){try{item.source=new URL(item.url).hostname.replace(/^www\./,'');}catch{item.source='Fonte original';}}
         }catch{}
       }
@@ -324,7 +326,10 @@ async function handler(req,res){
     // O Eco News é editorialmente focado em reciclagem, resíduos e logística reversa.
     // Nunca deixamos uma matéria de queimadas/desmatamento dominar o portal apenas por ser recente.
     await hydrateArticleImages(unique.slice(0,20),20);
-    const sorted=enrich(unique).sort((a,b)=>relevanceScore(b)-relevanceScore(a) || (Date.parse(b.date)-Date.parse(a.date)));
+    const imageReady=unique.filter(a=>a && !isBadImage(a.image) && a.image);
+    const curatedReady=FALLBACK.filter(a=>isCoreNews(a) && a.image);
+    const pool=dedupe([...curatedReady,...imageReady]);
+    const sorted=enrich(pool).sort((a,b)=>relevanceScore(b)-relevanceScore(a) || (Date.parse(b.date)-Date.parse(a.date)));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
   }catch(error){

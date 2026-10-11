@@ -1,3 +1,7 @@
+function isBadImageUrl(u=''){
+  return /(?:news\.google\.com|gstatic\.com|googleusercontent\.com|google\.com\/s2\/)/i.test(String(u));
+}
+
 function extractMetaImage(html, pageUrl){
   const patterns = [
     /<meta[^>]+property=["']og:image(?::secure_url)?["'][^>]+content=["']([^"']+)["'][^>]*>/i,
@@ -9,7 +13,7 @@ function extractMetaImage(html, pageUrl){
   for (const re of patterns) {
     const m = String(html || '').match(re);
     if (m && m[1]) {
-      try { return new URL(m[1], pageUrl).href; } catch (_) {}
+      try { const u=new URL(m[1], pageUrl).href; if(!isBadImageUrl(u)) return u; } catch (_) {}
     }
   }
   return '';
@@ -46,53 +50,34 @@ async function handler(req,res){
   const ref=typeof req.query?.ref==='string'?req.query.ref:'';
   if(!url || !/^https?:\/\//i.test(url)) return res.status(400).send('URL inválida');
 
-  try{
-    let imageUrl=url;
-    let r=await fetchImage(imageUrl,ref);
-
-    // Se a URL da imagem do feed estiver bloqueada, procura a imagem oficial
-    // na própria página da matéria (og:image) e tenta novamente.
-    if(!r.ok || !/^image\//i.test((r.headers.get('content-type')||'').split(';')[0])){
-      if(ref && /^https?:\/\//i.test(ref)){
-        const discovered=await getPageImage(ref);
-        if(discovered && discovered!==imageUrl){
-          imageUrl=discovered;
-          r=await fetchImage(imageUrl,ref);
-        }
-      }
-    }
-
-    if(!r.ok) return res.status(r.status).send('Imagem indisponível');
+  async function sendImage(imageUrl, referer){
+    if(!imageUrl || isBadImageUrl(imageUrl)) return false;
+    const r=await fetchImage(imageUrl,referer);
+    if(!r.ok) return false;
     const type=(r.headers.get('content-type')||'').split(';')[0].trim();
-    if(!/^image\//i.test(type)) return res.status(415).send('Conteúdo não é imagem');
+    if(!/^image\//i.test(type)) return false;
     const buf=Buffer.from(await r.arrayBuffer());
-    if(!buf.length) return res.status(502).send('Imagem vazia');
-
+    if(!buf.length) return false;
     res.setHeader('Content-Type',type);
     res.setHeader('Cache-Control','public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000');
     res.setHeader('X-Content-Type-Options','nosniff');
-    return res.status(200).send(buf);
+    res.status(200).send(buf);
+    return true;
+  }
+
+  try{
+    // 1) Tenta a própria URL caso ela já seja uma imagem.
+    if(await sendImage(url,ref)) return;
+
+    // 2) Se a URL for uma matéria, descobre a imagem oficial da página.
+    const pageUrl = /^https?:\/\//i.test(ref) ? ref : url;
+    if(/^https?:\/\//i.test(pageUrl)){
+      const discovered=await getPageImage(pageUrl);
+      if(discovered && await sendImage(discovered,pageUrl)) return;
+    }
+    return res.status(404).send('Imagem não disponível');
   }catch(e){
-    // Última tentativa: descobrir a imagem diretamente na matéria.
-    try{
-      if(ref && /^https?:\/\//i.test(ref)){
-        const discovered=await getPageImage(ref);
-        if(discovered){
-          const r=await fetchImage(discovered,ref);
-          if(r.ok){
-            const type=(r.headers.get('content-type')||'').split(';')[0].trim();
-            if(/^image\//i.test(type)){
-              const buf=Buffer.from(await r.arrayBuffer());
-              res.setHeader('Content-Type',type);
-              res.setHeader('Cache-Control','public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000');
-              res.setHeader('X-Content-Type-Options','nosniff');
-              return res.status(200).send(buf);
-            }
-          }
-        }
-      }
-    }catch(_){}
-    return res.status(502).send('Imagem indisponível');
+    return res.status(404).send('Imagem não disponível');
   }
 }
 module.exports=handler;
