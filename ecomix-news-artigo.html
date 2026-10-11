@@ -8,7 +8,37 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="news-page article-page">
-<header class="news-header news-only-header"><div class="wrap"><a class="news-only-brand" href="https://ecomixgestaoambiental.com.br/ecomix-news.html" aria-label="Eco News"><span>ECO</span><b>NEWS</b></a></div></header>
+<div class="news-topline"><div class="wrap"><span>São Paulo e região metropolitana</span><span>Informação que movimenta o ciclo</span></div></div>
+<header class="news-site-header">
+  <div class="wrap news-site-nav">
+    <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-site-brand" aria-label="Eco News"><span>ECO</span><b>NEWS</b></a>
+    <button class="news-menu" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="news-desktop-nav" aria-label="Navegação principal">
+      <a href="https://ecomixgestaoambiental.com.br/#sobre">A EcoMix</a>
+      <a href="https://ecomixgestaoambiental.com.br/#servicos">Serviços</a>
+      <a href="https://ecomixgestaoambiental.com.br/#condominios">Condomínios</a>
+      <a href="https://ecomixgestaoambiental.com.br/#empresas">Empresas</a>
+      <a href="https://ecomixgestaoambiental.com.br/#processo">Como funciona</a>
+      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-current">Eco News</a>
+      <a href="https://ecomixgestaoambiental.com.br/#contato" class="news-nav-cta">Fale conosco</a>
+    </nav>
+  </div>
+</header>
+<div class="news-mobile-menu" aria-hidden="true">
+  <div class="news-mobile-backdrop"></div>
+  <div class="news-mobile-panel">
+    <div class="news-mobile-top"><span>ECO NEWS</span><small>INFORMAÇÃO QUE MOVIMENTA O CICLO</small></div>
+    <nav>
+      <a href="https://ecomixgestaoambiental.com.br/#sobre"><em>01</em><span>A EcoMix</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#servicos"><em>02</em><span>Serviços</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#condominios"><em>03</em><span>Condomínios</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#empresas"><em>04</em><span>Empresas</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#processo"><em>05</em><span>Como funciona</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="current"><em>06</em><span>Eco News</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/#contato" class="cta"><em>07</em><span>Fale conosco</span><b>↗</b></a>
+    </nav>
+  </div>
+</div>
 
 <div class="article-newsbar">
   <div class="wrap">
@@ -136,6 +166,18 @@
           </div>
         </section>`;
     });
+})();
+</script>
+<script>
+(function(){
+  const btn=document.querySelector('.news-menu'), menu=document.querySelector('.news-mobile-menu'), back=menu?.querySelector('.news-mobile-backdrop');
+  if(!btn||!menu)return;
+  const close=()=>{menu.classList.remove('is-open');menu.setAttribute('aria-hidden','true');btn.setAttribute('aria-expanded','false');document.body.classList.remove('news-menu-open')};
+  const open=()=>{menu.classList.add('is-open');menu.setAttribute('aria-hidden','false');btn.setAttribute('aria-expanded','true');document.body.classList.add('news-menu-open')};
+  btn.addEventListener('click',()=>menu.classList.contains('is-open')?close():open());
+  back?.addEventListener('click',close);
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 })();
 </script>
 </body>

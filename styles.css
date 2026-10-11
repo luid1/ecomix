@@ -350,3 +350,51 @@ html,body{max-width:100%;overflow-x:hidden}
 .news-slide-image:hover img,.news-card-image:hover img,.news-lead-image:hover img{transform:scale(1.025);}
 
 .news-card-image img[src*='eco-news-sem-imagem'],.news-lead-image img[src*='eco-news-sem-imagem'],.news-slide-image img[src*='eco-news-sem-imagem']{object-fit:cover;opacity:.9;}
+
+/* ===== ECO NEWS — NAVEGAÇÃO FIXA NO MESMO PADRÃO DA ECOMIX ===== */
+.news-topline{height:32px;background:#063226;color:#dce8e2;font-size:10px}
+.news-topline .wrap{height:100%;display:flex;justify-content:space-between;align-items:center}
+.news-site-header{height:82px;background:#fff;border-bottom:1px solid #edf1ee;position:sticky;top:0;z-index:1000}
+.news-site-nav{height:100%;display:flex;justify-content:space-between;align-items:center}
+.news-site-brand{display:inline-flex;align-items:baseline;gap:3px;letter-spacing:-2px;font-family:Manrope,sans-serif;font-weight:900;font-size:38px;line-height:1}
+.news-site-brand span{color:#073f30}.news-site-brand b{color:#8fca3d}
+.news-desktop-nav{display:flex;align-items:center;gap:24px;font-size:12px;font-weight:700}
+.news-desktop-nav a{color:var(--text);transition:color .25s ease}
+.news-desktop-nav a:hover{color:var(--green2)}
+.news-desktop-nav .news-current{color:var(--green)!important;font-weight:900;position:relative}
+.news-desktop-nav .news-current:after{content:'NOVO';position:absolute;top:-13px;right:-7px;font-size:7px;letter-spacing:1px;color:#6d9e36;background:#edf6e6;border-radius:999px;padding:3px 5px}
+.news-nav-cta{background:var(--green)!important;color:#fff!important;padding:13px 18px;border-radius:7px}
+.news-menu{display:none}
+.news-mobile-menu{display:none}
+@media(max-width:950px){
+  .news-desktop-nav{display:none}
+  .news-menu{position:relative;display:flex;width:48px;height:48px;padding:0;border:1px solid #dce7e1;border-radius:50%;background:#fff;align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer;z-index:1100;box-shadow:0 6px 18px rgba(7,63,47,.08)}
+  .news-menu span{display:block;width:20px;height:2px;background:var(--green);border-radius:3px;transition:transform .4s ease,opacity .25s ease}
+  .news-menu span:nth-child(2){width:14px;align-self:flex-start;margin-left:14px}
+  .news-menu-open{overflow:hidden}
+  .news-mobile-menu{display:block;position:fixed;inset:0;z-index:1050;visibility:hidden;pointer-events:none}
+  .news-mobile-menu.is-open{visibility:visible;pointer-events:auto}
+  .news-mobile-backdrop{position:absolute;inset:0;background:rgba(2,29,22,.58);backdrop-filter:blur(7px);opacity:0;transition:opacity .4s ease}
+  .news-mobile-menu.is-open .news-mobile-backdrop{opacity:1}
+  .news-mobile-panel{position:absolute;top:0;right:0;width:min(88vw,470px);height:100%;overflow:auto;background:linear-gradient(155deg,#073f2f 0%,#062e24 58%,#041f19 100%);color:#fff;padding:105px 34px 28px;transform:translateX(105%);transition:transform .55s cubic-bezier(.2,.8,.2,1);box-shadow:-24px 0 70px rgba(0,0,0,.22)}
+  .news-mobile-menu.is-open .news-mobile-panel{transform:translateX(0)}
+  .news-mobile-top{display:flex;flex-direction:column;gap:6px;padding-left:24px;margin-bottom:30px}
+  .news-mobile-top span{font-family:Manrope,sans-serif;font-size:27px;font-weight:800;letter-spacing:-1.5px}
+  .news-mobile-top small{font-size:8px;letter-spacing:1.5px;color:var(--lime);font-weight:800}
+  .news-mobile-panel nav{display:flex;flex-direction:column;gap:0}
+  .news-mobile-panel nav a{display:grid;grid-template-columns:36px 1fr 30px;align-items:center;gap:10px;padding:17px 0 17px 24px;border-bottom:1px solid rgba(255,255,255,.1);color:#fff}
+  .news-mobile-panel nav a:hover,.news-mobile-panel nav a.current{color:var(--lime)}
+  .news-mobile-panel em{font-style:normal;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.42)}
+  .news-mobile-panel nav span{font-family:Manrope,sans-serif;font-size:24px;font-weight:700;letter-spacing:-.7px}
+  .news-mobile-panel b{font-size:19px;font-weight:400;text-align:right;color:rgba(255,255,255,.48)}
+  .news-mobile-panel a.cta{margin-top:15px;border:1px solid rgba(143,195,74,.4);border-radius:9px;background:rgba(143,195,74,.08)}
+}
+@media(max-width:600px){
+  .news-topline{display:none}
+  .news-site-header{height:74px}
+  .news-site-brand{font-size:32px}
+  .news-mobile-panel{width:100%;padding:96px 25px 25px}
+  .news-mobile-top{padding-left:19px}
+  .news-mobile-panel nav a{padding-left:19px}
+  .news-mobile-panel nav span{font-size:22px}
+}
