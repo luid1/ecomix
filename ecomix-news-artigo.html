@@ -42,11 +42,12 @@
   };
 
   const fallbackImage='';
+  const articleImage=(url)=>'/api/article-image?url='+encodeURIComponent(url);
   const manausImage='https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg';
 
   function render(a){
     const image=(/Manaus|fumaça|queimadas/i.test(a.title||'') ? (a.image || manausImage) : a.image) || fallbackImage;
-    const displayImage = /^https?:\/\//i.test(image) ? ('/api/image?url='+encodeURIComponent(image)) : image;
+    const displayImage = /^https?:\/\//i.test(image) ? ('/api/image?url='+encodeURIComponent(image)) : (a.url ? articleImage(a.url) : image);
     root.innerHTML=`
       <section class="article-hero">
         <div class="wrap article-hero-grid">

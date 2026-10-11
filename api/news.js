@@ -130,6 +130,19 @@ function extractMetaImage(html,pageUrl){
   return '';
 }
 
+function normalizeTitle(value=''){return clean(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+
+function dedupe(items){
+  const seenUrl=new Set(), seenTitle=new Set(), out=[];
+  for(const item of items){
+    const url=String(item.url||'').replace(/[?#].*$/,'').replace(/\/$/,'').toLowerCase();
+    const title=normalizeTitle(item.title);
+    if(!url || !title || seenUrl.has(url) || seenTitle.has(title)) continue;
+    seenUrl.add(url); seenTitle.add(title); out.push(item);
+  }
+  return out;
+}
+
 function enrich(items){
   return items.map(a=>{
     const h=(a.title+' '+a.description).toLowerCase(),tags=['todos'];
@@ -175,8 +188,8 @@ async function handler(req,res){
 
     const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
     const all=[...FALLBACK,...results.flat()];
-    const unique=[...new Map(all.map(x=>[x.url,x])).values()];
-    await hydrateArticleImages(unique,10);
+    const unique=dedupe(all);
+    await hydrateArticleImages(unique,16);
     const sorted=enrich(unique).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
     const limit=Math.min(30,Math.max(1,Number(query.limit||12)));
     return res.status(200).json({updated_at:new Date().toISOString(),live_sources:results.some(x=>x.length),items:sorted.slice(0,limit)});
