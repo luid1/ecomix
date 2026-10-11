@@ -529,3 +529,57 @@ html,body{max-width:100%;overflow-x:hidden}
 .article-source-discreet a{color:#527064;text-decoration:none}
 .article-source-discreet a:hover{text-decoration:underline}
 @media(max-width:720px){.news-header-logo img{width:185px}.article-content .article-main section p{font-size:16px;line-height:1.78}.article-page .article-hero{padding-top:24px}}
+
+
+/* ===== ECO NEWS V19 — LOGO OFICIAL FORNECIDA PELO CLIENTE ===== */
+.news-page > header .news-header-logo img{
+  width:250px!important;
+  height:72px!important;
+  max-height:72px!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+}
+@media(max-width:900px){
+  .news-page > header .news-header-logo{width:250px!important}
+  .news-page > header .news-header-logo img{width:250px!important;height:72px!important}
+}
+@media(max-width:600px){
+  .news-page > header .news-header-logo{width:205px!important;height:58px!important}
+  .news-page > header .news-header-logo img{width:205px!important;height:58px!important}
+}
+
+/* V20 — cabeçalho principal do index.html fixo */
+@media(min-width:601px){
+  body:not(.news-page) > .topline{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    width:100%;
+    z-index:1001;
+  }
+  body:not(.news-page) > header{
+    position:fixed;
+    top:32px;
+    left:0;
+    right:0;
+    width:100%;
+    z-index:1000;
+  }
+  body:not(.news-page) > .news-slider-section{
+    margin-top:114px;
+  }
+}
+@media(max-width:600px){
+  body:not(.news-page) > header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    width:100%;
+    z-index:1000;
+  }
+  body:not(.news-page) > .news-slider-section{
+    margin-top:72px;
+  }
+}
