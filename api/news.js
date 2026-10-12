@@ -66,6 +66,11 @@ const VERIFIED_IMAGES = {
 function normText(v='') {
   return String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 }
+
+function slugify(value='') {
+  return normText(value).replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+}
+
 function canonicalUrl(u='') {
   try {
     const x=new URL(u);
@@ -298,12 +303,21 @@ async function handler(req,res){
     const query=req.query||{};
     const requestedUrl=typeof query.url==='string'?query.url:'';
     const requestedId=typeof query.id==='string'?query.id:'';
+    const requestedSlug=typeof query.slug==='string'?query.slug:'';
 
     // A página de matéria é atendida de forma leve: primeiro usa o conjunto conhecido,
     // depois tenta as fontes RSS. Isso evita estourar o tempo da função da Vercel.
-    if(requestedUrl || requestedId){
+    if(requestedUrl || requestedId || requestedSlug){
       let item=FALLBACK.find(x=>canonicalUrl(x.url)===canonicalUrl(requestedUrl));
+      if(!item && requestedSlug)item=enrich(FALLBACK).find(x=>slugify(x.title)===requestedSlug);
       if(!item && requestedId)item=enrich(FALLBACK).find(x=>x.id===requestedId);
+      if(!item && requestedSlug){
+        try{
+          const results=await Promise.all(SOURCES.map(async source=>{try{return parseRSS(await get(source.url,2600),source);}catch{return [];}}));
+          const pool=dedupe([...FALLBACK,...results.flat()]).filter(isCoreNews);
+          item=pool.find(x=>slugify(x.title)===requestedSlug);
+        }catch{}
+      }
       if(!item && requestedUrl)item={title:'',url:requestedUrl,description:'',date:new Date().toISOString(),source:'',image:'',category:'ECO NEWS'};
       if(!item)return res.status(404).json({error:'Notícia não encontrada'});
 

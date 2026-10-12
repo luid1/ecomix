@@ -631,3 +631,15 @@ html,body{max-width:100%;overflow-x:hidden}
  .article-layout-editorial .article-section h2,.article-layout-editorial .article-section-lead h2{font-size:26px}
  .article-layout-editorial .article-section p,.article-layout-editorial .article-section-lead p{font-size:17px;line-height:1.65}
 }
+
+/* V31 — navegação editorial organizada, URLs amigáveis e identidade EcoMix */
+.news-tools{background:#f4f7f5;border:1px solid #e0e8e3;border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:16px;margin-bottom:34px;box-shadow:0 8px 24px rgba(5,48,36,.04)}
+.news-filters{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:0;flex:1}
+.news-filters .news-filter{display:inline-flex;align-items:center;gap:7px;border:1px solid #d3dfd8;background:#fff;color:#36584d;border-radius:999px;padding:10px 14px;font-size:10px;font-weight:900;letter-spacing:.5px;cursor:pointer;white-space:nowrap;transition:.18s ease}
+.news-filters .news-filter i{font-style:normal;font-size:14px;line-height:1;color:#3e6d5a}
+.news-filters .news-filter.active,.news-filters .news-filter:hover{background:#8fca3d;border-color:#8fca3d;color:#173b2d;transform:translateY(-1px)}
+.news-filters .news-filter.active i,.news-filters .news-filter:hover i{color:#173b2d}
+.news-search{height:40px;min-width:230px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d3dfd8;border-radius:999px;padding:0 14px;color:#789087;box-sizing:border-box}
+.news-search span{font-size:18px;line-height:1;color:#496c5e}.news-search input{border:0;outline:0;background:transparent;width:100%;font:inherit;font-size:11px;color:#244e40}.news-search input::placeholder{color:#7b8e87}
+@media(max-width:900px){.news-tools{flex-direction:column;align-items:stretch}.news-search{min-width:0;width:100%}}
+@media(max-width:600px){.news-filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}.news-filters .news-filter{flex:0 0 auto}.news-tools{padding:12px;border-radius:16px}}

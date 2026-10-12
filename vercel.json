@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/eco-news/:slug", "destination": "/ecomix-news-artigo.html?slug=:slug" }
+  ]
+}
