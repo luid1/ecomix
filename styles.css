@@ -643,3 +643,62 @@ html,body{max-width:100%;overflow-x:hidden}
 .news-search span{font-size:18px;line-height:1;color:#496c5e}.news-search input{border:0;outline:0;background:transparent;width:100%;font:inherit;font-size:11px;color:#244e40}.news-search input::placeholder{color:#7b8e87}
 @media(max-width:900px){.news-tools{flex-direction:column;align-items:stretch}.news-search{min-width:0;width:100%}}
 @media(max-width:600px){.news-filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}.news-filters .news-filter{flex:0 0 auto}.news-tools{padding:12px;border-radius:16px}}
+
+/* V32 — Eco News navigation and category toolbar */
+.news-tools-pro{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 290px;
+  align-items:center!important;
+  gap:18px!important;
+  padding:14px;
+  background:#f4f8f5;
+  border:1px solid #dce7e1;
+  border-radius:22px;
+  box-shadow:0 10px 28px rgba(7,63,48,.05);
+}
+.news-tools-pro .news-filters{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0!important;
+  flex-wrap:wrap;
+}
+.news-tools-pro .news-filter{
+  display:inline-flex!important;
+  align-items:center;
+  gap:8px;
+  min-height:40px;
+  border:1px solid #d4e1da!important;
+  background:#fff!important;
+  color:#244c3f!important;
+  border-radius:999px!important;
+  padding:9px 14px!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.45px!important;
+  white-space:nowrap;
+  transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.news-tools-pro .news-filter:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(7,63,48,.08)}
+.news-tools-pro .news-filter.active{background:#8fca3d!important;border-color:#8fca3d!important;color:#123e30!important;box-shadow:0 7px 18px rgba(143,202,61,.18)}
+.filter-icon{width:15px;height:15px;display:inline-grid;place-items:center;position:relative;flex:0 0 15px;color:#2b5b4b}
+.news-filter.active .filter-icon{color:#164a39}
+.icon-grid:before{content:'••';letter-spacing:3px;font-size:15px;line-height:8px;transform:rotate(90deg);opacity:.9}
+.icon-leaf:before{content:'';width:12px;height:8px;border:2px solid currentColor;border-radius:12px 2px 12px 2px;transform:rotate(-35deg);display:block}
+.icon-recycle:before{content:'↻';font-size:18px;font-weight:900;line-height:1}
+.icon-building:before{content:'';width:11px;height:12px;border:2px solid currentColor;border-radius:2px;display:block;box-shadow:inset 3px 0 0 transparent}
+.icon-spark:before{content:'✦';font-size:15px;line-height:1}
+.icon-gear:before{content:'⚙';font-size:15px;line-height:1}
+.icon-cycle:before{content:'↻';font-size:17px;line-height:1}
+.news-search-pro{height:42px!important;min-width:0!important;width:100%;padding:0 7px 0 14px!important;border-radius:999px!important;background:#fff!important}
+.news-search-pro .search-icon{width:13px;height:13px;border:1.7px solid #5c766b;border-radius:50%;position:relative;display:block;flex:0 0 13px}
+.news-search-pro .search-icon:after{content:'';position:absolute;width:5px;height:1.7px;background:#5c766b;right:-4px;bottom:-2px;transform:rotate(45deg);border-radius:2px}
+.news-search-pro input{font-size:11px!important;letter-spacing:.1px}
+.news-search-pro .search-enter{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#8fca3d;color:#164a39;font-size:18px;font-weight:900;flex:0 0 34px}
+@media(max-width:980px){.news-tools-pro{grid-template-columns:1fr}.news-search-pro{max-width:420px}}
+@media(max-width:600px){.news-tools-pro{padding:10px;border-radius:18px}.news-tools-pro .news-filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px;scrollbar-width:none}.news-tools-pro .news-filters::-webkit-scrollbar{display:none}.news-tools-pro .news-filter{min-height:38px;padding:8px 12px!important}.news-search-pro{max-width:none}}
+
+/* V32 — friendly article URLs and compact source presentation */
+.article-source-discreet a{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.article-page .article-newsback{display:inline-flex;align-items:center;gap:7px}
+.article-page .article-newsback:before{content:'E';display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:#fff;color:#0a4a39;font-weight:950;font-size:14px;box-shadow:0 2px 8px rgba(7,63,48,.12)}

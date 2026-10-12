@@ -2,9 +2,11 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="theme-color" content="#073f30">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Eco News — Matéria</title>
 <meta name="description" content="Eco News — notícias, contexto e informações sobre resíduos, reciclagem e sustentabilidade.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/ecomix-e-favicon.png">
 <link rel="icon" type="image/svg+xml" href="assets/ecomix-e-favicon.svg">
 <link rel="apple-touch-icon" href="assets/ecomix-e-favicon.svg">
 <link rel="stylesheet" href="styles.css">
@@ -69,6 +71,7 @@
   const pathSlug=(location.pathname.match(/^\/eco-news\/([^/]+)\/?$/)||[])[1]||'';
   const articleUrl=params.get('url')||'';
   const articleSlug=params.get('slug')||pathSlug;
+  const legacyUrl=params.get('url')||'';
 
   const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -84,7 +87,6 @@
   };
 
   const fallbackImage='assets/eco-news-sem-imagem.svg';
-  const manausImage='https://f.i.uol.com.br/fotografia/2026/10/08/17914748316ac7bc8fe4724_1791474831_3x2_md.jpg';
 
   function readingTime(a){
     const words=String(a.description||'').split(/\s+/).filter(Boolean).length + (a.editorialSections||[]).reduce((n,x)=>n+String(x.text||'').split(/\s+/).filter(Boolean).length,0);
@@ -112,9 +114,10 @@
   }
 
   function render(a){
+    normalizeArticleUrl(a);
     document.title=(a.title||'Eco News')+' — Eco News';
     let canonical=document.querySelector('link[rel=canonical]'); if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);} canonical.href=location.origin+'/eco-news/'+slugify(a.title||'eco-news');
-    const image=(/Manaus|fumaça|queimadas/i.test(a.title||'') ? (a.image || manausImage) : a.image) || fallbackImage;
+    const image=a.image || fallbackImage;
     const displayImage = /^https?:\/\//i.test(image) ? ('/api/image?url='+encodeURIComponent(image)) : image;
     root.innerHTML=`
       <section class="article-hero">
@@ -132,7 +135,7 @@
               alt="${esc(a.title)}"
               loading="eager"
               referrerpolicy="no-referrer"
-              onerror="this.onerror=null;${(/Manaus|fumaça|queimadas/i.test(a.title||'') ? `this.src='${manausImage}'` : `this.src='assets/eco-news-sem-imagem.svg'`)}"
+              onerror="this.onerror=null;this.src='assets/eco-news-sem-imagem.svg'"
             >
             <figcaption>${esc(a.imageCredit||('Imagem: '+a.source))}</figcaption>
           </figure>
@@ -196,12 +199,23 @@
     bindShare(a);
   }
 
+  function normalizeArticleUrl(a){
+    try{
+      if(!a || !a.title) return;
+      const pretty='/eco-news/'+slugify(a.title);
+      if(location.pathname !== pretty){
+        history.replaceState({ecoNews:true},'',pretty);
+      }
+      const canonical=document.querySelector('link[rel=canonical]') || (()=>{const l=document.createElement('link');l.rel='canonical';document.head.appendChild(l);return l;})();
+      canonical.href=location.origin+pretty;
+    }catch{}
+  }
+
   fetch('/api/news?'+(articleUrl ? 'url='+encodeURIComponent(articleUrl) : articleSlug ? 'slug='+encodeURIComponent(articleSlug) : 'id='+encodeURIComponent(id)),{cache:'no-store'})
     .then(r=>{if(!r.ok) throw new Error('API'); return r.json();})
     .then(a=>{if(!a||a.error) throw new Error('notícia'); render(a);})
     .catch(()=>{
       const known={
-        'https://www1.folha.uol.com.br/ambiente/2026/10/fumaca-de-queimadas-encobre-manaus-pelo-terceiro-dia-consecutivo.shtml':{title:'Fumaça de queimadas encobre Manaus pelo terceiro dia consecutivo',source:'Folha / Ambiente',category:'MEIO AMBIENTE',date:'2026-10-10T14:58:00-03:00',image:manausImage,description:'A cidade de Manaus voltou a amanhecer sob fumaça gerada pelas queimadas no estado. O monitoramento ambiental registrou qualidade péssima do ar na capital.'},
         'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/menos-de-5-das-empresas-cumprem-lei-de-reciclagem-de-eletronicos-no-brasil-diz-associacao.shtml':{title:'Menos de 5% das empresas cumprem lei de reciclagem de eletrônicos no Brasil, diz associação',source:'C-Level / Folha',category:'RECICLAGEM',date:'2026-10-09T12:00:00-03:00',image:'https://f.i.uol.com.br/fotografia/2021/07/17/162653456360f2f2a38bdda_1626534563_3x2_md.jpg',description:'Entidade do setor cobra fiscalização e afirma que poucas empresas cumprem as metas de logística reversa de eletrônicos.'},
         'https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-10/5o-leilao-do-eco-invest-atrai-quase-r-50-bi-para-investimentos-verdes':{title:'5º leilão do Eco Invest atrai quase R$ 50 bi para investimentos verdes',source:'Agência Brasil',category:'SUSTENTABILIDADE',date:'2026-10-08T17:48:00-03:00',image:'',description:'Rodada recebeu forte demanda dos bancos para investimentos ligados à inovação e transformação ecológica.'},
         'https://c-level.folha.uol.com.br/economia-sustentavel/2026/10/excesso-de-oferta-e-incerteza-regulatoria-freiam-expansao-de-renovaveis-no-brasil-e-novas-instalacoes-caem-27.shtml':{title:'Excesso de oferta e incerteza regulatória freiam expansão de renováveis no Brasil',source:'C-Level / Folha',category:'ENERGIA LIMPA',date:'2026-10-08T23:00:00-03:00',image:'https://f.i.uol.com.br/fotografia/2025/01/23/173765773567928d878f5ac_1737657735_3x2_md.jpg',description:'Relatório aponta redução na expansão de fontes renováveis e desafios para investimentos em energia limpa no país.'},
