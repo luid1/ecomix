@@ -17,7 +17,7 @@
 </div>
 <header>
   <div class="wrap nav">
-    <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="logo news-header-logo" aria-label="Eco News">
+    <a href="https://ecomixgestaoambiental.com.br/eco-news" class="logo news-header-logo" aria-label="Eco News">
       <img src="assets/eco-news-logo.png" alt="Eco News">
     </a>
     <button class="menu" type="button" aria-label="Abrir menu" aria-expanded="false">
@@ -29,7 +29,7 @@
       <a href="https://ecomixgestaoambiental.com.br/#condominios">Condomínios</a>
       <a href="https://ecomixgestaoambiental.com.br/#empresas">Empresas</a>
       <a href="https://ecomixgestaoambiental.com.br/#processo">Como funciona</a>
-      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-nav">Eco News</a>
+      <a href="https://ecomixgestaoambiental.com.br/eco-news" class="news-nav">Eco News</a>
       <a href="https://ecomixgestaoambiental.com.br/#contato" class="nav-cta">Fale conosco</a>
     </nav>
   </div>
@@ -48,7 +48,7 @@
       <a href="https://ecomixgestaoambiental.com.br/#condominios" data-menu-link><em>04</em><span>Condomínios</span><b>↗</b></a>
       <a href="https://ecomixgestaoambiental.com.br/#empresas" data-menu-link><em>05</em><span>Empresas</span><b>↗</b></a>
       <a href="https://ecomixgestaoambiental.com.br/#processo" data-menu-link><em>06</em><span>Como funciona</span><b>↗</b></a>
-      <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="news-menu-link"><em>07</em><span>Eco News</span><b>↗</b></a>
+      <a href="https://ecomixgestaoambiental.com.br/eco-news" class="news-menu-link"><em>07</em><span>Eco News</span><b>↗</b></a>
       <a href="https://ecomixgestaoambiental.com.br/#contato" data-menu-link class="mobile-menu-cta"><em>08</em><span>Fale conosco</span><b>↗</b></a>
     </div>
     <div class="mobile-menu-footer">
@@ -58,7 +58,7 @@
   </div>
 </div>
 <div class="article-newsbar article-newsbar-simple">
-  <div class="wrap"><a href="https://ecomixgestaoambiental.com.br/ecomix-news.html" class="article-newsback">← Voltar para o Eco News</a></div>
+  <div class="wrap"><a href="https://ecomixgestaoambiental.com.br/eco-news" class="article-newsback">← Voltar para o Eco News</a></div>
 </div><main id="articleRoot">
   <div class="news-loading">Abrindo matéria…</div>
 </main>
@@ -100,7 +100,7 @@
       let items=(data.items||[]).filter(x=>x.url!==a.url);
       items.sort((x,y)=>{const sx=(x.tags||[]).filter(t=>tags.includes(t)).length; const sy=(y.tags||[]).filter(t=>tags.includes(t)).length; return sy-sx;});
       items=items.slice(0,3);
-      box.innerHTML=items.map(x=>`<a class="related-card" href="https://ecomixgestaoambiental.com.br/ecomix-news-artigo.html?url=${encodeURIComponent(x.url)}"><div><span>${esc(x.category||'ECO NEWS')}</span><small>${esc(x.source)}</small></div><strong>${esc(x.title)}</strong><b>Continuar lendo →</b></a>`).join('')||'<p>Nenhuma matéria relacionada disponível.</p>';
+      box.innerHTML=items.map(x=>`<a class="related-card" href="/eco-news/${slugify(x.title)}"><div><span>${esc(x.category||'ECO NEWS')}</span><small>${esc(x.source)}</small></div><strong>${esc(x.title)}</strong><b>Continuar lendo →</b></a>`).join('')||'<p>Nenhuma matéria relacionada disponível.</p>';
     }).catch(()=>{box.innerHTML='';});
   }
 
@@ -189,7 +189,7 @@
               <span>ECO NEWS</span>
               <strong>Informação que movimenta o ciclo.</strong>
             </div>
-            <a href="https://ecomixgestaoambiental.com.br/ecomix-news.html">Ver outras matérias →</a>
+            <a href="https://ecomixgestaoambiental.com.br/eco-news">Ver outras matérias →</a>
             <a href="index.html">Voltar para a EcoMix →</a>
           </aside>
         </div>
@@ -227,8 +227,8 @@
         <section class="article-content">
           <div class="wrap">
             <div class="article-intro">O Eco News não conseguiu atualizar os detalhes desta matéria agora. Você pode consultar a publicação original.</div>
-            <a class="article-back" href="${articleUrl ? esc(articleUrl) : 'ecomix-news.html'}" target="_blank" rel="noopener noreferrer">Abrir publicação original ↗</a>
-            <br><br><a class="article-back" href="https://ecomixgestaoambiental.com.br/ecomix-news.html">← Voltar ao Eco News</a>
+            <a class="article-back" href="${articleUrl ? esc(articleUrl) : '/eco-news'}" target="_blank" rel="noopener noreferrer">Abrir publicação original ↗</a>
+            <br><br><a class="article-back" href="https://ecomixgestaoambiental.com.br/eco-news">← Voltar ao Eco News</a>
           </div>
         </section>`;
     });
