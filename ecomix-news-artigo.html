@@ -133,7 +133,7 @@
       </section>
 
       <article class="article-content">
-        <div class="wrap article-layout">
+        <div class="wrap article-layout article-layout-editorial">
           <div class="article-main">
             <div class="article-intro">
               <strong>${esc(a.editorialIntro||a.description||'')}</strong>
@@ -147,15 +147,18 @@
               <button type="button" data-share="copy">Copiar link</button>
             </div>
 
-            <section class="article-section article-section-lead">
+            <section class="article-section article-section-lead editorial-opening">
               <h2>O que aconteceu</h2>
               <p>${esc(a.editorialLead||a.description||a.editorialIntro||'')}</p>
             </section>
 
-            ${(a.editorialSections||[]).map(p=>`
-              <section>
-                <h2>${esc(p.title)}</h2>
-                <p>${esc(p.text)}</p>
+            ${(a.editorialSections||[]).map((p,i)=>`
+              <section class="article-section editorial-section editorial-section-${i+1}">
+                <div class="editorial-section-label">${String(i+1).padStart(2,'0')}</div>
+                <div>
+                  <h2>${esc(p.title)}</h2>
+                  <p>${esc(p.text)}</p>
+                </div>
               </section>
             `).join('')}
 

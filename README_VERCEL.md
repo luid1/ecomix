@@ -17,3 +17,6 @@ V25 — correção da imagem da matéria ‘Amazonas recebe aeronaves para comba
 
 
 V27: Eco News agora prioriza matérias de reciclagem, resíduos, logística reversa e economia circular; bloqueia imagens do Google News e evita substituir a curadoria por cards sem imagem confiável.
+
+
+V28: ajuste visual do Eco News para que a primeira matéria da grade tenha o mesmo tamanho das demais, sem card gigante/row-span.

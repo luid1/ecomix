@@ -198,27 +198,42 @@ function extractMetaImage(html,pageUrl){
 function buildEditorial(a,tags){
   const desc=clean(a.description||'');
   const topic = tags.includes('reciclagem') ? 'reciclagem e logística reversa' : tags.includes('residuos') ? 'gestão de resíduos' : tags.includes('condominios') ? 'gestão ambiental em condomínios' : tags.includes('tecnologia') ? 'tecnologia, inovação e transformação operacional' : tags.includes('economia-circular') ? 'economia circular' : 'sustentabilidade e meio ambiente';
-  const intro = desc || `A reportagem aborda um tema relacionado a ${topic} e reúne informações que ajudam a entender seus efeitos para empresas, condomínios, consumidores e para a gestão ambiental.`;
-  const why = `O tema merece atenção porque mudanças em ${topic} podem afetar custos, processos, investimentos, conformidade e a forma como organizações lidam com recursos e resíduos. O ponto central é transformar a informação divulgada em entendimento prático: o que mudou, quem é afetado, quais decisões podem ser necessárias e quais indicadores devem ser acompanhados.`;
-  const context = `A notícia está inserida em uma transformação mais ampla da gestão ambiental. Empresas, condomínios, governos e consumidores convivem com novas exigências de rastreabilidade, eficiência, destinação correta, reaproveitamento de materiais e transparência. Ao mesmo tempo, regulamentações, tecnologias e mudanças de mercado alteram a maneira como essas operações são planejadas e executadas.`;
-  const business = `Para empresas e condomínios, o assunto pode representar tanto uma necessidade de adaptação quanto uma oportunidade. Separação correta, armazenamento, coleta, triagem, comprovação de destinação e acompanhamento de resultados deixam de ser detalhes isolados e passam a fazer parte de uma gestão mais organizada. A capacidade de documentar processos e trabalhar com parceiros adequados também ganha importância.`;
-  const chain = `Outro ponto importante é a cadeia como um todo. Resíduos não desaparecem quando saem de uma empresa ou de um condomínio: eles seguem para transporte, triagem, recuperação, reciclagem, tratamento ou disposição final. Por isso, decisões tomadas na origem influenciam diretamente a qualidade do material, os custos da operação e a possibilidade de reaproveitamento.`;
-  const practical = `Na prática, o acompanhamento deve considerar novas decisões das autoridades, dados divulgados pelas instituições envolvidas, mudanças regulatórias, investimentos e respostas do mercado. O Eco News organiza esses elementos para facilitar a leitura e pode atualizar a cobertura quando surgirem informações relevantes.`;
-  const implications = `O cenário também reforça a importância de indicadores e procedimentos claros. Peso coletado, frequência de retirada, tipos de materiais, índices de recuperação, documentação e destinação são exemplos de informações que ajudam a transformar uma iniciativa ambiental em uma operação mensurável. Quanto melhor organizada estiver a cadeia, maior tende a ser a capacidade de identificar perdas e oportunidades.`;
-  const conclusion = `Em resumo, a notícia deve ser entendida dentro de um movimento maior de profissionalização da gestão ambiental. Mais do que acompanhar uma manchete, empresas e condomínios precisam compreender os efeitos do tema sobre suas rotinas e estar preparados para novas exigências, oportunidades e mudanças de mercado.`;
+  const intro = desc || `A reportagem aborda ${topic} e reúne informações para entender o que está acontecendo, quem é afetado e quais são os próximos passos.`;
+  const why = `O assunto ganhou relevância porque pode influenciar a forma como materiais são separados, coletados, reaproveitados e destinados. Para a cadeia da reciclagem, decisões tomadas agora podem refletir em custos, eficiência, recuperação de materiais e organização das operações.`;
+  const chain = `Na prática, o resultado depende da cadeia completa: geração, separação na origem, armazenamento, coleta, transporte, triagem, recuperação e destinação. Quando uma dessas etapas funciona mal, parte do material pode perder valor ou deixar de seguir para a reciclagem.`;
+  const business = `Para empresas e condomínios, o principal ponto é transformar a informação em ação. Separar corretamente, organizar a coleta, acompanhar volumes e manter registros de destinação ajuda a reduzir perdas e torna a operação ambiental mais eficiente.`;
+  const practical = `Vale acompanhar os próximos anúncios das instituições envolvidas, mudanças de regras, novos investimentos e os resultados apresentados pelo setor. Esses movimentos ajudam a entender se a mudança terá efeito pontual ou se fará parte de uma transformação maior da cadeia.`;
+  const conclusion = `A notícia mostra uma cadeia ambiental em transformação. Para quem trabalha com resíduos e reciclagem, acompanhar essas mudanças significa identificar oportunidades, antecipar exigências e melhorar a qualidade da operação.`;
+  let sections=[];
+  if(tags.includes('reciclagem')){
+    sections=[
+      {title:'Por que essa notícia importa para a reciclagem',text:why},
+      {title:'O caminho do material até a reciclagem',text:chain},
+      {title:'O que isso muda para empresas e condomínios',text:business},
+      {title:'O que acompanhar daqui para frente',text:practical},
+      {title:'Em resumo',text:conclusion}
+    ];
+  }else if(tags.includes('residuos') || tags.includes('economia-circular')){
+    sections=[
+      {title:'Por que esse movimento importa',text:why},
+      {title:'Como isso afeta a cadeia de resíduos',text:chain},
+      {title:'O que muda na prática',text:business},
+      {title:'Próximos passos',text:practical},
+      {title:'Em resumo',text:conclusion}
+    ];
+  }else{
+    sections=[
+      {title:'Por que esse assunto merece atenção',text:why},
+      {title:'O que está por trás da mudança',text:chain},
+      {title:'Impacto para empresas e condomínios',text:business},
+      {title:'O que acompanhar',text:practical},
+      {title:'Em resumo',text:conclusion}
+    ];
+  }
   return {
     editorialIntro:intro,
-    editorialLead: desc || `A cobertura apresenta os principais elementos relacionados a ${topic} e ajuda a situar o leitor sobre o que está acontecendo, por que o assunto ganhou atenção e quais pontos merecem acompanhamento.`,
-    editorialSections:[
-      {title:'O que está em discussão',text:desc || `A publicação trata de ${topic}. O Eco News organiza o assunto em uma leitura editorial própria, reunindo contexto e implicações para facilitar a compreensão do tema.`},
-      {title:'Por que esse assunto importa',text:why},
-      {title:'Contexto e cenário',text:context},
-      {title:'O impacto para empresas e condomínios',text:business},
-      {title:'A cadeia por trás da notícia',text:chain},
-      {title:'O que muda na prática',text:implications},
-      {title:'O que acompanhar a partir de agora',text:practical},
-      {title:'Em resumo',text:conclusion}
-    ]
+    editorialLead: desc || `A reportagem apresenta os principais fatos sobre ${topic} e ajuda a entender o que mudou e por que o assunto merece atenção.`,
+    editorialSections:sections
   };
 }
 
