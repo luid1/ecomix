@@ -1,4 +1,4 @@
-/* EcoMix - design tokens baseados no Manual de Identidade Visual v1.0 */
+/* EcoMix - design tokens baseados no Manual de Identidade Visual v1.1 */
 :root {
   --ecomix-forest: #073F32;
   --ecomix-forest-2: #0B5040;
@@ -10,13 +10,13 @@
   --ecomix-text: #33443D;
   --ecomix-muted: #6E7D76;
   --ecomix-line: #DCE5DD;
-  --ecomix-radius-card: 14px;
-  --ecomix-radius-button: 999px;
+  --ecomix-radius-card: 8px;
+  --ecomix-radius-button: 7px;
   --ecomix-font: "Lato", Arial, Helvetica, sans-serif;
   --ecomix-page-max: 1200px;
 }
 body { margin: 0; color: var(--ecomix-text); background: var(--ecomix-white); font-family: var(--ecomix-font); line-height: 1.55; }
-h1, h2, h3 { color: var(--ecomix-forest); line-height: 1.08; font-weight: 900; }
+h1, h2, h3 { color: var(--ecomix-forest); line-height: 1.08; font-weight: 800; }
 a { color: var(--ecomix-mid); }
 .ecomix-header, .ecomix-footer { background: var(--ecomix-forest); color: var(--ecomix-white); }
 .ecomix-section { padding: clamp(32px, 6vw, 76px) 24px; }

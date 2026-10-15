@@ -1,6 +1,6 @@
 {
   "brand": "EcoMix Gestão Ambiental",
-  "version": "1.0",
+  "version": "1.1",
   "tagline": [
     "Reciclagem organizada.",
     "Impacto que transforma."
@@ -21,7 +21,7 @@
   },
   "typography": {
     "primary": "Lato",
-    "headings": "Lato Heavy/Black",
+    "headings": "Lato Bold (700–800)",
     "body": "Lato Regular",
     "fallback": "Arial, Helvetica, sans-serif"
   },
@@ -32,8 +32,8 @@
     "email": "comercial@ecomixgestaoambiental.com.br"
   },
   "guidelines": {
-    "photos": "Priorize fotografia real da operação; use imagens ilustrativas com aviso explícito.",
+    "photos": "Priorize fotografia real da operação; imagens de ambiente ou frota geradas/compostas devem ser identificadas como ilustrativas.",
     "logo": "Não distorcer, recolorir nem recriar. Preservar proporção e contraste.",
-    "layout": "Títulos fortes, espaço negativo intencional, cards arredondados, ícones lineares e rodapé discreto."
+    "layout": "Hierarquia editorial simples, espaçamento consistente, cantos discretos, poucos efeitos e boa legibilidade."
   }
 }
