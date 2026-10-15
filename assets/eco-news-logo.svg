@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 116" role="img" aria-labelledby="t d">
-<title id="t">Eco News</title><desc id="d">Eco News — jornalismo ambiental e economia circular</desc>
-<g>
- <circle cx="54" cy="55" r="43" fill="#073f30"/>
- <path d="M32 58c11-27 31-34 48-35-2 22-14 42-39 46" fill="#8fca3d"/>
- <path d="M40 68c12-15 23-25 39-34" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
- <path d="M36 79c17 7 34 2 44-10" fill="none" stroke="#8fca3d" stroke-width="4" stroke-linecap="round"/>
-</g>
-<text x="116" y="54" font-family="Arial,Helvetica,sans-serif" font-size="45" font-weight="800" letter-spacing="-2" fill="#073f30">ECO</text>
-<text x="225" y="54" font-family="Arial,Helvetica,sans-serif" font-size="45" font-weight="800" letter-spacing="-2" fill="#8fca3d">NEWS</text>
-<text x="118" y="82" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="700" letter-spacing="2.8" fill="#60786d">JORNALISMO · AMBIENTE · ECONOMIA CIRCULAR</text>
-<path d="M118 92h275" stroke="#d9e6df" stroke-width="2"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220"><rect width="960" height="220" fill="white" fill-opacity="0"/><text x="8" y="132" font-family="Arial, Helvetica, sans-serif" font-size="116" font-weight="900" letter-spacing="-5" fill="#073F32">ECO</text><text x="305" y="132" font-family="Arial, Helvetica, sans-serif" font-size="116" font-weight="900" letter-spacing="-5" fill="#78C83D">NEWS</text><path d="M855 24c-10 45-51 55-56 91 0 26 19 43 40 43 24 0 42-18 42-43 0-36-35-53-26-91Z" fill="#78C83D"/><path d="M827 123c18-5 31-21 37-43" fill="none" stroke="#073F32" stroke-width="6" stroke-linecap="round"/><text x="14" y="185" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="600" letter-spacing="5" fill="#416456">INFORMAÇÃO QUE MOVIMENTA O CICLO</text></svg>

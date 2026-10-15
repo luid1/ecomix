@@ -1,167 +1,215 @@
-const b=document.querySelector('.menu');
-const mobileMenu=document.querySelector('#mobileMenu');
-const backdrop=mobileMenu?.querySelector('.mobile-menu-backdrop');
-const menuLinks=[...(mobileMenu?.querySelectorAll('[data-menu-link]')||[])];
-const pageTransition=document.querySelector('#pageTransition');
+(() => {
+  'use strict';
 
-function closeMobileMenu(){
-  if(!b||!mobileMenu)return;
-  b.classList.remove('is-open');
-  b.setAttribute('aria-expanded','false');
-  b.setAttribute('aria-label','Abrir menu');
-  mobileMenu.classList.remove('is-open');
-  mobileMenu.setAttribute('aria-hidden','true');
-  document.body.classList.remove('menu-open');
-}
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const WA_NUMBER = '5511951952545';
 
-function openMobileMenu(){
-  if(!b||!mobileMenu)return;
-  b.classList.add('is-open');
-  b.setAttribute('aria-expanded','true');
-  b.setAttribute('aria-label','Fechar menu');
-  mobileMenu.classList.add('is-open');
-  mobileMenu.setAttribute('aria-hidden','false');
-  document.body.classList.add('menu-open');
-}
+  // Menu mobile acessível.
+  const menuButton = $('.ecx-menu');
+  const mobileMenu = $('#ecxMobileMenu');
+  const backdrop = $('.ecx-mobile-backdrop');
 
-b?.addEventListener('click',()=>{
-  mobileMenu?.classList.contains('is-open') ? closeMobileMenu() : openMobileMenu();
-});
-backdrop?.addEventListener('click',closeMobileMenu);
+  function closeMenu() {
+    if (!menuButton || !mobileMenu) return;
+    menuButton.classList.remove('is-open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Abrir menu');
+    mobileMenu.classList.remove('is-open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('ecx-menu-open');
+  }
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape' && mobileMenu?.classList.contains('is-open')) closeMobileMenu();
-});
+  function openMenu() {
+    if (!menuButton || !mobileMenu) return;
+    menuButton.classList.add('is-open');
+    menuButton.setAttribute('aria-expanded', 'true');
+    menuButton.setAttribute('aria-label', 'Fechar menu');
+    mobileMenu.classList.add('is-open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('ecx-menu-open');
+  }
 
-// O clique simula uma navegação para uma nova página: fecha o menu,
-// exibe a tela de transição e então leva suavemente à seção escolhida.
-menuLinks.forEach(link=>{
-  link.addEventListener('click',e=>{
-    const target=link.getAttribute('href');
-    if(!target || !target.startsWith('#')) return;
-    const section=document.querySelector(target);
-    if(!section)return;
-    e.preventDefault();
-    closeMobileMenu();
-    pageTransition?.classList.add('is-active');
-    window.setTimeout(()=>{
-      section.scrollIntoView({behavior:'smooth',block:'start'});
-      window.setTimeout(()=>pageTransition?.classList.remove('is-active'),520);
-    },420);
+  menuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.contains('is-open') ? closeMenu() : openMenu();
   });
-});
-
-
-// Frases do card: troca a cada 2 segundos, com entrada/saída suave.
-const phrases=[...document.querySelectorAll('.quote-rotator .phrase')];
-if(phrases.length>1){
-  let current=0;
-  setInterval(()=>{
-    phrases[current].classList.remove('active');
-    current=(current+1)%phrases.length;
-    phrases[current].classList.add('active');
-  },2000);
-}
-
-// A abertura da home só termina depois que as imagens críticas foram carregadas.
-// Mantemos a animação de entrada por pelo menos ~5s; se alguma foto demorar mais,
-// a tela permanece até ela terminar ou até o fallback correspondente ser carregado.
-(function(){
-  const loader=document.getElementById('ec-loading');
-  if(!loader) return;
-  const started=performance.now();
-  const waitImage=img=>new Promise(resolve=>{
-    if(img.complete && img.naturalWidth>0) return resolve(true);
-    const done=ok=>{img.removeEventListener('load',onload);img.removeEventListener('error',onerror);resolve(ok);};
-    const onload=()=>done(true);
-    const onerror=()=>done(false);
-    img.addEventListener('load',onload,{once:true});
-    img.addEventListener('error',onerror,{once:true});
+  backdrop?.addEventListener('click', closeMenu);
+  $$('.ecx-mobile-panel a').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu();
   });
-  const preloadUrl=url=>new Promise(resolve=>{
-    const img=new Image();
-    img.onload=img.onerror=()=>resolve();
-    img.src=url;
-  });
-  const waitStaticImages=()=>Promise.all([
-    ...[...document.images].map(waitImage),
-    ...[
-      'assets/hero-rapaz-reciclagem.jpg',
-      'assets/condominios-nova.jpg'
-    ].map(preloadUrl)
-  ]);
-  const waitDynamicNews=()=>new Promise(resolve=>{
-    const slider=document.getElementById('newsSlider');
-    if(!slider) return resolve();
-    let finished=false;
-    const finish=()=>{if(!finished){finished=true;resolve();}};
-    const check=()=>{
-      const imgs=[...slider.querySelectorAll('img')];
-      if(!imgs.length) return;
-      Promise.all(imgs.map(waitImage)).then(results=>{
-        // Libera a home somente quando as fotos realmente carregaram.
-        if(results.every(Boolean)) finish();
+
+  // Sombra discreta no cabeçalho ao rolar a página.
+  const header = $('.ecx-header');
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Revelação leve dos blocos; o conteúdo permanece visível sem JavaScript.
+  const revealItems = $$('.ecx-reveal');
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('ecx-js');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
       });
+    }, { threshold: 0.12, rootMargin: '0px 0px -3% 0px' });
+    revealItems.forEach(item => revealObserver.observe(item));
+  } else {
+    revealItems.forEach(item => item.classList.add('is-visible'));
+  }
+
+  // Formulário: prepara uma mensagem para o WhatsApp sem enviar dados a um servidor.
+  const contactForm = $('#ecxContactForm');
+  contactForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!contactForm.reportValidity()) return;
+    const formData = new FormData(contactForm);
+    const name = String(formData.get('nome') || '').trim();
+    const type = String(formData.get('tipo') || '').trim();
+    const city = String(formData.get('cidade') || '').trim();
+    const message = String(formData.get('mensagem') || '').trim();
+    const lines = [
+      'Olá, EcoMix! Gostaria de conversar sobre uma solução de reciclagem.',
+      '',
+      `Nome: ${name}`,
+      `Tipo de local: ${type}`,
+      `Cidade: ${city}`
+    ];
+    if (message) lines.push(`Informações adicionais: ${message}`);
+    lines.push('', 'Gostaria de entender os próximos passos para uma avaliação da operação.');
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  });
+
+  // Eco News: utiliza o endpoint atual do site. Se a API não responder, deixa um fallback claro.
+  const slider = $('#newsSlider');
+  if (slider) {
+    const dots = $('.news-slide-dots', slider);
+    const controls = $('.news-slide-controls', slider);
+    let slides = [];
+    let activeIndex = 0;
+    let rotationTimer = null;
+    let requestTimer = null;
+
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[char]));
+    const slugify = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
+    const formatDate = value => {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
     };
-    slider.addEventListener('eco-news-ready',check,{once:true});
-    check();
-    // Segurança para não deixar a página presa indefinidamente caso uma fonte externa caia.
-    setTimeout(finish,25000);
-  });
-  const minTime=new Promise(resolve=>setTimeout(resolve,Math.max(0,5000-(performance.now()-started))));
-  Promise.all([waitStaticImages(),waitDynamicNews(),minTime]).then(()=>loader.classList.add('is-done'));
-})();
+    const imageUrl = (value, reference) => {
+      const url = String(value || '');
+      if (/^https?:\/\//i.test(url)) return `/api/image?url=${encodeURIComponent(url)}${reference ? `&ref=${encodeURIComponent(reference)}` : ''}`;
+      return url || 'assets/eco-news-sem-imagem.svg';
+    };
 
-// Entradas suaves das faixas e listas quando entram na tela.
-document.addEventListener('DOMContentLoaded', () => {
-  const targets = [
-    document.querySelector('.number-grid'),
-    document.querySelector('.service-list'),
-    document.querySelector('.material-row')
-  ].filter(Boolean);
+    function activate(index) {
+      if (!slides.length) return;
+      activeIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, position) => slide.classList.toggle('is-active', position === activeIndex));
+      $$('.news-slide-dots button', slider).forEach((dot, position) => {
+        dot.classList.toggle('active', position === activeIndex);
+        dot.setAttribute('aria-current', position === activeIndex ? 'true' : 'false');
+      });
+    }
+    function stopRotation() {
+      if (rotationTimer) window.clearInterval(rotationTimer);
+      rotationTimer = null;
+    }
+    function startRotation() {
+      stopRotation();
+      if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        rotationTimer = window.setInterval(() => activate(activeIndex + 1), 7000);
+      }
+    }
+    function showFallback() {
+      if ($('.ecx-news-fallback', slider)) return;
+      $('.news-home-loading', slider)?.remove();
+      controls?.setAttribute('hidden', '');
+      slider.insertAdjacentHTML('afterbegin', `
+        <div class="ecx-news-fallback">
+          <div class="ecx-news-fallback-mark">E</div>
+          <div><span>ECO NEWS · CONTEÚDO AMBIENTAL</span><h3>O que está mudando na reciclagem?</h3><p>Acompanhe notícias e conteúdos sobre resíduos, coleta seletiva, logística reversa e economia circular no portal Eco News.</p><a href="/eco-news">Acessar o Eco News <b>↗</b></a></div>
+        </div>`);
+    }
+    function renderItems(items) {
+      $('.ecx-news-fallback', slider)?.remove();
+      $('.news-home-loading', slider)?.remove();
+      if (!Array.isArray(items) || items.length === 0) {
+        showFallback();
+        return;
+      }
+      const cleanItems = items.filter(item => item && item.title).slice(0, 5);
+      if (!cleanItems.length) {
+        showFallback();
+        return;
+      }
+      cleanItems.forEach((item, index) => {
+        const storyHref = `/eco-news/${slugify(item.title || 'eco-news')}`;
+        const slide = document.createElement('article');
+        slide.className = `news-slide${index === 0 ? ' is-active' : ''}`;
+        slide.innerHTML = `
+          <a class="news-slide-image" href="${storyHref}" aria-label="Abrir notícia: ${escapeHtml(item.title)}">
+            <img src="${escapeHtml(imageUrl(item.image, item.url))}" alt="" loading="${index === 0 ? 'eager' : 'lazy'}" referrerpolicy="no-referrer">
+          </a>
+          <a class="news-slide-content" href="${storyHref}">
+            <span class="news-slide-kicker">${escapeHtml(item.category || 'ECO NEWS')}${item.date ? ` · ${escapeHtml(formatDate(item.date))}` : ''}</span>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p class="ecx-news-description">${escapeHtml(item.description || 'Leia os principais destaques e consulte a publicação original.')}</p>
+            <div class="news-slide-source">${escapeHtml(item.source || 'Fonte original')} <b>↗</b></div>
+          </a>`;
+        const img = $('img', slide);
+        img?.addEventListener('error', () => { img.src = 'assets/eco-news-sem-imagem.svg'; }, { once: true });
+        slider.insertBefore(slide, controls || null);
+        slides.push(slide);
+        if (dots) {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.setAttribute('aria-label', `Mostrar notícia ${index + 1}`);
+          dot.addEventListener('click', () => { activate(index); startRotation(); });
+          dots.appendChild(dot);
+        }
+      });
+      if (controls) controls.hidden = cleanItems.length < 2;
+      activate(0);
+      startRotation();
+      slider.dispatchEvent(new Event('eco-news-ready'));
+    }
 
-  const reveal = el => el.classList.add('is-visible');
-  if (!('IntersectionObserver' in window)) { targets.forEach(reveal); return; }
+    $('.news-slide-next', slider)?.addEventListener('click', () => { activate(activeIndex + 1); startRotation(); });
+    $('.news-slide-prev', slider)?.addEventListener('click', () => { activate(activeIndex - 1); startRotation(); });
+    slider.addEventListener('mouseenter', stopRotation);
+    slider.addEventListener('mouseleave', startRotation);
+    slider.addEventListener('focusin', stopRotation);
+    slider.addEventListener('focusout', startRotation);
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) { reveal(entry.target); obs.unobserve(entry.target); }
-    });
-  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+    // Evita deixar um indicador de carregamento eterno se o endpoint estiver indisponível.
+    requestTimer = window.setTimeout(() => {
+      if (!slides.length && $('.news-home-loading', slider)) showFallback();
+    }, 9000);
+    fetch('/api/news?limit=5', { cache: 'no-store', headers: { 'Accept': 'application/json' } })
+      .then(response => {
+        if (!response.ok) throw new Error('Eco News indisponível');
+        return response.json();
+      })
+      .then(data => {
+        window.clearTimeout(requestTimer);
+        renderItems(data.items || []);
+      })
+      .catch(() => {
+        window.clearTimeout(requestTimer);
+        if (!slides.length && $('.news-home-loading', slider)) showFallback();
+        slider.dispatchEvent(new Event('eco-news-ready'));
+      });
+  }
 
-  targets.forEach(el => observer.observe(el));
-});
-
-// Navegação para a página Eco News com transição premium.
-document.querySelectorAll('a[href$=".html"]').forEach(link=>{
-  link.addEventListener('click',e=>{
-    const href=link.getAttribute('href');
-    if(!href || href.startsWith('http') || href.startsWith('#')) return;
-    e.preventDefault();
-    closeMobileMenu();
-    pageTransition?.classList.add('is-active');
-    window.setTimeout(()=>{ window.location.href=href; },480);
-  });
-});
-
-
-
-// Eco News na home: destaques dinâmicos vindos do agregador PHP.
-(function(){
-  const slider=document.getElementById('newsSlider'); if(!slider) return;
-  const slugify=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').replace(/-+/g,'-');
-const esc=s=>String(s??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));
-  const imageSrc=(u,ref)=>{const x=String(u||''); return /^https?:\/\//i.test(x)?('/api/image?url='+encodeURIComponent(x)+(ref?'&ref='+encodeURIComponent(ref):'')):x||'assets/eco-news-sem-imagem.svg'};
-
-  const dots=slider.querySelector('.news-slide-dots'), controls=slider.querySelector('.news-slide-controls');
-  let slides=[], current=0, timer;
-  function activate(i){if(!slides.length)return;current=(i+slides.length)%slides.length;slides.forEach((s,n)=>s.classList.toggle('is-active',n===current));[...dots.children].forEach((d,n)=>d.classList.toggle('active',n===current));}
-  function restart(){clearInterval(timer);timer=setInterval(()=>activate(current+1),6000)}
-  fetch('/api/news?limit=5',{cache:'no-store'}).then(r=>r.json()).then(data=>{
-    const items=(data.items||[]).slice(0,5); if(!items.length){slider.querySelector('.news-home-loading')?.remove();return;}
-    slider.querySelector('.news-home-loading')?.remove();
-    items.forEach((a,i)=>{const storyHref='/eco-news/'+slugify(a.title||'eco-news');const el=document.createElement('div');el.className='news-slide'+(i===0?' is-active':'');el.innerHTML=`<a href="${storyHref}" class="news-slide-image" aria-label="Abrir notícia"><img src="${esc(imageSrc(a.image,a.url))}" alt="" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='assets/eco-news-sem-imagem.svg'"></a><a href="${storyHref}" class="news-slide-content"><span class="news-slide-kicker">${esc(a.category||'SUSTENTABILIDADE')} · ${esc(new Date(a.date).toLocaleDateString('pt-BR'))}</span><h3>${esc(a.title)}</h3><div class="news-slide-source">${esc(a.source)} <b>→</b></div></a>`;slider.insertBefore(el,controls);slides.push(el);const d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Mostrar notícia '+(i+1));d.addEventListener('click',()=>{activate(i);restart()});dots.appendChild(d);});activate(0);restart();slider.dispatchEvent(new Event('eco-news-ready'));
-  }).catch((err)=>{
-    slider.dispatchEvent(new Event('eco-news-ready')); const load=slider.querySelector('.news-home-loading'); if(load){ load.innerHTML='<strong>Eco News</strong><br><span>As notícias estão sendo atualizadas. Tente novamente em instantes.</span>'; } console.warn('Eco News:',err); });
-  slider.querySelector('.news-slide-next')?.addEventListener('click',()=>{activate(current+1);restart()});slider.querySelector('.news-slide-prev')?.addEventListener('click',()=>{activate(current-1);restart()});slider.addEventListener('mouseenter',()=>clearInterval(timer));slider.addEventListener('mouseleave',restart);
+  // Ano automático no rodapé.
+  $$('[data-current-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });
 })();

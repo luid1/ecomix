@@ -1,0 +1,31 @@
+/* EcoMix - design tokens baseados no Manual de Identidade Visual v1.0 */
+:root {
+  --ecomix-forest: #073F32;
+  --ecomix-forest-2: #0B5040;
+  --ecomix-leaf: #78C83D;
+  --ecomix-mid: #2C7A4B;
+  --ecomix-mist: #D4E8CD;
+  --ecomix-pale: #F3F7F1;
+  --ecomix-white: #FFFFFF;
+  --ecomix-text: #33443D;
+  --ecomix-muted: #6E7D76;
+  --ecomix-line: #DCE5DD;
+  --ecomix-radius-card: 14px;
+  --ecomix-radius-button: 999px;
+  --ecomix-font: "Lato", Arial, Helvetica, sans-serif;
+  --ecomix-page-max: 1200px;
+}
+body { margin: 0; color: var(--ecomix-text); background: var(--ecomix-white); font-family: var(--ecomix-font); line-height: 1.55; }
+h1, h2, h3 { color: var(--ecomix-forest); line-height: 1.08; font-weight: 900; }
+a { color: var(--ecomix-mid); }
+.ecomix-header, .ecomix-footer { background: var(--ecomix-forest); color: var(--ecomix-white); }
+.ecomix-section { padding: clamp(32px, 6vw, 76px) 24px; }
+.ecomix-container { width: min(100% - 40px, var(--ecomix-page-max)); margin-inline: auto; }
+.ecomix-eyebrow { color: var(--ecomix-mid); text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; font-weight: 800; }
+.ecomix-card { background: var(--ecomix-pale); border: 1px solid var(--ecomix-line); border-radius: var(--ecomix-radius-card); padding: 24px; }
+.ecomix-button { display: inline-block; border-radius: var(--ecomix-radius-button); padding: 12px 22px; background: var(--ecomix-leaf); color: var(--ecomix-forest); font-weight: 800; text-decoration: none; }
+.ecomix-button--dark { background: var(--ecomix-forest); color: var(--ecomix-white); }
+.ecomix-highlight { color: var(--ecomix-leaf); }
+.ecomix-rule { height: 1px; background: var(--ecomix-line); border: 0; }
+@media (max-width: 700px) { .ecomix-grid { display: grid; grid-template-columns: 1fr !important; } .ecomix-section { padding: 36px 18px; } }
+/* Para e-mails HTML: utilizar estrutura baseada em tabelas, CSS inline e links absolutos. */

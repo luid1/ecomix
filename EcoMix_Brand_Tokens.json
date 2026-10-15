@@ -1,0 +1,39 @@
+{
+  "brand": "EcoMix Gestão Ambiental",
+  "version": "1.0",
+  "tagline": [
+    "Reciclagem organizada.",
+    "Impacto que transforma."
+  ],
+  "colors": {
+    "forest": "#073F32",
+    "forest2": "#0B5040",
+    "leaf": "#78C83D",
+    "mid": "#2C7A4B",
+    "mist": "#D4E8CD",
+    "pale": "#F3F7F1",
+    "text": "#33443D",
+    "muted": "#6E7D76",
+    "line": "#DCE5DD",
+    "white": "#FFFFFF",
+    "soft": "#E7F1E4",
+    "black": "#15352B"
+  },
+  "typography": {
+    "primary": "Lato",
+    "headings": "Lato Heavy/Black",
+    "body": "Lato Regular",
+    "fallback": "Arial, Helvetica, sans-serif"
+  },
+  "contacts": {
+    "phone": "(11) 95195-2545",
+    "website": "https://ecomixgestaoambiental.com.br",
+    "instagram": "@ecomixgestaoambiental",
+    "email": "comercial@ecomixgestaoambiental.com.br"
+  },
+  "guidelines": {
+    "photos": "Priorize fotografia real da operação; use imagens ilustrativas com aviso explícito.",
+    "logo": "Não distorcer, recolorir nem recriar. Preservar proporção e contraste.",
+    "layout": "Títulos fortes, espaço negativo intencional, cards arredondados, ícones lineares e rodapé discreto."
+  }
+}
