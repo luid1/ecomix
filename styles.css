@@ -1185,3 +1185,21 @@ body.ecomix-home .ecx-reveal-delay{transition-delay:0s!important}
 /* Headlines use a more restrained editorial scale rather than oversized AI-style display type. */
 .ecx-hero h1{font-size:clamp(40px,3.7vw,52px)!important;letter-spacing:-.45px!important;line-height:1.08!important}
 @media(max-width:600px){.ecx-hero h1{font-size:clamp(38px,10vw,48px)!important;letter-spacing:-.25px!important;line-height:1.08!important}}
+
+
+/* Download da apresentação comercial — EcoMix */
+.ecx-presentation-download{background:var(--ecx-pale);border-top:1px solid var(--ecx-line);border-bottom:1px solid var(--ecx-line);padding:clamp(52px,7vw,94px) 0}
+.ecx-presentation-grid{display:grid;grid-template-columns:minmax(0,.96fr) minmax(0,1.04fr);gap:clamp(32px,6vw,82px);align-items:center}
+.ecx-presentation-cover{display:block;position:relative;max-width:600px;background:#fff;padding:12px;border:1px solid var(--ecx-line);border-radius:8px 28px 8px 8px;box-shadow:0 18px 48px rgba(7,63,50,.10);transition:transform .22s ease,box-shadow .22s ease}
+.ecx-presentation-cover:hover{transform:translateY(-3px);box-shadow:0 23px 55px rgba(7,63,50,.14)}
+.ecx-presentation-cover img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center;border-radius:3px}
+.ecx-presentation-file-tag{display:flex;align-items:center;gap:10px;margin:12px 2px 2px;color:var(--ecx-muted);font-size:9px;letter-spacing:1.1px;font-weight:900}
+.ecx-presentation-file-tag span{display:inline-grid;place-items:center;width:30px;height:25px;border-radius:4px;background:var(--ecx-forest);color:#fff;font-size:9px;letter-spacing:.4px}
+.ecx-presentation-copy h2{max-width:610px;margin:0 0 18px;color:var(--ecx-forest);font-size:clamp(32px,3.7vw,48px);line-height:1.08;letter-spacing:-1.3px;font-weight:900}
+.ecx-presentation-copy>p{max-width:590px;margin:0;color:var(--ecx-muted);font-size:14px;line-height:1.9}
+.ecx-presentation-actions{display:flex;flex-wrap:wrap;align-items:center;gap:17px;margin-top:25px}
+.ecx-presentation-actions .ecx-btn{border-radius:6px}
+.ecx-presentation-actions .ecx-underlink{margin-top:0;white-space:nowrap}
+.ecx-presentation-note{display:block;margin-top:22px;color:var(--ecx-muted);font-size:10px;line-height:1.7;max-width:530px}
+@media(max-width:820px){.ecx-presentation-grid{grid-template-columns:1fr;gap:30px}.ecx-presentation-cover{max-width:620px;width:100%;margin:auto}.ecx-presentation-copy h2{font-size:clamp(30px,7vw,42px)}.ecx-presentation-actions{align-items:flex-start;flex-direction:column;gap:12px}}
+@media(max-width:480px){.ecx-presentation-download{padding:48px 0}.ecx-presentation-cover{padding:8px;border-radius:6px 20px 6px 6px}.ecx-presentation-file-tag{font-size:8px}.ecx-presentation-actions .ecx-btn{width:100%;justify-content:center}}

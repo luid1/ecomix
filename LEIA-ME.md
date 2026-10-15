@@ -10,6 +10,12 @@ Versão atualizada do site EcoMix: mantém verde floresta `#073F32`, verde folha
 - Tipografia Lato mais moderada e conteúdo visível mesmo sem animações.
 - Link para baixar a apresentação comercial atualizada.
 
+## Apresentação comercial para download
+- A página inicial possui uma seção própria chamada “Conheça a EcoMix”, com botões para baixar o PDF e visualizar no navegador.
+- O PDF institucional está incluído em `assets/ecomix-apresentacao-comercial.pdf`.
+- A miniatura da capa usada nessa seção está em `assets/apresentacao-comercial-capa.jpg`.
+- O atalho também aparece no menu mobile e no rodapé.
+
 ## Conteúdo incluído
 - `index.html`: nova página inicial com serviços, condomínios, empresas, frota compacta tipo HR, modelo de parceria, documentação, processo, Eco News, perguntas frequentes, contato e link para a apresentação comercial atualizada.
 - `styles.css`: CSS completo de base e a nova camada visual; os estilos das páginas Eco News foram preservados e alinhados à marca.
