@@ -3,7 +3,7 @@
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const WA_NUMBER = '5511951952545';
+  const WA_NUMBER = '5511984661175';
 
   // Menu mobile acessível.
   const menuButton = $('.ecx-menu');

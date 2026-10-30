@@ -1179,6 +1179,8 @@ body.ecomix-home .ecx-reveal-delay{transition-delay:0s!important}
 /* Show both collection cabinets in the condo mockup without cropping either unit. */
 .ecx-simulation-image{aspect-ratio:1.5/1!important;background:#e7ece5!important}
 .ecx-simulation-image img{object-fit:contain!important;object-position:center!important;background:#e7ece5!important}
+.ecx-photo-frame{aspect-ratio:1.5/1!important;background:#e7ece5!important;max-height:none!important}
+.ecx-photo-frame>img{object-fit:contain!important;object-position:center!important;background:#e7ece5!important}
 
 .ecx-business-copy .ecx-pdf-link{margin-left:18px}
 @media(max-width:600px){.ecx-business-copy .ecx-pdf-link{margin-left:0;margin-top:16px}}

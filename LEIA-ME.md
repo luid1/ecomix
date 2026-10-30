@@ -26,7 +26,7 @@ Versão atualizada do site EcoMix: mantém verde floresta `#073F32`, verde folha
 - `EcoMix_Brand_Tokens.json` e `EcoMix_Design_Tokens.css`: referência para manter as cores e estilos em novas peças.
 
 ## Contatos usados
-- WhatsApp/telefone: (11) 95195-2545
+- WhatsApp/telefone: (11) 98466-1175
 - E-mail: comercial@ecomixgestaoambiental.com.br
 - Instagram: @ecomixgestaoambiental
 - Site: https://ecomixgestaoambiental.com.br
