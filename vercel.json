@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/caixas", "destination": "/caixas.html" },
     { "source": "/eco-news", "destination": "/ecomix-news.html" },
     { "source": "/eco-news/", "destination": "/ecomix-news.html" },
     { "source": "/eco-news/:slug", "destination": "/ecomix-news-artigo.html?slug=:slug" }

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoMix — Guia de descarte das caixas de reciclagem</title>
+<meta name="description" content="Escaneou o QR da caixa EcoMix? Veja o que vai em cada caixa, o que não pode, os dias de coleta do seu condomínio e o impacto da sua reciclagem." />
+<meta name="theme-color" content="#073F32" />
+<link rel="icon" href="assets/ecomix-favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="ecomix-ui.css" />
+<style>
+  /* ---- /caixas — mobile-first ---- */
+  .cx { max-width: 560px; margin-inline: auto; padding-inline: 18px; }
+
+  .cx-top { background: var(--forest); color: #fff; padding: 16px 0 0; }
+  .cx-top__bar { display: flex; align-items: center; justify-content: space-between; }
+  .cx-top__bar img { height: 26px; filter: brightness(0) invert(1); }
+  .cx-top__bar .wa { font-size: .82rem; font-weight: 800; color: var(--leaf); display: inline-flex; gap: 6px; align-items: center; }
+
+  .cx-hero { background: var(--forest); color: #fff; padding-bottom: 30px; position: relative; overflow: hidden; }
+  .cx-hero::after { content:""; position:absolute; right:-120px; top:-80px; width:300px; height:300px; background: radial-gradient(circle, rgba(120,200,61,.18), transparent 60%); }
+  .cx-hero .eyebrow { color: var(--leaf); margin-top: 22px; }
+  .cx-hero h1 { color: #fff; font-size: clamp(2rem, 8vw, 2.7rem); line-height: 1; letter-spacing: -.03em; position: relative; }
+  .cx-hero p { color: #C8DCC6; margin: 14px 0 0; font-size: 1rem; position: relative; }
+  .cx-hero .spectrum { width: 100%; margin-top: 24px; }
+
+  /* condomínio */
+  .cond-panel { background: var(--leaf); color: var(--forest); border-radius: var(--r); padding: 18px; margin-top: -22px; position: relative; z-index: 2; box-shadow: var(--shadow); }
+  .cond-panel.generic { background: #fff; border: 1px solid var(--line); }
+  .cond-panel__label { font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+  .cond-panel h2 { font-size: 1.4rem; margin: 3px 0 0; color: var(--forest); }
+  .cond-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .cond-meta div { background: rgba(7,63,50,.09); border-radius: 10px; padding: 10px 12px; }
+  .cond-panel.generic .cond-meta div { background: var(--pale); }
+  .cond-meta small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+  .cond-meta b { font-size: .98rem; font-weight: 900; }
+  .cond-pick { margin-top: 12px; }
+  .cond-pick select { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); font-family: var(--font); font-weight: 700; color: var(--forest); background: #fff; }
+  .cond-pick label { font-size: .8rem; font-weight: 800; display: block; margin-bottom: 7px; }
+
+  .cx-section { padding-top: 34px; }
+  .cx-section > .eyebrow { margin-bottom: 14px; }
+  .cx-h { font-size: 1.5rem; margin-bottom: 4px; }
+  .cx-sub { color: var(--muted); font-size: .95rem; margin: 0 0 18px; }
+
+  /* abas de caixa */
+  .guide-tabs { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 18px; }
+  .guide-tab {
+    font-family: var(--font); font-weight: 800; font-size: .82rem; line-height: 1.15;
+    padding: 12px 8px; border-radius: 12px; cursor: pointer; text-align: center;
+    background: var(--pale); color: var(--forest); border: 1.5px solid var(--line);
+  }
+  .guide-tab b { display:block; font-size: .72rem; color: var(--mid); margin-bottom: 2px; }
+  .guide-tab[aria-selected="true"] { background: var(--forest); color: #fff; border-color: var(--forest); }
+  .guide-tab[aria-selected="true"] b { color: var(--leaf); }
+  .guide-tab:focus-visible { outline: 3px solid var(--leaf); outline-offset: 2px; }
+
+  .accept { background: #fff; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .accept__head { padding: 16px 18px; color: #fff; }
+  .accept__head h3 { color: #fff; font-size: 1.15rem; }
+  .accept__head p { margin: 2px 0 0; font-size: .85rem; opacity: .85; }
+  .accept__body { padding: 16px 18px; }
+  .mat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .mat {
+    display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 11px;
+    font-weight: 800; font-size: .92rem; color: #fff;
+  }
+  .mat svg { width: 22px; height: 22px; flex: none; }
+  .yes-list { list-style: none; margin: 0; padding: 0; }
+  .yes-list li { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); font-weight: 700; color: var(--forest); font-size: .95rem; }
+  .yes-list li:last-child { border-bottom: 0; }
+  .yes-list .ic { width: 30px; height: 30px; border-radius: 8px; background: var(--mist); color: var(--forest); display: grid; place-items: center; flex: none; }
+  .yes-list .ic svg { width: 17px; height: 17px; }
+
+  .no-box { margin-top: 16px; background: #FCEFEF; border: 1px solid #F3D4D4; border-radius: 12px; padding: 14px 16px; }
+  .no-box h4 { color: #B3312F; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+  .no-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .no-list li { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #F0D2D2; color: #99302F; border-radius: 999px; padding: 7px 12px; font-size: .84rem; font-weight: 700; }
+  .no-list .x { width: 16px; height: 16px; border-radius: 50%; background: #CF3339; color: #fff; display: grid; place-items: center; font-size: 11px; flex: none; }
+
+  /* 3d wrap */
+  .cx-3d { background: var(--forest); border-radius: var(--r); padding: 6px 4px 16px; margin-top: 4px; }
+  .cx-3d .box3d-component { --bw: 220px; --bh: 352px; --bd: 220px; }
+
+  /* impacto */
+  .cx-impact { background: linear-gradient(160deg, var(--forest-3), var(--forest)); color: #fff; border-radius: var(--r); padding: 26px 22px; text-align: center; }
+  .cx-impact .big { font-size: 3.6rem; font-weight: 900; color: var(--leaf); line-height: .9; letter-spacing: -.03em; }
+  .cx-impact p { color: #C8DCC6; margin: 8px 0 0; }
+
+  .cx-cta { background: var(--pale); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; text-align: center; margin-top: 4px; }
+  .cx-cta h3 { font-size: 1.15rem; margin-bottom: 6px; }
+  .cx-cta p { color: var(--muted); font-size: .9rem; margin: 0 0 16px; }
+
+  .cx-foot { background: #052a22; color: #9FBBA0; text-align: center; padding: 26px 0 30px; margin-top: 34px; }
+  .cx-foot img { height: 24px; filter: brightness(0) invert(1); margin: 0 auto 12px; }
+  .cx-foot a { color: var(--leaf); font-weight: 800; }
+  .cx-foot small { display:block; font-size:.76rem; margin-top:8px; }
+
+  .hide { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ===== topo ===== -->
+<div class="cx-top">
+  <div class="cx">
+    <div class="cx-top__bar">
+      <img src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental" />
+      <a class="wa" href="https://wa.me/5511984661175" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 5 5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-2.6.7.7-2.5-.2-.3A8 8 0 0 1 12 4zm4.3 10.1c-.2-.1-1.3-.7-1.5-.7-.2-.1-.3-.1-.5.1l-.6.8c-.1.1-.2.2-.4.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.3.1-.4l.3-.4.2-.4v-.3L9.3 8c-.1-.3-.3-.3-.4-.3H8.5c-.2 0-.4.1-.6.3-.7.7-.9 1.6-.6 2.6.5 1.7 1.7 3.1 3.3 4 1.6.9 2.4.9 3.3.8.5-.1 1.3-.6 1.5-1.1.2-.5.2-.9.1-1z"/></svg>
+        (11) 98466-1175
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== hero ===== -->
+<header class="cx-hero">
+  <div class="cx">
+    <span class="eyebrow">Você escaneou a caixa EcoMix</span>
+    <h1 id="heroTitle">Descarte certo, bem aqui no seu prédio.</h1>
+    <p>Veja o que vai em cada caixa, o que não pode entrar e os dias de coleta. Reciclagem organizada começa com você.</p>
+    <div class="spectrum"><i class="p"></i><i class="pl"></i><i class="me"></i><i class="vi"></i></div>
+  </div>
+</header>
+
+<!-- ===== painel do condomínio ===== -->
+<div class="cx">
+  <div class="cond-panel generic" id="condPanel">
+    <span class="cond-panel__label" id="condLabel">Seu condomínio</span>
+    <h2 id="condNome">Encontre o seu condomínio</h2>
+    <div class="cond-meta hide" id="condMeta">
+      <div><small>Próxima coleta</small><b id="mColeta">—</b></div>
+      <div><small>Dias de coleta</small><b id="mDias">—</b></div>
+      <div><small>Caixas instaladas</small><b id="mCaixas">—</b></div>
+      <div><small>Ponto de coleta</small><b id="mPonto">—</b></div>
+    </div>
+    <div class="cond-pick" id="condPick">
+      <label for="condSelect">Selecione para ver dias de coleta e status:</label>
+      <select id="condSelect">
+        <option value="">Selecione seu condomínio…</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ===== guia de descarte ===== -->
+<main class="cx">
+  <section class="cx-section">
+    <span class="eyebrow">Guia de descarte</span>
+    <h2 class="cx-h">O que vai em cada caixa</h2>
+    <p class="cx-sub">Toque na caixa para ver os materiais aceitos e o que não pode entrar.</p>
+
+    <div class="guide-tabs" role="tablist" aria-label="Escolher caixa">
+      <button class="guide-tab" role="tab" data-g="c2" aria-selected="true"><b>Caixa 2</b>Lixo reciclável</button>
+      <button class="guide-tab" role="tab" data-g="c1" aria-selected="false"><b>Caixa 1</b>Especiais</button>
+      <button class="guide-tab" role="tab" data-g="c3" aria-selected="false"><b>Caixa 3</b>Pequena 100L</button>
+    </div>
+
+    <!-- CAIXA 2 / 3: recicláveis -->
+    <div class="accept" data-guide="c2">
+      <div class="accept__head" style="background:var(--forest)">
+        <h3>Lixo reciclável</h3>
+        <p>Limpos e secos. Sem restos de comida.</p>
+      </div>
+      <div class="accept__body">
+        <div class="mat-grid">
+          <span class="mat" style="background:var(--m-papel)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>Papel</span>
+          <span class="mat" style="background:var(--m-plastico)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v3l-2 3v11h8V9l-2-3V3"/></svg>Plástico</span>
+          <span class="mat" style="background:var(--m-metal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M9 4h6"/></svg>Metal</span>
+          <span class="mat" style="background:var(--m-vidro)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3h4v4l1 3v10H9V10l1-3z"/></svg>Vidro</span>
+        </div>
+        <div class="no-box">
+          <h4>Não coloque aqui</h4>
+          <ul class="no-list">
+            <li><span class="x">✕</span>Restos de comida</li>
+            <li><span class="x">✕</span>Pilhas e baterias</li>
+            <li><span class="x">✕</span>Óleo de cozinha</li>
+          </ul>
+          <p style="margin:10px 0 0;font-size:.82rem;color:var(--muted)">Pilhas e óleo vão na <b>caixa de especiais</b>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAIXA 1: especiais -->
+    <div class="accept hide" data-guide="c1">
+      <div class="accept__head" style="background:var(--forest-3)">
+        <h3>Recicláveis especiais</h3>
+        <p>O que não vai no reciclável comum.</p>
+      </div>
+      <div class="accept__body">
+        <ul class="yes-list">
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="12" rx="1"/><path d="M8 21h8"/></svg></span>Eletrônicos</li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11v2M8 11l2 2 3-4"/></svg></span>Pilhas e baterias</li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V5h12v4M6 13h12v6H6zM8 9h8"/></svg></span>Cartuchos de impressora</li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4l4 3 4-3 3 3-2 3v10H7V10L5 7z"/></svg></span>Roupas</li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s5 6 5 10a5 5 0 0 1-10 0c0-4 5-10 5-10z"/></svg></span>Óleo de cozinha</li>
+        </ul>
+        <div class="no-box">
+          <h4>Não coloque aqui</h4>
+          <ul class="no-list">
+            <li><span class="x">✕</span>Restos de comida</li>
+            <li><span class="x">✕</span>Lixo comum</li>
+            <li><span class="x">✕</span>Vidro quebrado</li>
+          </ul>
+          <p style="margin:10px 0 0;font-size:.82rem;color:var(--muted)">Recicláveis comuns vão na <b>caixa de lixo reciclável</b>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAIXA 3: pequena (mesmo conteúdo do reciclável) -->
+    <div class="accept hide" data-guide="c3">
+      <div class="accept__head" style="background:var(--forest)">
+        <h3>Caixa pequena (100 L)</h3>
+        <p>Recicláveis comuns, limpos e secos.</p>
+      </div>
+      <div class="accept__body">
+        <div class="mat-grid">
+          <span class="mat" style="background:var(--m-papel)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>Papel</span>
+          <span class="mat" style="background:var(--m-plastico)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v3l-2 3v11h8V9l-2-3V3"/></svg>Plástico</span>
+          <span class="mat" style="background:var(--m-metal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M9 4h6"/></svg>Metal</span>
+          <span class="mat" style="background:var(--m-vidro)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3h4v4l1 3v10H9V10l1-3z"/></svg>Vidro</span>
+        </div>
+        <div class="no-box">
+          <h4>Não coloque aqui</h4>
+          <ul class="no-list">
+            <li><span class="x">✕</span>Restos de comida</li>
+            <li><span class="x">✕</span>Pilhas e baterias</li>
+            <li><span class="x">✕</span>Óleo de cozinha</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3D ===== -->
+  <section class="cx-section">
+    <span class="eyebrow">A sua caixa de perto</span>
+    <h2 class="cx-h">Gire e conheça</h2>
+    <p class="cx-sub">Arraste para ver todas as faces da caixa instalada no seu prédio.</p>
+    <div class="cx-3d"><div id="box3d"></div></div>
+  </section>
+
+  <!-- ===== impacto ===== -->
+  <section class="cx-section">
+    <div class="cx-impact">
+      <span class="eyebrow" style="justify-content:center">Seu descarte vale</span>
+      <div class="big">50%</div>
+      <p>do valor dos materiais coletados vai para <b>cooperativas e ONGs</b>. Reciclar aqui também gera renda e destino certo.</p>
+    </div>
+  </section>
+
+  <!-- ===== cta ===== -->
+  <section class="cx-section" style="padding-bottom:10px">
+    <div class="cx-cta">
+      <h3>Ficou com dúvida sobre um item?</h3>
+      <p>Fale com a EcoMix pelo WhatsApp — a gente te ajuda a descartar certo.</p>
+      <a class="btn" href="https://wa.me/5511984661175" target="_blank" rel="noopener">Falar no WhatsApp <span class="ar">↗</span></a>
+    </div>
+  </section>
+</main>
+
+<!-- ===== footer ===== -->
+<footer class="cx-foot">
+  <div class="cx">
+    <img src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental" />
+    <div>Reciclagem organizada. Impacto que transforma.</div>
+    <small><a href="https://ecomixgestaoambiental.com.br">ecomixgestaoambiental.com.br</a> · @ecomixgestaoambiental</small>
+  </div>
+</footer>
+
+<script src="caixas3d.js"></script>
+<script>
+  /* ====== Registro de condomínios ======
+     Para adicionar um condomínio, copie um bloco abaixo.
+     O link do condomínio é:  /caixas?c=SLUG
+     (ex.: ecomixgestaoambiental.com.br/caixas?c=jardim-das-flores) */
+  var CONDOS = {
+    "jardim-das-flores": {
+      nome: "Residencial Jardim das Flores",
+      proxima: "Terça, 12/11",
+      dias: "Terças e sextas",
+      caixas: "Reciclável + Especiais",
+      ponto: "Garagem — próximo à portaria"
+    },
+    "parque-das-arvores": {
+      nome: "Condomínio Parque das Árvores",
+      proxima: "Quinta, 14/11",
+      dias: "Quintas",
+      caixas: "Reciclável + Pequena 100L",
+      ponto: "Área de serviço do bloco B"
+    }
+  };
+
+  var qs = new URLSearchParams(location.search);
+  var slug = (qs.get('c') || qs.get('cond') || '').toLowerCase();
+  var saved = null;
+  try { saved = localStorage.getItem('ecomix_condo'); } catch(e){}
+  if (!slug && saved && CONDOS[saved]) slug = saved;
+
+  var panel = document.getElementById('condPanel');
+  var elNome = document.getElementById('condNome');
+  var elLabel = document.getElementById('condLabel');
+  var elMeta = document.getElementById('condMeta');
+  var elPick = document.getElementById('condPick');
+  var select = document.getElementById('condSelect');
+
+  // popula o seletor
+  Object.keys(CONDOS).forEach(function(k){
+    var o = document.createElement('option');
+    o.value = k; o.textContent = CONDOS[k].nome;
+    select.appendChild(o);
+  });
+
+  function showCondo(k){
+    var c = CONDOS[k];
+    if (!c) return;
+    panel.classList.remove('generic');
+    elLabel.textContent = 'Seu condomínio';
+    elNome.textContent = c.nome;
+    document.getElementById('mColeta').textContent = c.proxima;
+    document.getElementById('mDias').textContent = c.dias;
+    document.getElementById('mCaixas').textContent = c.caixas;
+    document.getElementById('mPonto').textContent = c.ponto;
+    elMeta.classList.remove('hide');
+    elPick.classList.add('hide');
+    select.value = k;
+    try { localStorage.setItem('ecomix_condo', k); } catch(e){}
+  }
+
+  if (slug && CONDOS[slug]) {
+    showCondo(slug);
+  }
+
+  select.addEventListener('change', function(){
+    if (this.value && CONDOS[this.value]) showCondo(this.value);
+  });
+
+  /* ====== guia: trocar de caixa ====== */
+  var tabs = document.querySelectorAll('.guide-tab');
+  var box3d = EcoMixBox3D.mount('#box3d', { box: 'c2', assets: 'assets/caixas3d', tabs: false });
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      var g = t.getAttribute('data-g');
+      tabs.forEach(function(x){ x.setAttribute('aria-selected', x===t ? 'true':'false'); });
+      document.querySelectorAll('[data-guide]').forEach(function(p){
+        p.classList.toggle('hide', p.getAttribute('data-guide') !== g);
+      });
+      if (box3d) { box3d.load(g); box3d.face('front'); }
+    });
+  });
+</script>
+</body>
+</html>

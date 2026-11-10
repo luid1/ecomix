@@ -1,338 +1,588 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#073F32">
-  <title>EcoMix Gestão Ambiental | Reciclagem organizada. Impacto que transforma.</title>
-  <meta name="description" content="Coleta programada, triagem, reciclagem e gestão ambiental para condomínios e empresas em São Paulo e região metropolitana. Solicite uma avaliação da operação com a EcoMix.">
-  <link rel="canonical" href="https://ecomixgestaoambiental.com.br/">
-  <link rel="icon" type="image/svg+xml" href="assets/ecomix-favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="EcoMix Gestão Ambiental">
-  <meta property="og:title" content="EcoMix | Reciclagem organizada. Impacto que transforma.">
-  <meta property="og:description" content="Coleta, triagem e gestão ambiental para condomínios e empresas.">
-  <meta property="og:url" content="https://ecomixgestaoambiental.com.br/">
-  <meta property="og:image" content="https://ecomixgestaoambiental.com.br/assets/ponto-de-coleta-ecomix.jpg">
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"EcoMix Gestão Ambiental",
-    "url":"https://ecomixgestaoambiental.com.br/",
-    "email":"comercial@ecomixgestaoambiental.com.br",
-    "telephone":"+55 11 98466-1175",
-    "sameAs":["https://www.instagram.com/ecomixgestaoambiental/"]
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoMix Gestão Ambiental — Reciclagem organizada. Impacto que transforma.</title>
+<meta name="description" content="Coleta programada, triagem e destinação de recicláveis para condomínios e empresas em São Paulo. Estações de coleta identificadas, documentação ambiental e 50% do valor dos materiais para cooperativas e ONGs." />
+<link rel="icon" href="assets/ecomix-favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="ecomix-ui.css" />
+<style>
+  /* ---- específico da home ---- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7,63,50,.92); backdrop-filter: blur(10px);
+    color: #fff; border-bottom: 1px solid var(--line-dk);
   }
-  </script>
+  .nav__in { display: flex; align-items: center; gap: 20px; height: 68px; }
+  .nav__logo img { height: 30px; width: auto; filter: brightness(0) invert(1); }
+  .nav__links { display: flex; gap: 26px; margin-left: auto; }
+  .nav__links a { font-size: .92rem; font-weight: 700; color: #DCEBD8; transition: color .15s; }
+  .nav__links a:hover { color: var(--leaf); }
+  .nav__cta { display: inline-flex; }
+  .nav__burger { display: none; background: none; border: 0; color: #fff; cursor: pointer; margin-left: auto; }
+  @media (max-width: 920px) {
+    .nav__links, .nav .nav__cta { display: none; }
+    .nav__burger { display: inline-flex; }
+    .nav__links.open {
+      display: flex; position: absolute; left: 0; right: 0; top: 68px;
+      flex-direction: column; gap: 0; background: var(--forest); padding: 8px var(--gut) 18px;
+      border-bottom: 1px solid var(--line-dk);
+    }
+    .nav__links.open a { padding: 13px 0; border-bottom: 1px solid var(--line-dk); }
+  }
+
+  /* HERO */
+  .hero { position: relative; overflow: hidden; }
+  .hero::after {
+    content: ""; position: absolute; width: 760px; height: 760px; right: -280px; top: -320px;
+    background: radial-gradient(circle, rgba(120,200,61,.18), transparent 62%); pointer-events: none;
+  }
+  .hero__grid {
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 4vw, 60px);
+    align-items: center; position: relative; z-index: 1;
+  }
+  .hero__loc {
+    display: inline-flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 800;
+    letter-spacing: .04em; color: var(--leaf); margin-bottom: 20px;
+  }
+  .hero__loc .pin { width: 8px; height: 8px; border-radius: 50%; background: var(--leaf); }
+  .hero h1 { font-size: clamp(2.6rem, 6.4vw, 5rem); line-height: .96; letter-spacing: -.035em; }
+  .hero h1 span { color: var(--leaf); display: block; }
+  .hero p.sub { margin: 22px 0 30px; max-width: 46ch; color: #C8DCC6; font-size: clamp(1.02rem,1.5vw,1.2rem); }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero__stats { display: flex; gap: 26px; margin-top: 38px; flex-wrap: wrap; }
+  .hero__stat { display: flex; flex-direction: column; }
+  .hero__stat b { font-size: 1.9rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -.02em; }
+  .hero__stat small { font-size: .78rem; color: #A9C6A8; margin-top: 6px; max-width: 18ch; }
+  .hero__media { position: relative; }
+  .hero__media img { border-radius: var(--r-lg); box-shadow: var(--shadow-lg); width: 100%; }
+  .hero__badge {
+    position: absolute; left: -14px; bottom: 24px;
+    background: #fff; color: var(--forest); border-radius: var(--r);
+    padding: 14px 18px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px;
+    max-width: 230px;
+  }
+  .hero__badge .n { font-size: 1.7rem; font-weight: 900; color: var(--mid); line-height: 1; }
+  .hero__badge small { font-size: .74rem; color: var(--muted); line-height: 1.3; }
+  @media (max-width: 860px) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .hero__media { order: -1; }
+    .hero__badge { left: 10px; }
+  }
+  /* caixas de frente no hero (limpas, sem fundo de IA) */
+  .hero__boxes { display: flex; justify-content: center; align-items: flex-end; }
+  .hero__boxes .hbox {
+    width: 53%; height: auto; border-radius: 12px; background: #fff;
+    box-shadow: 0 34px 60px -20px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.25);
+  }
+  .hero__boxes .hbox--b { margin-right: -8%; transform: translateY(14px) scale(.93); transform-origin: bottom center; z-index: 1; }
+  .hero__boxes .hbox--a { z-index: 2; }
+  @media (max-width: 500px) { .hero__boxes .hbox { width: 52%; } }
+
+  /* processo */
+  .step { display: flex; flex-direction: column; gap: 12px; }
+  .step__n { font-size: .78rem; font-weight: 900; color: var(--leaf-2); letter-spacing: .05em; }
+  .step h3 { font-size: 1.12rem; }
+  .step p { margin: 0; font-size: .92rem; color: var(--muted); }
+
+  /* caixas */
+  .boxes__grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(24px,4vw,56px); align-items: center; }
+  @media (max-width: 920px) { .boxes__grid { grid-template-columns: 1fr; } }
+  .mat-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .box-feature { display: flex; gap: 14px; align-items: flex-start; padding: 15px 0; border-bottom: 1px solid var(--line-dk); }
+  .box-feature:last-child { border-bottom: 0; }
+  .box-feature h4 { font-size: 1rem; color: #fff; margin-bottom: 3px; }
+  .box-feature p { margin: 0; font-size: .88rem; color: #B9D2B6; }
+
+  /* impacto */
+  .impact__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  @media (max-width: 760px){ .impact__grid{ grid-template-columns: 1fr; } }
+  .impact__big { font-size: clamp(3.4rem,8vw,5.6rem); font-weight: 900; color: var(--leaf); line-height: .9; letter-spacing: -.04em; }
+
+  /* dois públicos */
+  .aud { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 760px){ .aud{ grid-template-columns: 1fr; } }
+  .aud__card { position: relative; overflow: hidden; border-radius: var(--r-lg); padding: clamp(26px,3vw,38px); color: #fff; min-height: 260px; display: flex; flex-direction: column; }
+  .aud__card.cond { background: var(--forest-3); }
+  .aud__card.emp  { background: #0c3226; }
+  .aud__card h3 { color:#fff; font-size: 1.5rem; margin-bottom: 10px; }
+  .aud__card p { color:#C8DCC6; font-size: .95rem; margin: 0 0 22px; }
+  .aud__card .btn { margin-top: auto; align-self: flex-start; }
+
+  /* doc */
+  .doc-card { display:flex; gap:16px; align-items:flex-start; }
+  .doc-card .tag { font-weight:900; color:var(--mid); font-size:1.4rem; letter-spacing:.02em; flex:none; }
+
+  /* contato */
+  .contact__grid { display:grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,4vw,48px); }
+  @media (max-width: 860px){ .contact__grid{ grid-template-columns:1fr; } }
+  .field { margin-bottom: 14px; }
+  .field label { display:block; font-size:.8rem; font-weight:800; color:#CDE3C9; margin-bottom:6px; letter-spacing:.02em; }
+  .field input, .field select, .field textarea {
+    width:100%; padding:13px 15px; border-radius:var(--r-sm); border:1px solid var(--line-dk);
+    background: rgba(255,255,255,.06); color:#fff; font-family:var(--font); font-size:.95rem;
+  }
+  .field input::placeholder, .field textarea::placeholder { color:#8FAE8C; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline:2px solid var(--leaf); border-color:var(--leaf); }
+  .field select option { color:#1C2A24; }
+  .contact-info a { color:#fff; font-weight:800; }
+  .contact-line { display:flex; align-items:flex-start; gap:12px; padding:16px 0; border-bottom:1px solid var(--line-dk); }
+  .contact-line small { display:block; color:var(--leaf); font-size:.72rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; margin-bottom:3px; }
+
+  /* footer */
+  .foot { background:#052a22; color:#A9C6A8; }
+  .foot__grid { display:grid; grid-template-columns: 1.4fr 1fr 1fr; gap:30px; }
+  @media (max-width:760px){ .foot__grid{ grid-template-columns:1fr; gap:24px; } }
+  .foot img { height:30px; filter:brightness(0) invert(1); margin-bottom:14px; }
+  .foot a { color:#C8DCC6; display:block; padding:5px 0; font-size:.9rem; }
+  .foot a:hover { color:var(--leaf); }
+  .foot h4 { color:#fff; font-size:.8rem; text-transform:uppercase; letter-spacing:.14em; margin-bottom:10px; }
+  .foot__bar { border-top:1px solid var(--line-dk); margin-top:34px; padding-top:20px; font-size:.8rem; color:#7C9A7A; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+
+  /* ---- LOADER on-brand (7s) ---- */
+  .loader{ position:fixed; inset:0; z-index:200; background:var(--forest);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    transition:opacity .8s ease, visibility .8s ease; }
+  .loader.done{ opacity:0; visibility:hidden; }
+  .loader__bgleaf{ position:absolute; opacity:.06; stroke:#fff; fill:none; stroke-width:.5; z-index:1; }
+  .loader__bgleaf.a{ width:440px; height:440px; top:-90px; left:-100px; transform:rotate(16deg); }
+  .loader__bgleaf.b{ width:560px; height:560px; bottom:-150px; right:-130px; transform:rotate(-22deg); }
+  .loader__in{ position:relative; z-index:2; text-align:center; padding:0 24px; width:min(430px,86vw); }
+  .loader__ring{ position:relative; width:156px; height:156px; margin:0 auto 12px; }
+  .loader__ringsvg{ width:156px; height:156px; transform:rotate(-90deg); }
+  .lr-track{ fill:none; stroke:rgba(255,255,255,.1); stroke-width:7; }
+  .lr-arc{ fill:none; stroke-width:7; stroke-linecap:round; transform-origin:center;
+    stroke-dasharray:74 252.7; stroke-dashoffset:74; animation:lrdraw 1.7s ease forwards; }
+  .lr-arc.a1{ stroke:#2159C4; transform:rotate(0deg);   animation-delay:.2s; }
+  .lr-arc.a2{ stroke:#CF3339; transform:rotate(90deg);  animation-delay:1.85s; }
+  .lr-arc.a3{ stroke:#E0A81F; transform:rotate(180deg); animation-delay:3.5s; }
+  .lr-arc.a4{ stroke:#2F9F4F; transform:rotate(270deg); animation-delay:5.15s; }
+  @keyframes lrdraw{ to{ stroke-dashoffset:0 } }
+  .loader__leafc{ position:absolute; inset:0; margin:auto; width:56px; height:56px; }
+  .loader__leafc path{ stroke:#9FE06B; stroke-width:1.4; fill:none; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:100; stroke-dashoffset:100; animation:ldraw 1.8s ease .3s forwards; }
+  .loader__leafc path:nth-child(2){ animation-delay:.9s; }
+  @keyframes ldraw{ to{ stroke-dashoffset:0 } }
+  .loader__pct{ color:var(--leaf); font-size:1.05rem; font-weight:900; letter-spacing:.05em; }
+  .loader__logo{ display:block; height:44px; margin:16px auto 0; filter:brightness(0) invert(1);
+    opacity:0; transform:translateY(8px); animation:lup .7s ease 1s forwards; }
+  .loader__cap{ color:#C8DCC6; font-size:.98rem; line-height:1.45; margin:14px auto 0; max-width:30ch;
+    opacity:0; animation:lup .7s ease 1.4s forwards; }
+  .loader__cap b{ color:var(--leaf); }
+  @keyframes lup{ to{ opacity:1; transform:none } }
+  @media (prefers-reduced-motion:reduce){
+    .lr-arc,.loader__leafc path{ animation:none; stroke-dashoffset:0 }
+    .loader__logo,.loader__cap{ animation:none; opacity:1; transform:none }
+  }
+  body.loading{ overflow:hidden; }
+  /* entrada das caixas do hero ao abrir */
+  .hero__boxes .hbox{ transition: transform 1s cubic-bezier(.16,.84,.3,1), opacity .9s ease; }
+  body.loading .hero__boxes .hbox--a{ opacity:0; transform:translateY(56px); }
+  body.loading .hero__boxes .hbox--b{ opacity:0; transform:translateY(70px) scale(.93); }
+  @media (prefers-reduced-motion:reduce){
+    .hero__boxes .hbox{ transition:none; }
+    body.loading .hero__boxes .hbox--a{ opacity:1; transform:none; }
+    body.loading .hero__boxes .hbox--b{ opacity:1; transform:translateY(14px) scale(.93); }
+  }
+
+  /* ---- hero 3D ---- */
+  .hero__box{ background:rgba(255,255,255,.04); border:1px solid var(--line-dk);
+    border-radius:var(--r-lg); padding:18px 10px 20px; box-shadow:var(--shadow-lg); }
+  .hero__tag{ position:absolute; left:6px; top:-14px; z-index:3; }
+
+  /* ---- chips de confiança no hero ---- */
+  .hero__trust{ display:flex; flex-wrap:wrap; gap:10px; margin-top:34px; }
+
+  /* ---- caixas: cards de tipo ---- */
+  .typecard{ background:rgba(255,255,255,.05); border:1px solid var(--line-dk); border-radius:var(--r);
+    padding:16px 16px 20px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .typecard img{ height:210px; width:auto; border-radius:9px; box-shadow:0 14px 30px rgba(0,0,0,.28);
+    object-fit:cover; object-position:top; margin-bottom:14px; }
+  .typecard .num-tag{ font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--leaf);text-transform:uppercase; }
+  .typecard h4{ color:#fff; font-size:1.06rem; margin:3px 0 4px; }
+  .typecard p{ color:#B9D2B6; font-size:.85rem; margin:0; }
+  .color-note{ display:flex; align-items:center; justify-content:center; gap:10px; margin-top:22px;
+    color:#C8DCC6; font-size:.9rem; font-weight:700; }
+  .color-note i{ width:16px; height:16px; border-radius:50%; box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4); display:inline-block; }
+
+  /* ---- MENU overlay mobile ---- */
+  .navov{ position:fixed; inset:0; z-index:120; background:var(--forest);
+    display:flex; flex-direction:column; padding:22px var(--gut);
+    opacity:0; visibility:hidden; transform:translateY(-8px);
+    transition:opacity .3s ease, transform .3s ease, visibility .3s ease; }
+  .navov.open{ opacity:1; visibility:visible; transform:none; }
+  .navov__top{ display:flex; align-items:center; justify-content:space-between; }
+  .navov__top img{ height:28px; filter:brightness(0) invert(1); }
+  .navov__close{ background:none; border:0; color:#fff; cursor:pointer; }
+  .navov__links{ display:flex; flex-direction:column; margin-top:18px; flex:1; justify-content:center; }
+  .navov__links a{ color:#fff; font-size:2rem; font-weight:900; letter-spacing:-.02em; padding:12px 0;
+    border-bottom:1px solid var(--line-dk); display:flex; align-items:center; justify-content:space-between; }
+  .navov__links a span{ color:var(--leaf); font-size:1rem; }
+  .navov__cta{ margin-top:22px; }
+  .navov .spectrum{ width:100%; margin-top:20px; }
+  /* entrada escalonada dos itens do menu mobile */
+  .navov__links a{ opacity:0; transform:translateY(14px); }
+  .navov.open .navov__links a{ animation:navItem .5s cubic-bezier(.2,.8,.2,1) forwards; }
+  .navov.open .navov__links a:nth-child(1){ animation-delay:.07s }
+  .navov.open .navov__links a:nth-child(2){ animation-delay:.13s }
+  .navov.open .navov__links a:nth-child(3){ animation-delay:.19s }
+  .navov.open .navov__links a:nth-child(4){ animation-delay:.25s }
+  .navov.open .navov__links a:nth-child(5){ animation-delay:.31s }
+  .navov .navov__cta, .navov .spectrum{ opacity:0; transform:translateY(14px); }
+  .navov.open .navov__cta{ animation:navItem .5s cubic-bezier(.2,.8,.2,1) .37s forwards; }
+  .navov.open .spectrum{ animation:navItem .5s cubic-bezier(.2,.8,.2,1) .43s forwards; }
+  @keyframes navItem{ to{ opacity:1; transform:none } }
+  @media (prefers-reduced-motion:reduce){
+    .navov__links a, .navov .navov__cta, .navov .spectrum{ opacity:1; transform:none; animation:none; }
+  }
+</style>
 </head>
-<body class="ecomix-home">
-  <div class="ecx-topbar">
-    <div class="ecx-container ecx-topbar-inner">
-      <span><i class="ecx-status-dot"></i> São Paulo e região metropolitana</span>
-      <span>Atendimento para condomínios e empresas</span>
+<body class="loading">
+
+<!-- ===================== LOADER ===================== -->
+<div class="loader" id="loader" role="status" aria-label="Carregando EcoMix">
+  <svg class="loader__bgleaf a" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c0-6 0-9 6-13-1 6-3 9-6 9M12 21c0-5 0-7-5-10 1 5 2 7 5 7"/></svg>
+  <svg class="loader__bgleaf b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c0-6 0-9 6-13-1 6-3 9-6 9M12 21c0-5 0-7-5-10 1 5 2 7 5 7"/></svg>
+  <div class="loader__in">
+    <div class="loader__ring">
+      <svg class="loader__ringsvg" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="lr-track" cx="60" cy="60" r="52"/>
+        <circle class="lr-arc a1" cx="60" cy="60" r="52"/>
+        <circle class="lr-arc a2" cx="60" cy="60" r="52"/>
+        <circle class="lr-arc a3" cx="60" cy="60" r="52"/>
+        <circle class="lr-arc a4" cx="60" cy="60" r="52"/>
+      </svg>
+      <svg class="loader__leafc" viewBox="0 0 24 24" aria-hidden="true">
+        <path pathLength="100" d="M12 21c0-6.5 1-11 8-14 0 7-3.5 11.5-8 12"/>
+        <path pathLength="100" d="M12 21c0-4.5-1-7.5-6-9.5 0 5 2.5 8 6 8.5"/>
+      </svg>
+    </div>
+    <div class="loader__pct" id="loaderPct">0%</div>
+    <img class="loader__logo" src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental" />
+    <p class="loader__cap">Reciclagem organizada.<br><b>Impacto que transforma.</b></p>
+  </div>
+</div>
+
+<!-- ===================== MENU OVERLAY ===================== -->
+<div class="navov" id="navov" role="dialog" aria-label="Menu" aria-modal="true">
+  <div class="navov__top">
+    <img src="assets/ecomix-logo.png" alt="EcoMix" />
+    <button class="navov__close" id="navClose" aria-label="Fechar menu">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav class="navov__links">
+    <a href="#processo">Como funciona <span>01</span></a>
+    <a href="#caixas">As caixas <span>02</span></a>
+    <a href="#parceria">Patrocínio <span>03</span></a>
+    <a href="#publicos">Para você <span>04</span></a>
+    <a href="#contato">Contato <span>05</span></a>
+  </nav>
+  <a class="btn btn--block navov__cta" href="https://wa.me/5511984661175" target="_blank" rel="noopener">Solicitar avaliação <span class="ar">↗</span></a>
+  <div class="spectrum"><i class="p"></i><i class="pl"></i><i class="me"></i><i class="vi"></i></div>
+</div>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="nav__logo" href="#top" aria-label="EcoMix"><img src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental" /></a>
+    <nav class="nav__links">
+      <a href="#processo">Como funciona</a>
+      <a href="#caixas">As caixas</a>
+      <a href="#parceria">Patrocínio</a>
+      <a href="#publicos">Para você</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="btn btn--sm nav__cta" href="https://wa.me/5511984661175" target="_blank" rel="noopener">Solicitar avaliação</a>
+    <button class="nav__burger" id="burger" aria-label="Abrir menu" aria-expanded="false">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero forest-bg section" id="top">
+  <div class="wrap hero__grid">
+    <div class="reveal in">
+      <span class="hero__loc"><i class="pin"></i> São Paulo e região metropolitana</span>
+      <h1>Reciclagem organizada.<span>Impacto que transforma.</span></h1>
+      <p class="sub">Coleta programada, triagem e destinação de recicláveis para condomínios e empresas — uma operação planejada para a rotina do seu espaço.</p>
+      <div class="hero__cta">
+        <a class="btn" href="https://wa.me/5511984661175" target="_blank" rel="noopener">Solicitar avaliação <span class="ar">↗</span></a>
+        <a class="btn btn--ghost" href="#caixas">Conhecer as caixas</a>
+      </div>
+      <div class="hero__trust">
+        <span class="chip"><i class="dot" style="background:var(--leaf)"></i>50% para cooperativas e ONGs</span>
+        <span class="chip">MTR + CDF</span>
+        <span class="chip">3 modelos de caixa</span>
+      </div>
+    </div>
+    <div class="hero__media reveal in">
+      <div class="hero__boxes">
+        <img class="hbox hbox--b" src="assets/caixa-especiais.png" alt="Estação EcoMix de recicláveis especiais: eletrônicos, pilhas, cartuchos, roupas e óleo de cozinha" />
+        <img class="hbox hbox--a" src="assets/caixa-reciclavel.png" alt="Estação EcoMix de lixo reciclável: papel, plástico, metal e vidro" />
+      </div>
     </div>
   </div>
+</section>
 
-  <header class="ecx-header">
-    <div class="ecx-container ecx-nav">
-      <a class="ecx-logo" href="#inicio" aria-label="EcoMix — início">
-        <img src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental">
-      </a>
-      <nav class="ecx-desktop-nav" aria-label="Navegação principal">
-        <a href="#solucoes">Soluções</a>
-        <a href="#condominios">Condomínios</a>
-        <a href="#empresas">Empresas</a>
-        <a href="#frota">Frota</a>
-        <a href="#parceria">Nosso modelo</a>
-        <a href="/eco-news" class="ecx-news-link">Eco News <span>↗</span></a>
-        <a class="ecx-nav-cta" href="#contato">Solicitar avaliação <span>↗</span></a>
-      </nav>
-      <button class="ecx-menu" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="ecxMobileMenu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <div class="ecx-mobile-menu" id="ecxMobileMenu" aria-hidden="true">
-    <button class="ecx-mobile-backdrop" type="button" aria-label="Fechar menu"></button>
-    <div class="ecx-mobile-panel">
-      <div class="ecx-mobile-heading"><span>ECOMIX</span><small>GESTÃO AMBIENTAL</small></div>
-      <nav aria-label="Navegação mobile">
-        <a href="#inicio"><em>01</em>Início <span>↗</span></a>
-        <a href="#solucoes"><em>02</em>Soluções <span>↗</span></a>
-        <a href="#condominios"><em>03</em>Condomínios <span>↗</span></a>
-        <a href="#empresas"><em>04</em>Empresas <span>↗</span></a>
-        <a href="#frota"><em>05</em>Nossa frota <span>↗</span></a>
-        <a href="#parceria"><em>06</em>Nosso modelo <span>↗</span></a>
-        <a href="#apresentacao"><em>07</em>Apresentação em PDF <span>↓</span></a>
-        <a href="/eco-news"><em>08</em>Eco News <span>↗</span></a>
-        <a href="#contato" class="ecx-mobile-contact"><em>09</em>Fale conosco <span>↗</span></a>
-      </nav>
-      <div class="ecx-mobile-foot">Reciclagem organizada.<br>Impacto que transforma.</div>
+<!-- ===================== PROCESSO ===================== -->
+<section class="section" id="processo">
+  <div class="wrap">
+    <span class="eyebrow">Uma nova rotina para os resíduos</span>
+    <h2 class="title">Do descarte à destinação,<br>sem complicar o seu dia a dia.</h2>
+    <div class="grid g-4" style="margin-top:46px">
+      <div class="step card reveal">
+        <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7.5" cy="18.5" r="1.8"/><circle cx="17" cy="18.5" r="1.8"/></svg></span>
+        <span class="step__n">01</span>
+        <h3>Coleta programada</h3>
+        <p>Retirada em dias definidos, com veículo compacto e sem acúmulo no condomínio.</p>
+      </div>
+      <div class="step card reveal">
+        <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M7 12h10M10 17h4"/></svg></span>
+        <span class="step__n">02</span>
+        <h3>Triagem e separação</h3>
+        <p>Materiais organizados por tipo para melhor aproveitamento na cadeia.</p>
+      </div>
+      <div class="step card reveal">
+        <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 7l-3 4 3 4M17 7l3 4-3 4M14 5l-4 14"/></svg></span>
+        <span class="step__n">03</span>
+        <h3>Destinação responsável</h3>
+        <p>Encaminhamento correto conforme as características de cada material.</p>
+      </div>
+      <div class="step card reveal">
+        <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span>
+        <span class="step__n">04</span>
+        <h3>Documentação</h3>
+        <p>Emissão de MTR e CDF quando aplicáveis à operação e à destinação.</p>
+      </div>
     </div>
   </div>
+</section>
 
-  <main>
-    <section class="ecx-hero" id="inicio">
-      <div class="ecx-hero-leaf ecx-hero-leaf-one" aria-hidden="true"></div>
-      <div class="ecx-hero-leaf ecx-hero-leaf-two" aria-hidden="true"></div>
-      <div class="ecx-container ecx-hero-grid">
-        <div class="ecx-hero-copy ecx-reveal">
-          <div class="ecx-eyebrow"><span class="ecx-eyebrow-line"></span> GESTÃO AMBIENTAL · COLETA · RECICLAGEM</div>
-          <h1>Reciclagem organizada.<br><span>Impacto que transforma.</span></h1>
-          <p class="ecx-hero-text">Coleta programada, triagem e destinação de materiais recicláveis com uma operação planejada para a realidade do seu condomínio ou empresa.</p>
-          <div class="ecx-hero-actions">
-            <a class="ecx-btn ecx-btn-primary" href="https://wa.me/5511984661175?text=Ol%C3%A1%2C%20EcoMix!%20Gostaria%20de%20solicitar%20uma%20avalia%C3%A7%C3%A3o%20para%20coleta%20de%20recicl%C3%A1veis." target="_blank" rel="noopener">Solicitar avaliação <span>↗</span></a>
-            <a class="ecx-btn ecx-btn-text" href="#solucoes">Conheça as soluções <span>↓</span></a>
-          </div>
-          <div class="ecx-hero-proof">
-            <span class="ecx-proof-mark" aria-hidden="true">E</span>
-            <div><strong>Operação pensada para o seu espaço</strong><small>Rotina, acesso e frequência definidos em conjunto.</small></div>
-          </div>
-        </div>
+<!-- ===================== AS CAIXAS + 3D ===================== -->
+<section class="section forest-bg" id="caixas">
+  <div class="wrap">
+    <div class="boxes__grid">
+      <div>
+        <span class="eyebrow">Estações de coleta EcoMix</span>
+        <h2 class="title">Três caixas,<br>todas as cores.</h2>
+        <p class="lead" style="margin:18px 0 22px">Pontos de coleta identificados, pensados para orientar o morador e se encaixar na área comum. Gire a caixa, troque a cor e confira cada face.</p>
 
-        <div class="ecx-hero-visual ecx-reveal ecx-reveal-delay">
-          <div class="ecx-photo-frame">
-            <img src="assets/ponto-de-coleta-ecomix.jpg" alt="Pontos de coleta EcoMix: estação de lixo reciclável e estação de recicláveis especiais, com compartimentos identificados" fetchpriority="high">
-            <div class="ecx-photo-caption"><span class="ecx-photo-icon" aria-hidden="true">↻</span><div><strong>Pontos de coleta EcoMix</strong><small>Identificação clara para orientar o descarte.</small></div></div>
-          </div>
-          <div class="ecx-visual-side-note"><span>COLETA</span><i></i><span>TRIAGEM</span><i></i><span>DESTINAÇÃO</span></div>
-          <div class="ecx-hero-stamp" aria-label="Soluções para condomínios e empresas"><span>MENOS DESPERDÍCIO</span><b>+</b><span>MAIS CIRCULARIDADE</span></div>
+        <div class="box-feature">
+          <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16v12H4zM4 7l3-3h10l3 3M9 12h6"/></svg></span>
+          <div><h4>Caixa 1 — Recicláveis especiais</h4><p>Eletrônicos, pilhas, cartuchos, roupas e óleo de cozinha.</p></div>
         </div>
-      </div>
-      <div class="ecx-container ecx-hero-bottom"><span>01 / UMA NOVA ROTINA PARA OS RESÍDUOS</span><span class="ecx-scroll-note">ROLE PARA CONHECER <b>↓</b></span></div>
-    </section>
-
-    <section class="ecx-pillars" aria-label="Pilares da operação EcoMix">
-      <div class="ecx-container ecx-pillars-grid">
-        <article><span class="ecx-line-icon" aria-hidden="true"><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48"><path d="M10 12h28v24H10zM16 18h4m5 0h4m5 0h2M16 25h4m5 0h4m5 0h2M16 32h4m5 0h4m5 0h2"/></svg></span><div><strong>Coleta programada</strong><small>Conforme o planejamento da operação.</small></div></article>
-        <article><span class="ecx-line-icon" aria-hidden="true"><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48"><path d="M24 6 31 18h-7l6 10 8-5M39 29l-7 12H18l4-7M10 34 4 23l7-12 4 6m-1-6h14M4 23h13"/></svg></span><div><strong>Triagem e separação</strong><small>Materiais organizados para aproveitamento.</small></div></article>
-        <article><span class="ecx-line-icon" aria-hidden="true"><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48"><path d="M7 14h23v21H7zM30 21h7l5 6v8H30zM13 39a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm24 0a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg></span><div><strong>Logística planejada</strong><small>Acesso, equipe e frequência alinhados.</small></div></article>
-        <article><span class="ecx-line-icon" aria-hidden="true"><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48"><path d="M24 5 38 10v12c0 10-6 16-14 21C16 38 10 32 10 22V10zM17 24l5 5 10-11"/></svg></span><div><strong>Destinação responsável</strong><small>Encaminhamento conforme os materiais.</small></div></article>
-      </div>
-    </section>
-
-    <section class="ecx-intro ecx-section" id="sobre">
-      <div class="ecx-container ecx-intro-grid">
-        <div class="ecx-section-heading ecx-reveal">
-          <span class="ecx-kicker">01 / A ECOMIX</span>
-          <h2>Do ponto de coleta à destinação.<br><em>Um ciclo melhor começa com organização.</em></h2>
-        </div>
-        <div class="ecx-intro-copy ecx-reveal ecx-reveal-delay">
-          <p class="ecx-lead">A EcoMix estrutura a coleta e a gestão de materiais recicláveis para condomínios e empresas, respeitando a rotina e as condições de cada local.</p>
-          <p>Planejamos a operação desde a definição dos pontos de coleta até a retirada, o transporte, o recebimento, a triagem e o encaminhamento dos materiais na cadeia da reciclagem.</p>
-          <a class="ecx-underlink" href="#processo">Veja como funciona <span>↗</span></a>
-        </div>
-      </div>
-      <div class="ecx-container ecx-intro-band ecx-reveal">
-        <div class="ecx-band-title"><span>O OBJETIVO</span><strong>Facilitar o descarte correto sem complicar a rotina.</strong></div>
-        <div class="ecx-band-rule" aria-hidden="true"></div>
-        <div class="ecx-band-copy">Cada proposta é estruturada a partir do espaço disponível, do volume estimado, dos materiais e da frequência necessária.</div>
-      </div>
-    </section>
-
-    <section class="ecx-solutions ecx-section" id="solucoes">
-      <div class="ecx-container">
-        <div class="ecx-section-top ecx-reveal">
-          <div><span class="ecx-kicker">02 / NOSSAS SOLUÇÕES</span><h2>Uma operação completa.<br><em>Sem complicar o seu dia a dia.</em></h2></div>
-          <p>A EcoMix combina planejamento e execução para tornar a gestão dos resíduos mais clara, organizada e adequada ao local.</p>
-        </div>
-        <div class="ecx-solution-grid">
-          <article class="ecx-solution-card ecx-reveal"><div class="ecx-card-top"><span>01</span><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 12h32v24H8zM16 19h16M16 26h16M16 33h8"/></svg></div><h3>Coleta e logística</h3><p>Retirada programada com rota, equipe e frequência definidas para a operação.</p><a href="#processo" aria-label="Ver como funciona coleta e logística">Conhecer etapa <span>↗</span></a></article>
-          <article class="ecx-solution-card ecx-reveal"><div class="ecx-card-top"><span>02</span><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5 34 21H25l7 11 8-6M39 30l-8 13H15l5-8M9 34 3 23 11 10l5 7m-1-7h13M3 23h14"/></svg></div><h3>Triagem e separação</h3><p>Organização dos materiais para melhorar o aproveitamento e preparar o encaminhamento.</p><a href="#processo">Conhecer etapa <span>↗</span></a></article>
-          <article class="ecx-solution-card ecx-reveal"><div class="ecx-card-top"><span>03</span><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 13h32v22H8zM16 20h16M16 27h10M14 40h20"/></svg></div><h3>Reciclagem e destinação</h3><p>Encaminhamento dos materiais conforme suas características e possibilidades de reaproveitamento.</p><a href="#documentacao">Entender destinação <span>↗</span></a></article>
-          <article class="ecx-solution-card ecx-reveal"><div class="ecx-card-top"><span>04</span><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5c-2 9-12 13-12 24a12 12 0 0 0 24 0C36 18 26 14 24 5Z M18 29c2 4 5 6 10 6"/></svg></div><h3>Educação ambiental</h3><p>Orientação sobre separação e uso correto dos pontos de coleta, quando prevista na operação.</p><a href="#condominios">Ver solução para condomínios <span>↗</span></a></article>
-          <article class="ecx-solution-card ecx-reveal"><div class="ecx-card-top"><span>05</span><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" aria-hidden="true"><path d="M7 39V18l17-12 17 12v21H7zM18 39V26h12v13M13 20h22"/></svg></div><h3>Soluções sob medida</h3><p>Planejamento de acordo com espaço, circulação, volume e particularidades do cliente.</p><a href="#contato">Conversar sobre a operação <span>↗</span></a></article>
-          <article class="ecx-solution-card ecx-solution-card-dark ecx-reveal"><div class="ecx-card-top"><span>06</span><svg fill="none" stroke="#2C7A4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 7h19l8 8v26H11zM30 7v9h8M17 23h14M17 29h14M17 35h9"/></svg></div><h3>Rastreabilidade e documentação</h3><p>Emissão de MTR e CDF quando aplicáveis à operação e à destinação realizada.</p><a href="#documentacao">Sobre a documentação <span>↗</span></a></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-condo ecx-section" id="condominios">
-      <div class="ecx-container ecx-condo-grid">
-        <div class="ecx-condo-visual ecx-reveal">
-          <div class="ecx-simulation-image">
-            <img src="assets/simulacao-caixas-condominio.jpg" alt="Caixa de coleta de recicláveis especiais da EcoMix, com compartimentos identificados para eletrônicos, pilhas, cartuchos, roupas e óleo" loading="lazy">
-            <span class="ecx-image-disclaimer"><span>✦</span> PONTOS DE COLETA ECOMIX</span>
-          </div>
-          <p class="ecx-image-note">Arte dos pontos de coleta EcoMix. A quantidade de compartimentos e o posicionamento final são definidos na avaliação de cada local.</p>
-          <div class="ecx-condo-visual-footer"><span>PROJETO SOB MEDIDA</span><span>ESPAÇO · CIRCULAÇÃO · ROTINA</span></div>
-        </div>
-        <div class="ecx-condo-copy ecx-reveal ecx-reveal-delay">
-          <span class="ecx-kicker">03 / CONDOMÍNIOS</span>
-          <h2>A reciclagem começa onde a rotina acontece.</h2>
-          <p class="ecx-lead">Pontos de coleta bem identificados ajudam os moradores a entender o descarte e tornam a operação mais organizada para a administração.</p>
-          <div class="ecx-checkrows">
-            <div><span>✓</span><p><strong>Pontos identificados</strong><small>Organização conforme os materiais que serão recebidos.</small></p></div>
-            <div><span>✓</span><p><strong>Planejamento do acesso</strong><small>Posicionamento pensado para o espaço e a circulação.</small></p></div>
-            <div><span>✓</span><p><strong>Coleta com veículo compacto</strong><small>Utilizamos veículos como a Hyundai HR, cujo porte pode facilitar o acesso e as manobras em muitos condomínios, conforme as condições do local.</small></p></div>
-          </div>
-          <a class="ecx-btn ecx-btn-primary" href="https://wa.me/5511984661175?text=Ol%C3%A1%2C%20EcoMix!%20Quero%20avaliar%20uma%20solu%C3%A7%C3%A3o%20de%20reciclagem%20para%20meu%20condom%C3%ADnio." target="_blank" rel="noopener">Planejar uma solução para meu condomínio <span>↗</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-business ecx-section" id="empresas">
-      <div class="ecx-container ecx-business-grid">
-        <div class="ecx-business-copy ecx-reveal">
-          <span class="ecx-kicker">04 / EMPRESAS</span>
-          <h2>Resíduos bem geridos.<br><em>Uma operação mais previsível.</em></h2>
-          <p>Para empresas, comércios e operações que precisam organizar a retirada dos recicláveis, a EcoMix planeja uma rotina compatível com o local, o volume e a necessidade de atendimento.</p>
-          <a class="ecx-underlink" href="#contato">Fale sobre sua operação <span>↗</span></a>
-          <a class="ecx-underlink ecx-pdf-link" href="/assets/ecomix-apresentacao-comercial.pdf" download="EcoMix_Apresentacao_Comercial.pdf">Baixar apresentação comercial <span>↓</span></a>
-        </div>
-        <div class="ecx-business-panel ecx-reveal ecx-reveal-delay">
-          <div class="ecx-business-panel-head"><span>UMA ROTINA ORGANIZADA</span><span class="ecx-mini-mark">E</span></div>
-          <div class="ecx-ops-row"><b>01</b><div><strong>Entendimento da operação</strong><small>Tipos de material, volume e acesso.</small></div><span>↗</span></div>
-          <div class="ecx-ops-row"><b>02</b><div><strong>Planejamento logístico</strong><small>Equipe, frequência e retirada.</small></div><span>↗</span></div>
-          <div class="ecx-ops-row"><b>03</b><div><strong>Encaminhamento dos materiais</strong><small>Triagem e destinação na cadeia da reciclagem.</small></div><span>↗</span></div>
-          <div class="ecx-business-panel-foot"><span>COLETA</span><i></i><span>TRIAGEM</span><i></i><span>DESTINAÇÃO</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-fleet ecx-section" id="frota">
-      <div class="ecx-container ecx-fleet-grid">
-        <figure class="ecx-fleet-photo ecx-reveal">
-          <img src="assets/frota-hr-ecomix-ilustrativa.jpg" alt="Imagem ilustrativa de um caminhão compacto tipo Hyundai HR com identidade visual verde da EcoMix em frente a um condomínio" loading="lazy">
-          <figcaption><span>FROTA E LOGÍSTICA</span><small>Imagem ilustrativa de veículo tipo HR; não é uma fotografia oficial da frota.</small></figcaption>
-        </figure>
-        <div class="ecx-fleet-copy ecx-reveal ecx-reveal-delay">
-          <span class="ecx-kicker">05 / FROTA E LOGÍSTICA</span>
-          <h2>Veículos compactos para uma coleta que respeita o espaço.</h2>
-          <p class="ecx-fleet-lead">A logística é planejada de acordo com o acesso, a circulação e a rotina de cada condomínio ou empresa.</p>
-          <p>Utilizamos veículos como a Hyundai HR. Seu porte compacto pode facilitar a entrada, as manobras e o atendimento em muitos condomínios, sempre considerando as condições de acesso e o volume da coleta.</p>
-          <div class="ecx-fleet-points">
-            <div><b>01</b><span><strong>Acesso planejado</strong><small>Consideramos portões, rampas, altura e circulação.</small></span></div>
-            <div><b>02</b><span><strong>Veículo adequado</strong><small>A escolha depende do espaço e do volume da operação.</small></span></div>
-            <div><b>03</b><span><strong>Coleta organizada</strong><small>Equipe, rota e frequência são alinhadas com o cliente.</small></span></div>
-          </div>
-          <a class="ecx-underlink" href="#contato">Planejar a logística do meu local <span>↗</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-partnership ecx-section" id="parceria">
-      <div class="ecx-container">
-        <div class="ecx-section-top ecx-reveal">
-          <div><span class="ecx-kicker">06 / MODELO DE PARCERIA</span><h2>Transparência do começo<br><em>ao resultado da operação.</em></h2></div>
-          <p>O modelo comercial separa os custos da operação do impacto positivo gerado pelo encaminhamento dos materiais.</p>
-        </div>
-        <div class="ecx-partnership-grid">
-          <article class="ecx-partner-card ecx-reveal"><div class="ecx-partner-index">01 <span>LOGÍSTICA</span></div><h3>Uma operação que funciona.</h3><p>Cobramos um valor referente à logística do serviço, considerando deslocamento, equipe, coleta e estrutura operacional.</p><div class="ecx-partner-rule"></div><small>VALORES DEFINIDOS NA PROPOSTA</small></article>
-          <article class="ecx-partner-card ecx-partner-highlight ecx-reveal"><div class="ecx-partner-index">02 <span>IMPACTO SOCIAL</span></div><div class="ecx-50">50<small>%</small></div><h3>Reciclagem com retorno social.</h3><p>50% do valor obtido com os materiais coletados é destinado a cooperativas e ONGs, conforme o modelo de parceria da EcoMix.</p><div class="ecx-partner-rule"></div><small>VALOR COMPARTILHADO COM PROPÓSITO</small></article>
-          <article class="ecx-partner-card ecx-reveal"><div class="ecx-partner-index">03 <span>OPÇÃO DE TROCA</span></div><h3>Produtos de limpeza.</h3><p>Quando solicitado e previsto na proposta, podemos oferecer produtos de limpeza em troca das coletas, conforme as condições combinadas.</p><div class="ecx-partner-rule"></div><small>OPÇÃO MEDIANTE ALINHAMENTO</small></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-docs" id="documentacao">
-      <div class="ecx-container ecx-docs-grid">
-        <div><span class="ecx-kicker ecx-kicker-light">07 / DOCUMENTAÇÃO</span><h2>Mais clareza para acompanhar a destinação.</h2><p>Quando aplicáveis à operação, os documentos ambientais ajudam a registrar a movimentação e comprovar a destinação dos resíduos.</p></div>
-        <div class="ecx-doc-cards">
-          <article><span>MTR</span><div><strong>Manifesto de Transporte de Resíduos</strong><small>Registra e acompanha a movimentação dos resíduos, quando exigido.</small></div><b>↗</b></article>
-          <article><span>CDF</span><div><strong>Certificado de Destinação Final</strong><small>Comprova a destinação final conforme aplicabilidade e documentação da operação.</small></div><b>↗</b></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-process ecx-section" id="processo">
-      <div class="ecx-container">
-        <div class="ecx-section-top ecx-reveal">
-          <div><span class="ecx-kicker">08 / COMO FUNCIONA</span><h2>Um processo claro.<br><em>Da avaliação ao acompanhamento.</em></h2></div>
-          <p>Antes de iniciar, alinhamos as necessidades e as condições do local para montar uma operação adequada.</p>
-        </div>
-        <div class="ecx-process-grid">
-          <article class="ecx-reveal"><span class="ecx-process-number">01</span><div class="ecx-process-icon">⌕</div><h3>Diagnóstico</h3><p>Entendemos o local, os materiais, o volume e a frequência desejada.</p></article>
-          <article class="ecx-reveal"><span class="ecx-process-number">02</span><div class="ecx-process-icon">↗</div><h3>Planejamento</h3><p>Definimos rotina, acesso, equipe e formato do ponto de coleta.</p></article>
-          <article class="ecx-reveal"><span class="ecx-process-number">03</span><div class="ecx-process-icon">↻</div><h3>Operação</h3><p>Realizamos as coletas e organizamos o fluxo dos materiais.</p></article>
-          <article class="ecx-reveal"><span class="ecx-process-number">04</span><div class="ecx-process-icon">✓</div><h3>Acompanhamento</h3><p>Ajustamos a rotina conforme a operação evolui e a necessidade do cliente.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-presentation-download ecx-section" id="apresentacao" aria-labelledby="ecx-presentation-title">
-      <div class="ecx-container ecx-presentation-grid">
-        <a class="ecx-presentation-cover" href="/assets/ecomix-apresentacao-comercial.pdf" target="_blank" rel="noopener" aria-label="Visualizar a apresentação comercial da EcoMix em PDF">
-          <img src="assets/apresentacao-comercial-capa.jpg" alt="Capa da apresentação comercial EcoMix: Reciclagem organizada. Impacto que transforma." loading="lazy">
-          <span class="ecx-presentation-file-tag"><span aria-hidden="true">PDF</span> APRESENTAÇÃO COMERCIAL</span>
-        </a>
-        <div class="ecx-presentation-copy">
-          <span class="ecx-kicker">CONHEÇA A ECOMIX</span>
-          <h2 id="ecx-presentation-title">Veja como funciona nossa solução de reciclagem.</h2>
-          <p>Baixe a apresentação comercial para conhecer a atuação da EcoMix, a operação de coleta e triagem, as soluções para condomínios e empresas e o nosso modelo de parceria.</p>
-          <div class="ecx-presentation-actions">
-            <a class="ecx-btn ecx-btn-primary" href="/assets/ecomix-apresentacao-comercial.pdf" download="EcoMix_Apresentacao_Comercial.pdf">Baixar apresentação em PDF <span aria-hidden="true">↓</span></a>
-            <a class="ecx-underlink" href="/assets/ecomix-apresentacao-comercial.pdf" target="_blank" rel="noopener">Visualizar antes de baixar <span aria-hidden="true">↗</span></a>
-          </div>
-          <small class="ecx-presentation-note">Material institucional. Escopo, frequência e valores são definidos em proposta conforme cada operação.</small>
-        </div>
-      </div>
-    </section>
-
-    <section class="news-slider-section ecx-news-section" aria-labelledby="news-slider-title">
-      <div class="ecx-container">
-        <div class="news-slider-head ecx-news-head"><div><span class="ecx-kicker">09 / ECO NEWS</span><h2 id="news-slider-title">Informação que movimenta<br>o ciclo da reciclagem.</h2></div><a class="news-slider-all" href="/eco-news">Explorar Eco News <span>↗</span></a></div>
-        <div class="news-slider" id="newsSlider" aria-live="polite">
-          <div class="news-loading news-home-loading"><strong>Eco News</strong><span>Carregando destaques sobre reciclagem, resíduos e economia circular…</span></div>
-          <div class="news-slide-controls" aria-label="Controles das notícias"><button type="button" class="news-slide-prev" aria-label="Notícia anterior">←</button><div class="news-slide-dots"></div><button type="button" class="news-slide-next" aria-label="Próxima notícia">→</button></div>
-        </div>
-        <p class="news-slider-note">Curadoria de diferentes fontes. Cada notícia identifica a publicação original e direciona para a matéria correspondente.</p>
-      </div>
-    </section>
-
-    <section class="ecx-faq ecx-section">
-      <div class="ecx-container ecx-faq-grid">
-        <div class="ecx-reveal"><span class="ecx-kicker">DÚVIDAS FREQUENTES</span><h2>O que vale saber antes de começar.</h2><p>Os detalhes finais — como frequência, posicionamento e condições de atendimento — são definidos na proposta após entender a necessidade do local.</p></div>
-        <div class="ecx-faq-list ecx-reveal ecx-reveal-delay">
-          <details><summary>A EcoMix cobra pela coleta? <span>+</span></summary><p>Sim. A proposta prevê um valor para a logística e a operação do serviço, incluindo deslocamento, equipe, coleta e estrutura operacional.</p></details>
-          <details><summary>Quais materiais podem ser coletados? <span>+</span></summary><p>Os materiais são avaliados conforme a operação. Entre os recicláveis comuns estão papel, papelão, plástico, metal e vidro. Outros materiais precisam ser alinhados previamente.</p></details>
-          <details><summary>Produtos de limpeza podem fazer parte da parceria? <span>+</span></summary><p>Sim, quando solicitado e previsto na proposta. Essa opção é combinada conforme as condições da operação.</p></details>
-          <details><summary>A EcoMix emite documentação ambiental? <span>+</span></summary><p>A EcoMix emite MTR e CDF quando aplicáveis à operação e à destinação realizada.</p></details>
-        </div>
-      </div>
-    </section>
-
-    <section class="ecx-contact" id="contato">
-      <div class="ecx-contact-shape" aria-hidden="true"></div>
-      <div class="ecx-container ecx-contact-grid">
-        <div class="ecx-contact-copy ecx-reveal">
-          <span class="ecx-kicker ecx-kicker-light">09 / FALE COM A ECOMIX</span>
-          <h2>Vamos organizar uma solução para o seu espaço?</h2>
-          <p>Conte um pouco sobre seu condomínio ou empresa. A partir dessas informações, podemos entender a necessidade e orientar os próximos passos para uma proposta.</p>
-          <div class="ecx-contact-links">
-            <a href="tel:+5511984661175"><span>TELEFONE / WHATSAPP</span><strong>(11) 98466-1175 ↗</strong></a>
-            <a href="mailto:comercial@ecomixgestaoambiental.com.br"><span>E-MAIL COMERCIAL</span><strong>comercial@ecomixgestaoambiental.com.br ↗</strong></a>
-            <a href="https://www.instagram.com/ecomixgestaoambiental/" target="_blank" rel="noopener"><span>INSTAGRAM</span><strong>@ecomixgestaoambiental ↗</strong></a>
+        <div class="box-feature">
+          <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8l-2 3 2 3M17 8l2 3-2 3M13 6l-3 12"/></svg></span>
+          <div>
+            <h4>Caixa 2 — Lixo reciclável</h4>
+            <p>Papel, plástico, metal e vidro — limpos e secos.</p>
+            <div class="mat-row">
+              <span class="chip"><i class="dot" style="background:var(--m-papel)"></i>Papel</span>
+              <span class="chip"><i class="dot" style="background:var(--m-plastico)"></i>Plástico</span>
+              <span class="chip"><i class="dot" style="background:var(--m-metal)"></i>Metal</span>
+              <span class="chip"><i class="dot" style="background:var(--m-vidro)"></i>Vidro</span>
+            </div>
           </div>
         </div>
-        <form class="ecx-contact-form ecx-reveal ecx-reveal-delay" id="ecxContactForm">
-          <div class="ecx-form-head"><span>PRIMEIRO CONTATO</span><strong>Vamos conversar.</strong><small>Preencha os dados para montar uma mensagem pelo WhatsApp.</small></div>
-          <label>Seu nome<input name="nome" type="text" placeholder="Como podemos chamar você?" required autocomplete="name"></label>
-          <div class="ecx-form-row"><label>Tipo de local<select name="tipo" required><option value="" selected disabled>Selecione</option><option>Condomínio</option><option>Empresa</option><option>Comércio</option><option>Outro</option></select></label><label>Cidade<input name="cidade" type="text" placeholder="Ex.: Cotia" required autocomplete="address-level2"></label></div>
-          <label>O que você precisa?<textarea name="mensagem" rows="3" placeholder="Conte brevemente como funciona sua coleta hoje (opcional)"></textarea></label>
-          <button class="ecx-btn ecx-btn-primary ecx-form-submit" type="submit">Enviar pelo WhatsApp <span>↗</span></button>
-          <p class="ecx-form-note">Ao enviar, o WhatsApp será aberto com os dados preenchidos para você revisar antes de mandar.</p>
-        </form>
-      </div>
-    </section>
-  </main>
+        <div class="box-feature">
+          <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8h12v11H6zM9 8V5h6v3"/></svg></span>
+          <div><h4>Caixa 3 — Pequena (100 L)</h4><p>Mesma identidade, para espaços e volumes menores.</p></div>
+        </div>
 
-  <footer class="ecx-footer">
-    <div class="ecx-container ecx-footer-main">
-      <div class="ecx-footer-brand"><a href="#inicio" aria-label="Voltar ao início"><img src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental"></a><p>Reciclagem organizada.<br><strong>Impacto que transforma.</strong></p></div>
-      <div class="ecx-footer-col"><span>EXPLORE</span><a href="#solucoes">Nossas soluções</a><a href="#condominios">Condomínios</a><a href="#empresas">Empresas</a><a href="#frota">Nossa frota</a><a href="#apresentacao">Apresentação comercial (PDF)</a><a href="/eco-news">Eco News</a></div>
-      <div class="ecx-footer-col"><span>CONTATO</span><a href="tel:+5511984661175">(11) 98466-1175</a><a href="mailto:comercial@ecomixgestaoambiental.com.br">comercial@ecomixgestaoambiental.com.br</a><a href="https://www.instagram.com/ecomixgestaoambiental/" target="_blank" rel="noopener">Instagram ↗</a></div>
-      <div class="ecx-footer-locale"><span class="ecx-locale-dot"></span><strong>São Paulo e região metropolitana</strong><small>Atendimento para condomínios e empresas.</small><a href="#contato">Solicitar avaliação ↗</a></div>
+        <div class="color-note" style="justify-content:flex-start;margin-top:18px">
+          Disponível em
+          <i style="background:#0B5040"></i> verde
+          <i style="background:#0D3B66"></i> azul
+          <i style="background:#2B3035"></i> grafite
+        </div>
+
+        <a class="btn" href="https://wa.me/5511984661175" target="_blank" rel="noopener" style="margin-top:24px">Quero avaliar o meu espaço <span class="ar">↗</span></a>
+      </div>
+
+      <div class="card" style="padding:14px 10px 20px">
+        <div id="box3d"></div>
+      </div>
     </div>
-    <div class="ecx-container ecx-footer-bottom"><span>© <span data-current-year>2026</span> EcoMix Gestão Ambiental</span><span>COLETA · TRIAGEM · DESTINAÇÃO</span><a href="#inicio">Voltar ao topo ↑</a></div>
-  </footer>
+  </div>
+</section>
 
-  <script src="script.js" defer></script>
+<!-- ===================== PARCERIA / IMPACTO ===================== -->
+<section class="section" id="parceria">
+  <div class="wrap">
+    <span class="eyebrow">Patrocínio e impacto</span>
+    <h2 class="title">Coloque sua marca onde<br>a sustentabilidade acontece.</h2>
+    <p class="lead" style="margin:16px 0 40px">Patrocine os pontos de coleta EcoMix e associe sua marca à reciclagem organizada — presença diária nos condomínios atendidos e um impacto social que pode ser comprovado.</p>
+    <div class="impact__grid">
+      <div class="card card--pale reveal">
+        <span class="chip" style="margin-bottom:16px">01 · Visibilidade</span>
+        <h3 style="font-size:1.3rem;margin-bottom:8px">Sua marca na estação</h3>
+        <p style="color:var(--muted);margin:0">Logo do patrocinador nos pontos de coleta, visto todos os dias pelos moradores dos condomínios.</p>
+      </div>
+      <div class="card reveal" style="background:var(--forest);color:#fff;border-color:var(--forest)">
+        <span class="chip" style="margin-bottom:16px">02 · Impacto social</span>
+        <div class="impact__big">50%</div>
+        <p style="color:#C8DCC6;margin:10px 0 0">do valor dos materiais coletados vai para cooperativas e ONGs — um patrocínio que gera renda e destino certo.</p>
+      </div>
+      <div class="card card--pale reveal">
+        <span class="chip" style="margin-bottom:16px">03 · Pronto para o ESG</span>
+        <h3 style="font-size:1.3rem;margin-bottom:8px">Resultados para comunicar</h3>
+        <p style="color:var(--muted);margin:0">Reciclagem organizada, com documentação (MTR e CDF) e dados de impacto para o seu relatório de sustentabilidade.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:36px">
+      <a class="btn" href="https://wa.me/5511984661175?text=Ol%C3%A1%2C%20EcoMix!%20Tenho%20interesse%20em%20patrocinar%20a%20EcoMix." target="_blank" rel="noopener">Quero patrocinar a EcoMix <span class="ar">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DOIS PÚBLICOS ===================== -->
+<section class="section pale-bg" id="publicos">
+  <div class="wrap">
+    <span class="eyebrow">Para quem é a EcoMix</span>
+    <h2 class="title">A reciclagem começa onde<br>a rotina acontece.</h2>
+    <div class="aud" style="margin-top:36px">
+      <div class="aud__card cond reveal">
+        <div class="spectrum" style="width:120px;margin-bottom:20px"><i class="p"></i><i class="pl"></i><i class="me"></i><i class="vi"></i></div>
+        <h3>Condomínios</h3>
+        <p>Pontos de coleta identificados, acesso planejado para a circulação do prédio e retirada com veículo compacto tipo Hyundai HR.</p>
+        <a class="btn" href="https://wa.me/5511984661175" target="_blank" rel="noopener">Solução para meu condomínio <span class="ar">↗</span></a>
+      </div>
+      <div class="aud__card emp reveal">
+        <div class="spectrum" style="width:120px;margin-bottom:20px"><i class="p"></i><i class="pl"></i><i class="me"></i><i class="vi"></i></div>
+        <h3>Empresas e comércios</h3>
+        <p>Uma rotina de retirada compatível com o local, o volume e a necessidade de atendimento — mais previsível e organizada.</p>
+        <a class="btn" href="https://wa.me/5511984661175" target="_blank" rel="noopener">Falar sobre minha operação <span class="ar">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTATO ===================== -->
+<section class="section forest-bg" id="contato">
+  <div class="wrap contact__grid">
+    <div>
+      <span class="eyebrow">Fale com a EcoMix</span>
+      <h2 class="title">Vamos organizar uma<br>solução para o seu espaço?</h2>
+      <p class="lead" style="margin:18px 0 28px">Conte sobre o seu condomínio ou empresa. A partir disso, entendemos a necessidade e orientamos os próximos passos para uma proposta.</p>
+      <div class="contact-info">
+        <div class="contact-line">
+          <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5c0 9 6 15 15 15 1 0 2-1 2-2l-3-3-3 1-4-4 1-3-3-3c-1 0-2 1-2 2z"/></svg></span>
+          <div><small>Telefone / WhatsApp</small><a href="https://wa.me/5511984661175" target="_blank" rel="noopener">(11) 98466-1175</a></div>
+        </div>
+        <div class="contact-line">
+          <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <div><small>E-mail comercial</small><a href="mailto:comercial@ecomixgestaoambiental.com.br">comercial@ecomixgestaoambiental.com.br</a></div>
+        </div>
+        <div class="contact-line">
+          <span class="ibadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></span>
+          <div><small>Instagram</small><a href="https://instagram.com/ecomixgestaoambiental" target="_blank" rel="noopener">@ecomixgestaoambiental</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="background:rgba(255,255,255,.05);border-color:var(--line-dk)">
+      <h3 style="color:#fff;font-size:1.2rem;margin-bottom:4px">Primeiro contato</h3>
+      <p style="color:#B9D2B6;font-size:.9rem;margin:0 0 20px">Preencha os dados para montar uma mensagem no WhatsApp.</p>
+      <form id="leadForm">
+        <div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" placeholder="Como podemos te chamar?" required /></div>
+        <div class="grid g-2">
+          <div class="field"><label for="tipo">Tipo de local</label>
+            <select id="tipo" name="tipo"><option>Condomínio</option><option>Empresa</option><option>Comércio</option><option>Outro</option></select>
+          </div>
+          <div class="field"><label for="cidade">Cidade</label><input id="cidade" name="cidade" placeholder="Sua cidade" /></div>
+        </div>
+        <div class="field"><label for="msg">O que você precisa?</label><textarea id="msg" name="msg" rows="3" placeholder="Conte um pouco sobre o seu espaço e o volume de recicláveis."></textarea></div>
+        <button class="btn btn--block" type="submit">Enviar pelo WhatsApp <span class="ar">↗</span></button>
+        <p style="color:#8FAE8C;font-size:.76rem;margin:12px 0 0;text-align:center">Ao enviar, abrimos o WhatsApp com a sua mensagem pronta.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot section--tight">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <img src="assets/ecomix-logo.png" alt="EcoMix Gestão Ambiental" />
+        <p style="max-width:34ch;font-size:.9rem">Reciclagem organizada para condomínios e empresas. Impacto que transforma, do ponto de coleta à destinação.</p>
+        <div class="spectrum" style="width:140px;margin-top:16px"><i class="p"></i><i class="pl"></i><i class="me"></i><i class="vi"></i></div>
+      </div>
+      <div>
+        <h4>Navegue</h4>
+        <a href="#processo">Como funciona</a>
+        <a href="#caixas">As caixas</a>
+        <a href="#parceria">Patrocínio</a>
+        <a href="caixas.html">Guia de descarte</a>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <a href="https://wa.me/5511984661175" target="_blank" rel="noopener">(11) 98466-1175</a>
+        <a href="mailto:comercial@ecomixgestaoambiental.com.br">E-mail comercial</a>
+        <a href="https://instagram.com/ecomixgestaoambiental" target="_blank" rel="noopener">@ecomixgestaoambiental</a>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>© 2026 EcoMix Gestão Ambiental</span>
+      <span>Reciclagem organizada. Impacto que transforma.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="caixas3d.js"></script>
+<script>
+  // loader on-brand (7s)
+  (function(){
+    var loader = document.getElementById('loader');
+    var pct = document.getElementById('loaderPct');
+    var DUR = 7000, t0 = performance.now();
+    (function tick(now){
+      var p = Math.min(1, ((now||performance.now()) - t0) / DUR);
+      if (pct) pct.textContent = Math.round(p*100) + '%';
+      if (p < 1) requestAnimationFrame(tick);
+    })();
+    function close(){ loader.classList.add('done'); document.body.classList.remove('loading'); document.body.classList.add('loaded'); }
+    var timer = setTimeout(close, DUR);
+    // pular: clique fecha após 1,5s
+    setTimeout(function(){ loader.addEventListener('click', function(){ clearTimeout(timer); close(); }); }, 1500);
+  })();
+
+  // menu overlay
+  var burger = document.getElementById('burger');
+  var navov = document.getElementById('navov');
+  var navClose = document.getElementById('navClose');
+  function openMenu(){ navov.classList.add('open'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+  function closeMenu(){ navov.classList.remove('open'); burger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+  burger.addEventListener('click', openMenu);
+  navClose.addEventListener('click', closeMenu);
+  navov.addEventListener('click', function(e){ if(e.target.tagName==='A') closeMenu(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu(); });
+
+  // caixa 3D na seção (3 modelos + todas as cores)
+  EcoMixBox3D.mount('#box3d', { box: 'c2', color: 'verde', assets: 'assets/caixas3d' });
+
+  // reveal on scroll
+  var io = new IntersectionObserver(function(ents){
+    ents.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }});
+  }, { threshold: .14 });
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(n){ io.observe(n); });
+
+  // form -> whatsapp
+  document.getElementById('leadForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = e.target;
+    var txt = 'Olá, EcoMix! Sou ' + (f.nome.value || '-') +
+      '.%0ATipo de local: ' + f.tipo.value +
+      '.%0ACidade: ' + (f.cidade.value || '-') +
+      '.%0A' + (f.msg.value ? ('Preciso de: ' + f.msg.value) : 'Gostaria de uma avaliação.');
+    window.open('https://wa.me/5511984661175?text=' + txt, '_blank');
+  });
+</script>
 </body>
 </html>

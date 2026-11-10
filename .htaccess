@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteRule ^caixas/?$ caixas.html [L,QSA]
+RewriteRule ^eco-news/?$ ecomix-news.html [L,QSA]
+RewriteRule ^eco-news/([^/]+)/?$ ecomix-news-artigo.html?slug=$1 [L,QSA]
